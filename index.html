@@ -96,6 +96,22 @@
         <p id='settingsHint' class='small' style='margin:8px 0 0'></p>
       </div>
 
+      <div class='settings-card'>
+        <h3>Polska lista słów SJP</h3>
+        <p class='small' style='margin:0 0 12px'>Możesz zaimportować publiczną listę słów do <b>dictionaries/pl</b> w Firebase. Pełna lista jest duża, więc import może potrwać.</p>
+        <div class='field'>
+          <label>Limit importu, 0 = wszystkie znalezione słowa 2–15 liter</label>
+          <input id='sjpImportLimitInput' type='number' min='0' step='1000' value='50000' />
+        </div>
+        <div class='grid2'>
+          <button id='importSjpOnlineBtn' class='btn blue'>Importuj SJP online</button>
+          <label class='btn purple' style='text-align:center;display:block;cursor:pointer'>Wgraj ZIP/TXT SJP
+            <input id='sjpFileInput' type='file' accept='.zip,.txt' class='hidden' />
+          </label>
+        </div>
+        <div id='sjpImportStatus' class='small' style='margin-top:10px'>Status: nie importowano.</div>
+      </div>
+
       <div class='grid2'>
         <button id='createRoomBtn' class='btn primary'>Utwórz pokój</button>
         <div>
@@ -163,6 +179,7 @@
   </div>
 
   <script type='module'>
+    import JSZip from 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm';
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
     import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
     import { getDatabase, ref, get, set, update, onValue, onDisconnect } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
@@ -188,10 +205,11 @@
     const MULTIPLIERS = makeMultipliers();
     const LETTER_VALUES = {A:1,E:1,I:1,N:1,O:1,R:1,S:1,W:1,Z:1,C:2,D:2,K:2,L:2,M:2,P:2,T:2,Y:2,B:3,G:3,H:3,J:3,Ł:3,U:3,Ą:5,Ę:5,F:5,Ó:5,Ś:5,Ż:5,Ć:6,Ń:7,Ź:9,'*':0};
     const LETTER_DISTRIBUTION = [['A',9],['E',7],['I',8],['N',5],['O',6],['R',4],['S',4],['W',4],['Z',5],['C',3],['D',3],['K',3],['L',3],['M',3],['P',3],['T',3],['Y',4],['B',2],['G',2],['H',2],['J',2],['Ł',2],['U',2],['Ą',1],['Ę',1],['F',1],['Ó',1],['Ś',1],['Ż',1],['Ć',1],['Ń',1],['Ź',1],['*',2]];
+    const SJP_WORDLIST_URL = 'https://sjp.pl/sl/growy/sjp-20260401.zip';
 
     const els = {
       setupView:q('setupView'),homeView:q('homeView'),lobbyView:q('lobbyView'),gameView:q('gameView'),topBadge:q('topBadge'),setupError:q('setupError'),
-      nameInput:q('nameInput'),joinCodeInput:q('joinCodeInput'),playerCountSelect:q('playerCountSelect'),timerToggle:q('timerToggle'),timerSecondsInput:q('timerSecondsInput'),timerSecondsWrap:q('timerSecondsWrap'),dictionaryToggle:q('dictionaryToggle'),dictionaryLangSelect:q('dictionaryLangSelect'),dictionarySourceSelect:q('dictionarySourceSelect'),dictionaryLangWrap:q('dictionaryLangWrap'),dictionarySourceWrap:q('dictionarySourceWrap'),voteToggle:q('voteToggle'),voteToggleWrap:q('voteToggleWrap'),settingsHint:q('settingsHint'),
+      nameInput:q('nameInput'),joinCodeInput:q('joinCodeInput'),playerCountSelect:q('playerCountSelect'),timerToggle:q('timerToggle'),timerSecondsInput:q('timerSecondsInput'),timerSecondsWrap:q('timerSecondsWrap'),dictionaryToggle:q('dictionaryToggle'),dictionaryLangSelect:q('dictionaryLangSelect'),dictionarySourceSelect:q('dictionarySourceSelect'),dictionaryLangWrap:q('dictionaryLangWrap'),dictionarySourceWrap:q('dictionarySourceWrap'),voteToggle:q('voteToggle'),voteToggleWrap:q('voteToggleWrap'),settingsHint:q('settingsHint'),sjpImportLimitInput:q('sjpImportLimitInput'),sjpImportStatus:q('sjpImportStatus'),
       roomCodeBox:q('roomCodeBox'),lobbySettingsSummary:q('lobbySettingsSummary'),lobbyPlayers:q('lobbyPlayers'),hostHint:q('hostHint'),startGameBtn:q('startGameBtn'),
       board:q('board'),rack:q('rack'),rackTitle:q('rackTitle'),movePreview:q('movePreview'),playersPanel:q('playersPanel'),votePanel:q('votePanel'),bagCount:q('bagCount'),roomInfo:q('roomInfo'),validationInfo:q('validationInfo'),timerInfo:q('timerInfo'),log:q('log'),toastHost:q('toastHost'),eventOverlay:q('eventOverlay'),eventIcon:q('eventIcon'),eventTitle:q('eventTitle'),eventText:q('eventText')
     };
@@ -215,6 +233,8 @@
     q('passBtn').onclick = passTurn;
     q('shuffleBtn').onclick = shuffleRack;
     q('leaveBtn').onclick = goHome;
+    q('importSjpOnlineBtn').onclick = importSjpOnline;
+    q('sjpFileInput').onchange = e => importSjpFile(e.target.files?.[0]);
     els.nameInput.oninput = () => localStorage.setItem('literaki_name', cleanName(els.nameInput.value));
     els.dictionaryToggle.onchange = syncCreateSettings;
     els.dictionaryLangSelect.onchange = syncCreateSettings;
@@ -296,6 +316,93 @@
         votingEnabled: !dictionaryEnabled && els.voteToggle.checked
       };
     }
+
+    async function importSjpOnline(){
+      if(!db) return alert('Firebase nie jest jeszcze gotowy.');
+      setImportStatus('Pobieram ZIP z SJP...');
+      try{
+        const res = await fetch(SJP_WORDLIST_URL);
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const blob = await res.blob();
+        const words = await extractWordsFromBlob(blob, 'sjp-20260401.zip');
+        await importWordsToFirebase(words, 'SJP online');
+      }catch(err){
+        console.warn('Import online SJP nieudany:', err);
+        setImportStatus('Nie udało się pobrać online. Pobierz ZIP ze strony SJP i użyj przycisku „Wgraj ZIP/TXT SJP”.');
+        alert('Przeglądarka mogła zablokować pobieranie przez CORS. Pobierz plik sjp-20260401.zip ze strony SJP i wgraj go ręcznie przyciskiem „Wgraj ZIP/TXT SJP”.');
+      }
+    }
+
+    async function importSjpFile(file){
+      if(!file || !db) return;
+      setImportStatus(`Czytam plik: ${file.name}...`);
+      try{
+        const words = await extractWordsFromBlob(file, file.name);
+        await importWordsToFirebase(words, file.name);
+      }catch(err){
+        console.error('Błąd importu pliku:', err);
+        setImportStatus('Błąd importu pliku. Upewnij się, że to ZIP albo TXT z listą słów.');
+        alert('Nie udało się zaimportować pliku.');
+      }finally{
+        const input = q('sjpFileInput');
+        if(input) input.value = '';
+      }
+    }
+
+    async function extractWordsFromBlob(blob, filename){
+      if(filename.toLowerCase().endsWith('.zip')){
+        const zip = await JSZip.loadAsync(blob);
+        const files = Object.values(zip.files).filter(file => !file.dir);
+        const txtFile = files.find(file => /\.(txt|dic|lst)$/i.test(file.name)) || files[0];
+        if(!txtFile) throw new Error('ZIP nie zawiera pliku ze słowami.');
+        setImportStatus(`Rozpakowuję: ${txtFile.name}...`);
+        const text = await txtFile.async('text');
+        return parseWordList(text);
+      }
+      const text = await blob.text();
+      return parseWordList(text);
+    }
+
+    function parseWordList(text){
+      setImportStatus('Parsuję słowa 2–15 liter...');
+      const tokens = String(text || '').toUpperCase().normalize('NFC').split(/[^A-ZĄĆĘŁŃÓŚŹŻ]+/u);
+      const words = [];
+      const seen = new Set();
+      for(const raw of tokens){
+        const word = raw.trim();
+        if(word.length < 2 || word.length > 15) continue;
+        if(!/^[A-ZĄĆĘŁŃÓŚŹŻ]+$/u.test(word)) continue;
+        if(seen.has(word)) continue;
+        seen.add(word);
+        words.push(word);
+      }
+      return words;
+    }
+
+    async function importWordsToFirebase(words, sourceName){
+      const max = Number(els.sjpImportLimitInput?.value || 0);
+      const selected = max > 0 ? words.slice(0, max) : words;
+      if(!selected.length) return setImportStatus('Nie znaleziono słów do importu.');
+      const ok = confirm(`Znaleziono ${words.length.toLocaleString('pl-PL')} słów. Zaimportować ${selected.length.toLocaleString('pl-PL')} do dictionaries/pl?`);
+      if(!ok) return setImportStatus('Import anulowany.');
+      const batchSize = 500;
+      for(let i=0;i<selected.length;i+=batchSize){
+        const batch = selected.slice(i, i + batchSize);
+        const updates = {};
+        for(const word of batch) updates[`dictionaries/pl/${dictKey(word)}`] = true;
+        await update(ref(db), updates);
+        setImportStatus(`Importuję ${sourceName}: ${Math.min(i + batch.length, selected.length).toLocaleString('pl-PL')} / ${selected.length.toLocaleString('pl-PL')} słów...`);
+        await sleep(25);
+      }
+      setImportStatus(`Gotowe. Zaimportowano ${selected.length.toLocaleString('pl-PL')} słów do dictionaries/pl.`);
+      showToast('Słownik zaimportowany', `${selected.length.toLocaleString('pl-PL')} słów PL dodano do Firebase.`);
+    }
+
+    function setImportStatus(text){
+      if(els.sjpImportStatus) els.sjpImportStatus.textContent = `Status: ${text}`;
+    }
+
+    function sleep(ms){return new Promise(resolve => setTimeout(resolve, ms));}
 
     async function createRoom(){
       await requestNotificationPermission();
