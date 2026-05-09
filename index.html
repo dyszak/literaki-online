@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang='pl'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <title>Literaki Online — 4 osoby</title>
+  <style>
+    :root{
+      --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--text:#e5e7eb;--muted:#9ca3af;--accent:#fbbf24;
+      --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;--tile:#f4d28f;--tile-border:#b9852b;
+      --cell:#ddc7a1;--board:#315f3e;--shadow:0 18px 50px rgba(0,0,0,.36)
+    }
+    *{box-sizing:border-box;user-select:none}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:radial-gradient(circle at top left,#1e3a8a 0,transparent 32%),var(--bg);color:var(--text);min-height:100vh;padding:18px}button,input{font:inherit}.hidden{display:none!important}
+    .wrap{max-width:1500px;margin:0 auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(17,24,39,.86);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:14px 18px;box-shadow:var(--shadow);backdrop-filter:blur(10px);margin-bottom:18px}.title h1{margin:0;font-size:28px;letter-spacing:-.04em}.title span{color:var(--muted);font-size:14px}.badge{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border-radius:999px;background:rgba(251,191,36,.13);border:1px solid rgba(251,191,36,.28);color:#fde68a;white-space:nowrap;font-weight:800}
+    .card{background:rgba(17,24,39,.92);border:1px solid rgba(255,255,255,.09);border-radius:24px;box-shadow:var(--shadow);padding:18px}.center-card{max-width:720px;margin:60px auto}.center-card h2{font-size:32px;margin:0 0 8px;letter-spacing:-.04em}.center-card p{margin:0 0 18px;color:var(--muted);line-height:1.55}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px;margin-bottom:12px}.field label{font-size:13px;color:var(--muted);font-weight:800}.field input{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none}.btn{border:0;border-radius:14px;padding:12px 13px;background:var(--panel2);color:var(--text);font-weight:900;cursor:pointer;transition:.08s}.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}.primary{background:var(--green)!important;color:#052e16!important}.danger{background:var(--red)!important;color:#fff!important}.blue{background:var(--blue)!important;color:#fff!important}.purple{background:var(--purple)!important;color:#fff!important}.wide{width:100%}.small{font-size:13px;color:var(--muted);line-height:1.45}.room-code{font-size:42px;font-weight:950;letter-spacing:.12em;color:#fde68a;text-align:center;background:rgba(251,191,36,.1);border:1px dashed rgba(251,191,36,.35);border-radius:18px;padding:16px;margin:12px 0}.players-list{display:grid;gap:10px;margin:14px 0}.lobby-player{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px}.online{color:#86efac}.offline{color:#fca5a5}
+    .game{display:grid;grid-template-columns:minmax(700px,1fr) 370px;gap:18px;align-items:start}.board-wrap,.side,.rack-panel{background:rgba(17,24,39,.9);border:1px solid rgba(255,255,255,.08);border-radius:24px;box-shadow:var(--shadow)}.board-wrap{padding:16px;overflow:auto}.board{width:min(92vw,820px);aspect-ratio:1;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);gap:3px;background:var(--board);padding:8px;border-radius:18px;margin:0 auto;border:4px solid #183826}.cell{position:relative;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--cell);min-width:34px;min-height:34px;color:rgba(17,24,39,.78);font-size:clamp(8px,.7vw,11px);font-weight:950;text-align:center;line-height:1.05;cursor:pointer;transition:.08s;overflow:hidden}.cell:hover{transform:translateY(-1px);filter:brightness(1.05)}.cell.pending{outline:3px solid #fbbf24;outline-offset:-3px}.cell.tw{background:#ef4444;color:#fff}.cell.dw{background:#f59e0b;color:#111827}.cell.tl{background:#2563eb;color:#fff}.cell.dl{background:#93c5fd;color:#0f172a}.cell.center{box-shadow:inset 0 0 0 3px rgba(255,255,255,.5)}.tile{width:100%;height:100%;min-width:34px;min-height:34px;border-radius:9px;background:linear-gradient(145deg,#ffe0a5,var(--tile));border:2px solid var(--tile-border);color:#3b2607;display:flex;align-items:center;justify-content:center;position:relative;font-weight:950;font-size:clamp(17px,1.5vw,25px);box-shadow:inset 0 1px rgba(255,255,255,.55),0 3px 0 #8d5e18;cursor:pointer}.tile small{position:absolute;right:4px;bottom:2px;font-size:10px;font-weight:950;color:#5b3a0a}.tile.blank:after{content:'★';position:absolute;left:4px;top:2px;font-size:9px;opacity:.65}.tile.locked{filter:saturate(.9)}
+    .rack-panel{margin-top:18px;padding:16px}.rack-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.rack-head h2{margin:0;font-size:18px}.rack{display:grid;grid-template-columns:repeat(7,70px);gap:10px;min-height:78px;align-items:center;justify-content:center;background:rgba(0,0,0,.18);padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.08);overflow-x:auto}.rack .tile{width:70px;height:70px;font-size:30px}.rack .tile.selected{outline:4px solid var(--accent);transform:translateY(-6px)}.side{padding:16px;display:flex;flex-direction:column;gap:14px;position:sticky;top:18px}.players{display:grid;gap:10px}.player{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:12px;border-radius:17px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08)}.player.active{background:rgba(34,197,94,.13);border-color:rgba(34,197,94,.42)}.player.me{box-shadow:inset 0 0 0 2px rgba(251,191,36,.25)}.player-name{font-weight:850;display:flex;gap:8px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}.score{font-size:24px;font-weight:950;color:#fff}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.info{display:grid;gap:8px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);padding:13px;border-radius:17px;color:var(--muted);font-size:14px;line-height:1.45}.info strong{color:var(--text)}.log{min-height:160px;max-height:270px;overflow:auto;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:17px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted)}.log b{color:var(--text)}
+    @media(max-width:1050px){.game{grid-template-columns:1fr}.side{position:static}.board{width:min(94vw,820px)}.rack{grid-template-columns:repeat(7,minmax(46px,1fr))}.rack .tile{width:100%;height:auto;aspect-ratio:1}.grid2{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class='wrap'>
+    <section class='topbar'>
+      <div class='title'>
+        <h1>Literaki Online</h1>
+        <span>Scrabble-like dla 4 osób, lobby i pokoje online.</span>
+      </div>
+      <div id='topBadge' class='badge'>Ładowanie…</div>
+    </section>
+
+    <section id='setupView' class='card center-card'>
+      <h2>Konfiguracja Firebase</h2>
+      <p>Wklej swoje dane Firebase w stałej <b>FIREBASE_CONFIG</b> w kodzie. Po deployu na Vercel strona będzie działać online.</p>
+      <div class='small' id='setupError'></div>
+    </section>
+
+    <section id='homeView' class='card center-card hidden'>
+      <h2>Lobby</h2>
+      <p>Stwórz pokój i wyślij znajomym kod albo link. Gra startuje, gdy w lobby są 4 osoby.</p>
+      <div class='field'>
+        <label>Twoja nazwa</label>
+        <input id='nameInput' maxlength='18' placeholder='np. Daniel' />
+      </div>
+      <div class='grid2'>
+        <button id='createRoomBtn' class='btn primary'>Utwórz pokój</button>
+        <div>
+          <input id='joinCodeInput' maxlength='6' placeholder='Kod pokoju' style='width:100%;margin-bottom:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none;text-transform:uppercase' />
+          <button id='joinRoomBtn' class='btn blue wide'>Dołącz</button>
+        </div>
+      </div>
+      <p class='small' style='margin-top:16px'>Uwaga: to prosta wersja peer-lobby na Firebase. Nie jest odporna na cheatowanie, bo klienci mają dostęp do stanu gry.</p>
+    </section>
+
+    <section id='lobbyView' class='card center-card hidden'>
+      <h2>Pokój</h2>
+      <p>Wyślij kod lub link pozostałym graczom.</p>
+      <div id='roomCodeBox' class='room-code'>-----</div>
+      <button id='copyLinkBtn' class='btn blue wide'>Kopiuj link do pokoju</button>
+      <div id='lobbyPlayers' class='players-list'></div>
+      <button id='startGameBtn' class='btn primary wide'>Start gry</button>
+      <button id='backHomeBtn' class='btn wide' style='margin-top:10px'>Wróć</button>
+      <p class='small' id='hostHint' style='margin-top:14px'></p>
+    </section>
+
+    <section id='gameView' class='game hidden'>
+      <main>
+        <div class='board-wrap'><div id='board' class='board'></div></div>
+        <div class='rack-panel'>
+          <div class='rack-head'>
+            <h2 id='rackTitle'>Stojak</h2>
+            <span id='movePreview' class='badge'>Ruch: 0 pkt</span>
+          </div>
+          <div id='rack' class='rack'></div>
+        </div>
+      </main>
+      <aside class='side'>
+        <div id='playersPanel' class='players'></div>
+        <div class='controls'>
+          <button id='playBtn' class='btn primary'>Zatwierdź</button>
+          <button id='undoBtn' class='btn'>Cofnij</button>
+          <button id='exchangeBtn' class='btn blue'>Wymień</button>
+          <button id='passBtn' class='btn'>Pas</button>
+          <button id='shuffleBtn' class='btn purple'>Pomieszaj</button>
+          <button id='leaveBtn' class='btn danger'>Wyjdź</button>
+        </div>
+        <div class='info'>
+          <div><strong>Pokój:</strong> <span id='roomInfo'>—</span></div>
+          <div><strong>Woreczek:</strong> <span id='bagCount'>0</span> liter</div>
+          <div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div>
+          <div><strong>Zasada:</strong> pierwszy ruch musi przejść przez środek. Słownik sprawdzacie sami.</div>
+        </div>
+        <div id='log' class='log'></div>
+      </aside>
+    </section>
+  </div>
+
+  <script type='module'>
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+    import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
+    import { getDatabase, ref, get, set, update, onValue, onDisconnect } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
+
+    // 1) Wklej tutaj konfigurację Firebase Web App.
+    // 2) Musisz mieć włączone: Realtime Database oraz najlepiej Authentication -> Anonymous.
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyA0_fhuy7ofypez2zUhNwdbB61NXxGtPwU",
+      authDomain: "dyszak-1eddc.firebaseapp.com",
+      databaseURL: "https://dyszak-1eddc-default-rtdb.firebaseio.com",
+      projectId: "dyszak-1eddc",
+      storageBucket: "dyszak-1eddc.firebasestorage.app",
+      messagingSenderId: "364073429062",
+      appId: "1:364073429062:web:af2cd1348881d6b92fc247",
+      measurementId: "G-ZT5M0ZWS0E"
+    };
+
+    const SIZE = 15;
+    const CENTER = 7;
+    const MULTIPLIERS = makeMultipliers();
+    const LETTER_VALUES = {A:1,E:1,I:1,N:1,O:1,R:1,S:1,W:1,Z:1,C:2,D:2,K:2,L:2,M:2,P:2,T:2,Y:2,B:3,G:3,H:3,J:3,Ł:3,U:3,Ą:5,Ę:5,F:5,Ó:5,Ś:5,Ż:5,Ć:6,Ń:7,Ź:9,'*':0};
+    const LETTER_DISTRIBUTION = [['A',9],['E',7],['I',8],['N',5],['O',6],['R',4],['S',4],['W',4],['Z',5],['C',3],['D',3],['K',3],['L',3],['M',3],['P',3],['T',3],['Y',4],['B',2],['G',2],['H',2],['J',2],['Ł',2],['U',2],['Ą',1],['Ę',1],['F',1],['Ó',1],['Ś',1],['Ż',1],['Ć',1],['Ń',1],['Ź',1],['*',2]];
+
+    const els = {
+      setupView:q('setupView'),homeView:q('homeView'),lobbyView:q('lobbyView'),gameView:q('gameView'),topBadge:q('topBadge'),setupError:q('setupError'),
+      nameInput:q('nameInput'),joinCodeInput:q('joinCodeInput'),roomCodeBox:q('roomCodeBox'),lobbyPlayers:q('lobbyPlayers'),hostHint:q('hostHint'),startGameBtn:q('startGameBtn'),
+      board:q('board'),rack:q('rack'),rackTitle:q('rackTitle'),movePreview:q('movePreview'),playersPanel:q('playersPanel'),bagCount:q('bagCount'),roomInfo:q('roomInfo'),log:q('log')
+    };
+
+    let app, db, auth, myId, currentRoomCode = null, room = null, unsubscribeRoom = null, selectedRackIndex = null;
+    const savedName = localStorage.getItem('literaki_name') || '';
+    els.nameInput.value = savedName;
+
+    q('createRoomBtn').onclick = createRoom;
+    q('joinRoomBtn').onclick = () => joinRoom(els.joinCodeInput.value.trim().toUpperCase());
+    q('copyLinkBtn').onclick = copyRoomLink;
+    q('startGameBtn').onclick = startGame;
+    q('backHomeBtn').onclick = goHome;
+    q('playBtn').onclick = submitMove;
+    q('undoBtn').onclick = undoMove;
+    q('exchangeBtn').onclick = exchangeTiles;
+    q('passBtn').onclick = passTurn;
+    q('shuffleBtn').onclick = shuffleRack;
+    q('leaveBtn').onclick = goHome;
+    els.nameInput.oninput = () => localStorage.setItem('literaki_name', cleanName(els.nameInput.value));
+
+    init();
+
+    async function init(){
+      const params = new URLSearchParams(location.search);
+      const urlRoom = params.get('room');
+      if(urlRoom) els.joinCodeInput.value = urlRoom.toUpperCase();
+
+      if(!isFirebaseConfigured()){
+        els.topBadge.textContent = 'Brak konfiguracji';
+        els.setupError.innerHTML = 'W kodzie nadal są placeholdery <b>WSTAW_...</b>. Utwórz projekt Firebase, skopiuj konfigurację Web App i wklej ją w <b>FIREBASE_CONFIG</b>.';
+        return;
+      }
+
+      app = initializeApp(FIREBASE_CONFIG);
+      db = getDatabase(app);
+      try{
+        auth = getAuth(app);
+        const cred = await signInAnonymously(auth);
+        myId = cred.user.uid;
+      }catch(err){
+        console.warn('Anonymous Auth niedostępne. Używam lokalnego ID. Jeśli reguły bazy wymagają auth, włącz Authentication -> Anonymous.', err);
+        myId = localStorage.getItem('literaki_uid') || crypto.randomUUID();
+        localStorage.setItem('literaki_uid', myId);
+      }
+      els.setupView.classList.add('hidden');
+      els.homeView.classList.remove('hidden');
+      els.topBadge.textContent = 'Online';
+      if(urlRoom) joinRoom(urlRoom.toUpperCase());
+    }
+
+    function isFirebaseConfigured(){
+      return FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.includes('WSTAW') && FIREBASE_CONFIG.databaseURL && !FIREBASE_CONFIG.databaseURL.includes('WSTAW');
+    }
+
+    async function createRoom(){
+      const name = cleanName(els.nameInput.value) || 'Gracz';
+      localStorage.setItem('literaki_name', name);
+      const code = await uniqueRoomCode();
+      const data = {
+        code,status:'lobby',hostId:myId,createdAt:Date.now(),updatedAt:Date.now(),currentIndex:0,moveNumber:0,consecutivePasses:0,
+        order:[myId],players:{[myId]:playerObj(name)},board:{},bag:[],pending:{uid:null,tiles:[]},logs:[logObj('Pokój utworzony. Czekamy na 4 graczy.')]
+      };
+      await set(roomRef(code), data);
+      subscribeRoom(code);
+    }
+
+    async function uniqueRoomCode(){
+      for(let i=0;i<20;i++){
+        const code = Math.random().toString(36).slice(2,7).toUpperCase();
+        const snap = await get(roomRef(code));
+        if(!snap.exists()) return code;
+      }
+      throw new Error('Nie udało się utworzyć kodu pokoju. Spróbuj ponownie.');
+    }
+
+    async function joinRoom(code){
+      code = String(code || '').replace(/[^A-Z0-9]/g,'').toUpperCase();
+      if(!code) return alert('Wpisz kod pokoju.');
+      const name = cleanName(els.nameInput.value) || 'Gracz';
+      localStorage.setItem('literaki_name', name);
+      const snap = await get(roomRef(code));
+      if(!snap.exists()) return alert('Nie znaleziono pokoju.');
+      const data = normalizeRoom(snap.val());
+      if(!data.players[myId]){
+        if(data.status !== 'lobby') return alert('Ta gra już wystartowała. Dołączyć mogą tylko gracze, którzy byli w lobby.');
+        if(data.order.length >= 4) return alert('Pokój jest pełny.');
+        data.players[myId] = playerObj(name);
+        data.order.push(myId);
+        data.logs = addLogToArray(data.logs, `${name} dołącza do pokoju.`);
+        data.updatedAt = Date.now();
+        await set(roomRef(code), data);
+      }else{
+        await update(ref(db, `rooms/${code}/players/${myId}`), {name, online:true,lastSeen:Date.now()});
+      }
+      subscribeRoom(code);
+    }
+
+    function subscribeRoom(code){
+      if(unsubscribeRoom) unsubscribeRoom();
+      currentRoomCode = code;
+      history.replaceState(null,'',`?room=${code}`);
+      const r = roomRef(code);
+      unsubscribeRoom = onValue(r, snap => {
+        if(!snap.exists()) return goHome();
+        room = normalizeRoom(snap.val());
+        render();
+      });
+      update(ref(db, `rooms/${code}/players/${myId}`), {online:true,lastSeen:Date.now()}).catch(()=>{});
+      onDisconnect(ref(db, `rooms/${code}/players/${myId}`)).update({online:false,lastSeen:Date.now()}).catch(()=>{});
+    }
+
+    function playerObj(name){return {id:myId,name,score:0,rack:[],online:true,lastSeen:Date.now()}}
+    function roomRef(code){return ref(db, `rooms/${code}`)}
+    function normalizeRoom(data){
+      return {...data,players:data.players || {},order:data.order || [],board:data.board || {},bag:data.bag || [],pending:data.pending || {uid:null,tiles:[]},logs:data.logs || []};
+    }
+
+    function render(){
+      if(!room) return;
+      els.topBadge.textContent = room.status === 'lobby' ? `Lobby ${room.code}` : `Tura: ${currentPlayer()?.name || '—'}`;
+      els.homeView.classList.add('hidden');
+      els.setupView.classList.add('hidden');
+      els.lobbyView.classList.toggle('hidden', room.status !== 'lobby');
+      els.gameView.classList.toggle('hidden', room.status === 'lobby');
+      if(room.status === 'lobby') renderLobby(); else renderGame();
+    }
+
+    function renderLobby(){
+      els.roomCodeBox.textContent = room.code;
+      els.lobbyPlayers.innerHTML = '';
+      room.order.forEach((id, index) => {
+        const p = room.players[id];
+        const row = document.createElement('div');
+        row.className = 'lobby-player';
+        row.innerHTML = `<b>${index+1}. ${esc(p?.name || 'Gracz')}</b><span class='${p?.online ? 'online' : 'offline'}'>${p?.online ? 'online' : 'offline'}</span>`;
+        els.lobbyPlayers.appendChild(row);
+      });
+      const isHost = room.hostId === myId;
+      els.startGameBtn.disabled = !isHost;
+      els.startGameBtn.textContent = isHost ? 'Start gry' : 'Tylko host może zacząć';
+      els.hostHint.innerHTML = isHost
+        ? `Jesteś hostem. Graczy w lobby: <b>${room.order.length}/4</b>. Start jest blokowany, dopóki nie ma 4 osób.`
+        : `Czekasz, aż host rozpocznie grę. Graczy w lobby: <b>${room.order.length}/4</b>.`;
+    }
+
+    function renderGame(){
+      renderBoard();renderRack();renderPlayers();renderLog();
+      els.bagCount.textContent = room.bag.length;
+      els.roomInfo.textContent = room.code;
+      const me = room.players[myId];
+      els.rackTitle.textContent = me ? `Twój stojak — ${me.name}` : 'Obserwator';
+      updateMovePreview();
+      const active = isMyTurn() && room.status === 'playing';
+      ['playBtn','undoBtn','exchangeBtn','passBtn','shuffleBtn'].forEach(id => q(id).disabled = !active);
+    }
+
+    function renderBoard(){
+      els.board.innerHTML = '';
+      for(let r=0;r<SIZE;r++) for(let c=0;c<SIZE;c++){
+        const cell = document.createElement('div');
+        const mult = MULTIPLIERS[r][c];
+        cell.className = `cell ${mult || ''} ${r===CENTER&&c===CENTER?'center':''}`;
+        const pending = pendingAt(r,c);
+        const tile = pending?.tile || room.board[key(r,c)];
+        if(pending) cell.classList.add('pending');
+        if(tile) cell.appendChild(tileEl(tile, !pending)); else cell.textContent = labelForMultiplier(mult,r,c);
+        cell.onclick = () => onCellClick(r,c);
+        els.board.appendChild(cell);
+      }
+    }
+
+    function renderRack(){
+      const me = room.players[myId];
+      els.rack.innerHTML = '';
+      if(!me) return;
+      me.rack.forEach((tile,index)=>{
+        const node = tileEl(tile,false);
+        node.classList.toggle('selected', selectedRackIndex === index);
+        node.onclick = () => {
+          if(!isMyTurn() || room.status !== 'playing') return;
+          selectedRackIndex = selectedRackIndex === index ? null : index;
+          renderRack();
+        };
+        els.rack.appendChild(node);
+      });
+    }
+
+    function renderPlayers(){
+      els.playersPanel.innerHTML = '';
+      room.order.forEach((id,i)=>{
+        const p = room.players[id];
+        const row = document.createElement('div');
+        row.className = `player ${i===room.currentIndex?'active':''} ${id===myId?'me':''}`;
+        row.innerHTML = `<div class='player-name'><span class='dot' style='background:${['#22c55e','#3b82f6','#f97316','#a855f7'][i%4]}'></span>${esc(p?.name||'Gracz')} ${id===myId?'(ty)':''}</div><div class='score'>${p?.score||0}</div>`;
+        els.playersPanel.appendChild(row);
+      });
+    }
+
+    function renderLog(){
+      els.log.innerHTML = '';
+      [...room.logs].slice(-40).reverse().forEach(item=>{
+        const div = document.createElement('div');
+        div.innerHTML = item.html || esc(item.text || '');
+        els.log.appendChild(div);
+      });
+    }
+
+    async function startGame(){
+      if(room.hostId !== myId) return;
+      if(room.order.length !== 4) return alert('Do startu potrzeba dokładnie 4 graczy.');
+      const next = clone(room);
+      next.status = 'playing';
+      next.board = {};
+      next.bag = createBag();
+      next.currentIndex = 0;
+      next.moveNumber = 0;
+      next.consecutivePasses = 0;
+      next.pending = {uid:null,tiles:[]};
+      next.order.forEach(id => { next.players[id].score = 0; next.players[id].rack = []; drawTiles(next.players[id].rack,next.bag,7); });
+      next.logs = addLogToArray(next.logs, 'Gra wystartowała. Pierwszy ruch musi przejść przez środek.');
+      await saveRoom(next);
+    }
+
+    async function onCellClick(r,c){
+      if(!isMyTurn() || room.status !== 'playing') return;
+      const existing = pendingAt(r,c);
+      const next = clone(room);
+      const me = next.players[myId];
+      if(existing){
+        const idx = next.pending.tiles.findIndex(p=>p.r===r&&p.c===c);
+        const [removed] = next.pending.tiles.splice(idx,1);
+        me.rack.push(removed.tile);
+        if(!next.pending.tiles.length) next.pending = {uid:null,tiles:[]};
+        selectedRackIndex = null;
+        await saveRoom(next);
+        return;
+      }
+      if(next.board[key(r,c)] || selectedRackIndex === null) return;
+      const tile = me.rack.splice(selectedRackIndex,1)[0];
+      selectedRackIndex = null;
+      if(!tile) return;
+      if(tile.blank && tile.letter === '*'){
+        const chosen = prompt('Joker: wpisz literę, którą ma udawać. Punktacja = 0.');
+        const allowed = 'AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ';
+        const letter = String(chosen || '').trim().toUpperCase();
+        if(!letter || !allowed.includes(letter)){me.rack.push(tile);return render();}
+        tile.letter = letter; tile.value = 0;
+      }
+      if(!next.pending.uid) next.pending = {uid:myId,tiles:[]};
+      next.pending.tiles.push({r,c,tile});
+      await saveRoom(next);
+    }
+
+    async function submitMove(){
+      if(!isMyTurn()) return;
+      const result = validateAndScoreMove(room);
+      if(!result.ok) return alert(result.message);
+      const next = clone(room);
+      const me = next.players[myId];
+      next.pending.tiles.forEach(p => next.board[key(p.r,p.c)] = p.tile);
+      me.score += result.score;
+      drawTiles(me.rack,next.bag,7);
+      next.moveNumber++;
+      next.consecutivePasses = 0;
+      next.pending = {uid:null,tiles:[]};
+      next.logs = addLogToArray(next.logs, `<b>${esc(me.name)}</b> układa ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);
+      if(me.rack.length === 0 && next.bag.length === 0) endGame(next, `${me.name} pozbył się wszystkich liter.`); else next.currentIndex = (next.currentIndex + 1) % next.order.length;
+      await saveRoom(next);
+    }
+
+    async function undoMove(){
+      if(!isMyTurn() || !room.pending?.tiles?.length) return;
+      const next = clone(room);
+      const me = next.players[myId];
+      next.pending.tiles.forEach(p => me.rack.push(p.tile));
+      next.pending = {uid:null,tiles:[]};
+      selectedRackIndex = null;
+      await saveRoom(next);
+    }
+
+    async function passTurn(){
+      if(!isMyTurn()) return;
+      const next = clone(room);
+      const me = next.players[myId];
+      next.pending.tiles.forEach(p => me.rack.push(p.tile));
+      next.pending = {uid:null,tiles:[]};
+      next.consecutivePasses++;
+      next.logs = addLogToArray(next.logs, `<b>${esc(me.name)}</b> pasuje.`);
+      if(next.consecutivePasses >= next.order.length * 2) endGame(next, 'Za dużo pasów z rzędu.'); else next.currentIndex = (next.currentIndex + 1) % next.order.length;
+      await saveRoom(next);
+    }
+
+    async function exchangeTiles(){
+      if(!isMyTurn()) return;
+      if(room.pending?.tiles?.length) return alert('Najpierw cofnij litery z planszy.');
+      if(room.bag.length < 7) return alert('Wymiana dostępna tylko, gdy w woreczku jest minimum 7 liter.');
+      const me = room.players[myId];
+      const rackText = me.rack.map((t,i)=>`${i+1}:${t.letter}`).join('  ');
+      const raw = prompt(`Które litery wymienić? Wpisz numery, np. 1,3,5
+
+${rackText}`);
+      if(!raw) return;
+      const indexes = [...new Set(raw.split(/[^0-9]+/).map(n=>Number(n)-1).filter(n=>Number.isInteger(n)&&n>=0&&n<me.rack.length))].sort((a,b)=>b-a);
+      if(!indexes.length) return;
+      const next = clone(room);
+      const p = next.players[myId];
+      const returned = indexes.map(i=>p.rack.splice(i,1)[0]).filter(Boolean).map(t=>({...t,letter:t.blank?'*':t.letter,value:t.blank?0:t.value}));
+      drawTiles(p.rack,next.bag,7);
+      next.bag = shuffle(next.bag.concat(returned));
+      next.consecutivePasses = 0;
+      next.logs = addLogToArray(next.logs, `<b>${esc(p.name)}</b> wymienia ${returned.length} liter.`);
+      next.currentIndex = (next.currentIndex + 1) % next.order.length;
+      await saveRoom(next);
+    }
+
+    async function shuffleRack(){
+      if(!isMyTurn()) return;
+      const next = clone(room);
+      next.players[myId].rack = shuffle(next.players[myId].rack);
+      selectedRackIndex = null;
+      await saveRoom(next);
+    }
+
+    function validateAndScoreMove(data){
+      const pending = data.pending?.tiles || [];
+      if(!pending.length) return {ok:false,message:'Nie położono żadnej litery.'};
+      if(data.pending.uid !== currentPlayerId()) return {ok:false,message:'To nie jest ruch aktualnego gracza.'};
+      const temp = {...data.board};
+      pending.forEach(p => temp[key(p.r,p.c)] = p.tile);
+      const rows = [...new Set(pending.map(p=>p.r))];
+      const cols = [...new Set(pending.map(p=>p.c))];
+      const sameRow = rows.length === 1, sameCol = cols.length === 1;
+      if(!sameRow && !sameCol) return {ok:false,message:'Nowe litery muszą leżeć w jednej linii.'};
+      if(data.moveNumber === 0 && !pending.some(p=>p.r===CENTER&&p.c===CENTER)) return {ok:false,message:'Pierwszy ruch musi przechodzić przez środek planszy.'};
+      const fixed = sameRow ? rows[0] : cols[0];
+      const nums = pending.map(p=>sameRow?p.c:p.r); const min = Math.min(...nums), max = Math.max(...nums);
+      for(let i=min;i<=max;i++){const r=sameRow?fixed:i,c=sameRow?i:fixed;if(!temp[key(r,c)]) return {ok:false,message:'Między literami nie może być pustych pól.'};}
+      if(data.moveNumber > 0 && !isConnectedToExisting(data.board,pending)) return {ok:false,message:'Ruch musi dotykać litery z planszy.'};
+      const words = [], seen = new Set();
+      const main = getWordAt(temp, sameRow?fixed:pending[0].r, sameRow?pending[0].c:fixed, sameRow?'row':'col');
+      if(main.tiles.length > 1) addWord(main);
+      pending.forEach(p=>{const cross = getWordAt(temp,p.r,p.c,sameRow?'col':'row'); if(cross.tiles.length>1) addWord(cross);});
+      function addWord(w){const k=w.tiles.map(t=>key(t.r,t.c)).join('|'); if(!seen.has(k)){seen.add(k);words.push(w)}}
+      if(!words.length) return {ok:false,message:'Musisz ułożyć słowo z co najmniej 2 liter.'};
+      let total = words.reduce((sum,w)=>sum+scoreWord(w,pending),0);
+      if(pending.length === 7) total += 50;
+      return {ok:true,score:total,words:words.map(w=>w.text)};
+    }
+
+    function getWordAt(boardObj,r,c,dir){
+      const dr = dir === 'col' ? 1 : 0, dc = dir === 'row' ? 1 : 0;
+      let sr=r, sc=c;
+      while(inBounds(sr-dr,sc-dc) && boardObj[key(sr-dr,sc-dc)]){sr-=dr;sc-=dc}
+      const tiles=[]; let text='';
+      while(inBounds(sr,sc) && boardObj[key(sr,sc)]){const tile=boardObj[key(sr,sc)];tiles.push({r:sr,c:sc,tile});text+=tile.letter;sr+=dr;sc+=dc}
+      return {tiles,text};
+    }
+
+    function scoreWord(word,pending){
+      const pendingKeys = new Set(pending.map(p=>key(p.r,p.c)));
+      let sum=0, wordMult=1;
+      word.tiles.forEach(item=>{
+        let points = item.tile.value;
+        if(pendingKeys.has(key(item.r,item.c))){
+          const mult = MULTIPLIERS[item.r][item.c];
+          if(mult === 'dl') points *= 2;
+          if(mult === 'tl') points *= 3;
+          if(mult === 'dw') wordMult *= 2;
+          if(mult === 'tw') wordMult *= 3;
+        }
+        sum += points;
+      });
+      return sum * wordMult;
+    }
+
+    function isConnectedToExisting(boardObj,pending){
+      return pending.some(p=>[[1,0],[-1,0],[0,1],[0,-1]].some(([dr,dc])=>inBounds(p.r+dr,p.c+dc)&&boardObj[key(p.r+dr,p.c+dc)]));
+    }
+
+    function updateMovePreview(){
+      if(!isMyTurn() || room.status !== 'playing') return els.movePreview.textContent = 'Nie twoja tura';
+      const result = validateAndScoreMove(room);
+      els.movePreview.textContent = result.ok ? `Ruch: ${result.score} pkt` : 'Ruch: 0 pkt';
+    }
+
+    function createBag(){
+      let id=0; const bag=[];
+      LETTER_DISTRIBUTION.forEach(([letter,count])=>{for(let i=0;i<count;i++) bag.push({id:id++,letter,value:LETTER_VALUES[letter],blank:letter==='*'})});
+      return shuffle(bag);
+    }
+    function drawTiles(rack,bag,target=7){while(rack.length<target && bag.length) rack.push(bag.pop())}
+    function endGame(next,reason){
+      next.status = 'finished';
+      next.order.forEach(id=>{next.players[id].score -= (next.players[id].rack || []).reduce((s,t)=>s+t.value,0)});
+      const winner = [...next.order].map(id=>next.players[id]).sort((a,b)=>b.score-a.score)[0];
+      next.logs = addLogToArray(next.logs, `<b>Koniec gry.</b> ${esc(reason)} Wygrywa <b>${esc(winner.name)}</b>: <b>${winner.score} pkt</b>.`);
+    }
+    async function saveRoom(next){next.updatedAt=Date.now();await set(roomRef(currentRoomCode),next)}
+    function addLogToArray(logs,html){return [...(logs||[]),logObj(html)].slice(-80)}
+    function logObj(html){return {html,t:Date.now()}}
+    function pendingAt(r,c){return (room.pending?.tiles || []).find(p=>p.r===r&&p.c===c)}
+    function currentPlayerId(){return room.order[room.currentIndex]}
+    function currentPlayer(){return room.players[currentPlayerId()]}
+    function isMyTurn(){return room && currentPlayerId() === myId && room.pending?.uid !== null ? room.pending.uid === myId : currentPlayerId() === myId}
+    function key(r,c){return `${r}_${c}`}
+    function inBounds(r,c){return r>=0&&r<SIZE&&c>=0&&c<SIZE}
+    function clone(obj){return structuredClone(obj)}
+    function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+    function cleanName(s){return String(s||'').trim().slice(0,18)}
+    function esc(s){return String(s).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]))}
+    function q(id){return document.getElementById(id)}
+    async function copyRoomLink(){await navigator.clipboard.writeText(`${location.origin}${location.pathname}?room=${room.code}`);alert('Skopiowano link.');}
+    function goHome(){currentRoomCode=null;room=null;selectedRackIndex=null;if(unsubscribeRoom){unsubscribeRoom();unsubscribeRoom=null}history.replaceState(null,'',location.pathname);els.lobbyView.classList.add('hidden');els.gameView.classList.add('hidden');els.homeView.classList.remove('hidden');els.topBadge.textContent='Online'}
+    function tileEl(tile,locked){const div=document.createElement('div');div.className=`tile ${tile.blank?'blank':''} ${locked?'locked':''}`;div.innerHTML=`<span>${esc(tile.letter)}</span><small>${tile.value}</small>`;return div}
+    function labelForMultiplier(mult,r,c){if(r===CENTER&&c===CENTER)return '★ DW';if(mult==='tw')return 'TW';if(mult==='dw')return 'DW';if(mult==='tl')return 'TL';if(mult==='dl')return 'DL';return ''}
+    function makeMultipliers(){
+      const m=Array.from({length:SIZE},()=>Array.from({length:SIZE},()=>'')); const set=(type,coords)=>coords.forEach(([r,c])=>m[r][c]=type);
+      set('tw',[[0,0],[0,7],[0,14],[7,0],[7,14],[14,0],[14,7],[14,14]]);
+      set('dw',[[1,1],[2,2],[3,3],[4,4],[7,7],[10,10],[11,11],[12,12],[13,13],[1,13],[2,12],[3,11],[4,10],[10,4],[11,3],[12,2],[13,1]]);
+      set('tl',[[1,5],[1,9],[5,1],[5,5],[5,9],[5,13],[9,1],[9,5],[9,9],[9,13],[13,5],[13,9]]);
+      set('dl',[[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12],[7,3],[7,11],[8,2],[8,6],[8,8],[8,12],[11,0],[11,7],[11,14],[12,6],[12,8],[14,3],[14,11]]);
+      return m;
+    }
+  </script>
+</body>
+</html>
