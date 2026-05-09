@@ -29,7 +29,10 @@
         <h1>Literaki Online</h1>
         <span>Scrabble-like dla 4 osób, lobby i pokoje online.</span>
       </div>
-      <div id='topBadge' class='badge'>Ładowanie…</div>
+      <div style='display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end'>
+        <div id='turnTimerBadge' class='badge'>Czas: —</div>
+        <div id='topBadge' class='badge'>Ładowanie…</div>
+      </div>
     </section>
 
     <section id='setupView' class='card center-card'>
@@ -180,7 +183,7 @@
       setupView:q('setupView'),homeView:q('homeView'),lobbyView:q('lobbyView'),gameView:q('gameView'),topBadge:q('topBadge'),setupError:q('setupError'),
       nameInput:q('nameInput'),joinCodeInput:q('joinCodeInput'),playerCountSelect:q('playerCountSelect'),timerToggle:q('timerToggle'),timerSecondsInput:q('timerSecondsInput'),timerSecondsWrap:q('timerSecondsWrap'),dictionaryToggle:q('dictionaryToggle'),dictionaryLangSelect:q('dictionaryLangSelect'),dictionarySourceSelect:q('dictionarySourceSelect'),dictionaryLangWrap:q('dictionaryLangWrap'),dictionarySourceWrap:q('dictionarySourceWrap'),voteToggle:q('voteToggle'),voteToggleWrap:q('voteToggleWrap'),settingsHint:q('settingsHint'),
       roomCodeBox:q('roomCodeBox'),lobbySettingsSummary:q('lobbySettingsSummary'),lobbyPlayers:q('lobbyPlayers'),hostHint:q('hostHint'),startGameBtn:q('startGameBtn'),
-      board:q('board'),rack:q('rack'),rackTitle:q('rackTitle'),movePreview:q('movePreview'),playersPanel:q('playersPanel'),votePanel:q('votePanel'),bagCount:q('bagCount'),roomInfo:q('roomInfo'),validationInfo:q('validationInfo'),timerInfo:q('timerInfo'),log:q('log'),toastHost:q('toastHost'),eventOverlay:q('eventOverlay'),eventIcon:q('eventIcon'),eventTitle:q('eventTitle'),eventText:q('eventText'),uiModalBackdrop:q('uiModalBackdrop'),uiModalTitle:q('uiModalTitle'),uiModalText:q('uiModalText'),uiModalInput:q('uiModalInput'),uiModalActions:q('uiModalActions')
+      board:q('board'),rack:q('rack'),rackTitle:q('rackTitle'),movePreview:q('movePreview'),playersPanel:q('playersPanel'),votePanel:q('votePanel'),bagCount:q('bagCount'),roomInfo:q('roomInfo'),validationInfo:q('validationInfo'),timerInfo:q('timerInfo'),turnTimerBadge:q('turnTimerBadge'),log:q('log'),toastHost:q('toastHost'),eventOverlay:q('eventOverlay'),eventIcon:q('eventIcon'),eventTitle:q('eventTitle'),eventText:q('eventText'),uiModalBackdrop:q('uiModalBackdrop'),uiModalTitle:q('uiModalTitle'),uiModalText:q('uiModalText'),uiModalInput:q('uiModalInput'),uiModalActions:q('uiModalActions')
     };
 
     let app, db, auth, myId, currentRoomCode = null, room = null, unsubscribeRoom = null, selectedRackIndex = null;
@@ -887,20 +890,28 @@ ${rackText}`, 'np. 1,3,5');
     }
     function renderTimer(){
       if(!els.timerInfo || !room) return;
+      const limit = room.settings?.turnTimeLimitSeconds || 120;
       if(!room.settings?.timerEnabled || room.status === 'finished'){
         els.topBadge.classList.remove('timer-warn');
+        els.turnTimerBadge.classList.remove('timer-warn');
         els.timerInfo.textContent = 'bez limitu';
+        els.turnTimerBadge.textContent = 'Czas: bez limitu';
         return;
       }
       if(room.status === 'voting'){
         els.topBadge.classList.remove('timer-warn');
+        els.turnTimerBadge.classList.remove('timer-warn');
         els.timerInfo.textContent = 'pauza podczas głosowania';
+        els.turnTimerBadge.textContent = 'Czas: pauza';
         return;
       }
       const left = secondsLeft(room);
-      els.timerInfo.textContent = `${formatTime(left)} / ${room.settings.turnTimeLimitSeconds || 120}s`;
+      const label = `${formatTime(left)} / ${formatTime(limit)}`;
+      els.timerInfo.textContent = label;
+      els.turnTimerBadge.textContent = `Czas: ${formatTime(left)}`;
       els.timerInfo.style.color = left <= 10 ? '#fca5a5' : '';
       els.topBadge.classList.toggle('timer-warn', left <= 10 && room.status === 'playing');
+      els.turnTimerBadge.classList.toggle('timer-warn', left <= 10 && room.status === 'playing');
     }
     function secondsLeft(data){
       if(!data?.settings?.timerEnabled || !data.turnStartedAt) return Infinity;
