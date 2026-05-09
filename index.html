@@ -191,7 +191,6 @@
     let offlineSkipProcessing = false;
     let lastTurnNotificationKey = '';
     let lastSeenEventKey = '';
-    let lastLobbyActivityPing = 0;
     const savedName = localStorage.getItem('literaki_name') || '';
     els.nameInput.value = savedName;
 
@@ -219,18 +218,12 @@
     init();
     setInterval(() => {
       if(!room) return;
-      if(room.status === 'lobby'){
-        maybeDeleteInactiveLobby();
-        return;
-      }
+      if(room.status === 'lobby') return;
       renderTimer();
       maybeSkipOfflineTurn();
       maybeExpireTurn();
     }, 1000);
 
-    ['click','keydown','mousemove','touchstart'].forEach(eventName => {
-      window.addEventListener(eventName, markLobbyActivity, {passive:true});
-    });
 
     async function init(){
       const params = new URLSearchParams(location.search);
@@ -305,7 +298,7 @@
       const code = await uniqueRoomCode();
       const settings = readRoomSettings();
       const data = {
-        code,status:'lobby',hostId:myId,createdAt:Date.now(),updatedAt:Date.now(),lastLobbyActivityAt:Date.now(),currentIndex:0,moveNumber:0,consecutivePasses:0,
+        code,status:'lobby',hostId:myId,createdAt:Date.now(),updatedAt:Date.now(),currentIndex:0,moveNumber:0,consecutivePasses:0,
         settings,order:[myId],players:{[myId]:playerObj(name)},board:{},bag:[],pending:{uid:null,tiles:[]},challenge:null,logs:[logObj(`Pokój utworzony. Tryb słów: ${settingsLabel(settings)}. Czekamy na 4 graczy.`)]
       };
       await set(roomRef(code), data);
@@ -337,11 +330,9 @@
         data.order.push(myId);
         data.logs = addLogToArray(data.logs, `${esc(name)} dołącza do pokoju.`);
         data.updatedAt = Date.now();
-        data.lastLobbyActivityAt = Date.now();
         await set(roomRef(code), data);
       }else{
         await update(ref(db, `rooms/${code}/players/${myId}`), {name, online:true,lastSeen:Date.now()});
-        await update(roomRef(code), {lastLobbyActivityAt:Date.now(),updatedAt:Date.now()});
       }
       subscribeRoom(code);
     }
@@ -796,96 +787,6 @@ ${rackText}`, 'np. 1,3,5');
       if(settings?.votingEnabled) return 'głosowanie graczy';
       return 'ręczna kontrola bez głosowania';
     }
-    async function markLobbyActivity(){
-      if(!room || room.status !== 'lobby' || !currentRoomCode || !db) return;
-      const now = Date.now();
-      if(now - lastLobbyActivityPing < 15000) return;
-      lastLobbyActivityPing = now;
-      try{
-        await update(roomRef(currentRoomCode), {lastLobbyActivityAt:now, updatedAt:now});
-      }catch(_){ }
-    }
-
-    async function maybeDeleteInactiveLobby(){
-      if(!room || room.status !== 'lobby' || !currentRoomCode || !db) return;
-      const last = Number(room.lastLobbyActivityAt || room.updatedAt || room.createdAt || Date.now());
-      if(Date.now() - last < 120000) return;
-      try{
-        await remove(roomRef(currentRoomCode));
-        showToast('Lobby usunięte', 'Brak aktywności przez 2 minuty.');
-      }catch(err){
-        console.warn('Nie udało się usunąć nieaktywnego lobby:', err);
-      }
-    }
-
-    function uiAlert(message, title = 'Komunikat'){
-      return openUiModal({type:'alert', title, message});
-    }
-
-    function uiConfirm(message, title = 'Potwierdź'){
-      return openUiModal({type:'confirm', title, message});
-    }
-
-    function uiPrompt(title, message, placeholder = '', defaultValue = ''){
-      return openUiModal({type:'prompt', title, message, placeholder, defaultValue});
-    }
-
-    function openUiModal({type, title, message, placeholder = '', defaultValue = ''}){
-      return new Promise(resolve => {
-        els.uiModalTitle.textContent = title || 'Komunikat';
-        els.uiModalText.textContent = message || '';
-        els.uiModalActions.innerHTML = '';
-        els.uiModalInput.classList.toggle('hidden', type !== 'prompt');
-        els.uiModalInput.value = defaultValue || '';
-        els.uiModalInput.placeholder = placeholder || '';
-
-        const close = value => {
-          els.uiModalBackdrop.classList.remove('show');
-          setTimeout(() => {
-            els.uiModalInput.classList.add('hidden');
-            els.uiModalActions.innerHTML = '';
-          }, 120);
-          resolve(value);
-        };
-
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn';
-        cancelBtn.textContent = type === 'alert' ? 'OK' : 'Anuluj';
-        cancelBtn.onclick = () => close(type === 'alert' ? true : null);
-
-        if(type === 'alert'){
-          els.uiModalActions.appendChild(cancelBtn);
-        }else{
-          const okBtn = document.createElement('button');
-          okBtn.className = 'btn primary';
-          okBtn.textContent = type === 'confirm' ? 'Tak' : 'OK';
-          okBtn.onclick = () => close(type === 'confirm' ? true : els.uiModalInput.value);
-          els.uiModalActions.append(cancelBtn, okBtn);
-        }
-
-        els.uiModalBackdrop.classList.add('show');
-        if(type === 'prompt') setTimeout(() => els.uiModalInput.focus(), 30);
-
-        const onKey = e => {
-          if(!els.uiModalBackdrop.classList.contains('show')){
-            window.removeEventListener('keydown', onKey);
-            return;
-          }
-          if(e.key === 'Escape'){
-            window.removeEventListener('keydown', onKey);
-            close(type === 'alert' ? true : null);
-          }
-          if(e.key === 'Enter'){
-            window.removeEventListener('keydown', onKey);
-            if(type === 'alert') close(true);
-            else if(type === 'confirm') close(true);
-            else close(els.uiModalInput.value);
-          }
-        };
-        window.addEventListener('keydown', onKey);
-      });
-    }
-
     function timerSeconds(){
       const raw = Number(els.timerSecondsInput?.value || 120);
       return Math.min(600, Math.max(15, Math.round(raw)));
