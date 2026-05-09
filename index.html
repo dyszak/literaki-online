@@ -99,8 +99,8 @@
 
       <div class='settings-card'>
         <h3>Polska lista słów SJP</h3>
-        <p class='small' style='margin:0 0 12px'>Gra czyta plik <b>sjp-myspell-pl-20260401.zip</b> bezpośrednio z folderu projektu. Wrzuć ten ZIP obok <b>index.html</b> na Vercel. Nie trzeba importować słów do Firebase.</p>
-        <div id='sjpFileStatus' class='small'>Status: plik SJP zostanie załadowany przy pierwszym sprawdzaniu polskiego słowa.</div>
+        <p class='small' style='margin:0 0 12px'>Gra czyta plik <b>sjp-20260401.zip</b> — oficjalną listę SJP do gier słownych. Wrzuć ten ZIP obok <b>index.html</b> na Vercel. Jeżeli lokalny plik nie istnieje, gra spróbuje pobrać go online ze strony SJP.</p>
+        <div id='sjpFileStatus' class='small'>Status: lista SJP do gier zostanie załadowana przy pierwszym sprawdzaniu polskiego słowa.</div>
       </div>
 
       <div class='grid2'>
@@ -196,7 +196,8 @@
     const MULTIPLIERS = makeMultipliers();
     const LETTER_VALUES = {A:1,E:1,I:1,N:1,O:1,R:1,S:1,W:1,Z:1,C:2,D:2,K:2,L:2,M:2,P:2,T:2,Y:2,B:3,G:3,H:3,J:3,Ł:3,U:3,Ą:5,Ę:5,F:5,Ó:5,Ś:5,Ż:5,Ć:6,Ń:7,Ź:9,'*':0};
     const LETTER_DISTRIBUTION = [['A',9],['E',7],['I',8],['N',5],['O',6],['R',4],['S',4],['W',4],['Z',5],['C',3],['D',3],['K',3],['L',3],['M',3],['P',3],['T',3],['Y',4],['B',2],['G',2],['H',2],['J',2],['Ł',2],['U',2],['Ą',1],['Ę',1],['F',1],['Ó',1],['Ś',1],['Ż',1],['Ć',1],['Ń',1],['Ź',1],['*',2]];
-    const SJP_BUNDLED_URL = './sjp-myspell-pl-20260401.zip';
+    const SJP_BUNDLED_URL = './sjp-20260401.zip';
+    const SJP_ONLINE_URL = 'https://sjp.pl/sl/growy/sjp-20260401.zip';
 
     const els = {
       setupView:q('setupView'),homeView:q('homeView'),lobbyView:q('lobbyView'),gameView:q('gameView'),topBadge:q('topBadge'),setupError:q('setupError'),
@@ -802,20 +803,26 @@
       if(sjpWordSet) return sjpWordSet;
       if(sjpWordSetPromise) return sjpWordSetPromise;
       sjpWordSetPromise = (async () => {
-        setSjpFileStatus('Pobieram sjp-myspell-pl-20260401.zip z folderu projektu...');
-        const res = await fetch(SJP_BUNDLED_URL, {cache:'force-cache'});
-        if(!res.ok) throw new Error(`Nie znaleziono ${SJP_BUNDLED_URL}. Status HTTP: ${res.status}`);
+        setSjpFileStatus('Pobieram sjp-20260401.zip z folderu projektu...');
+        let res = await fetch(SJP_BUNDLED_URL, {cache:'force-cache'});
+        let sourceName = 'sjp-20260401.zip';
+        if(!res.ok){
+          setSjpFileStatus('Nie znaleziono lokalnego pliku. Próbuję pobrać listę online z SJP...');
+          res = await fetch(SJP_ONLINE_URL, {cache:'force-cache'});
+          sourceName = 'sjp-20260401.zip online';
+        }
+        if(!res.ok) throw new Error(`Nie znaleziono listy SJP. Status HTTP: ${res.status}`);
         const blob = await res.blob();
-        const words = await extractWordsFromBlob(blob, 'sjp-myspell-pl-20260401.zip');
+        const words = await extractWordsFromBlob(blob, sourceName);
         sjpWordSet = new Set(words.map(dictKey));
         setSjpFileStatus(`Załadowano ${sjpWordSet.size.toLocaleString('pl-PL')} słów z pliku SJP.`);
         showToast('Słownik SJP załadowany', `${sjpWordSet.size.toLocaleString('pl-PL')} słów dostępnych lokalnie.`);
         return sjpWordSet;
       })().catch(err => {
         sjpWordSetPromise = null;
-        setSjpFileStatus('Nie udało się załadować pliku. Upewnij się, że ZIP leży obok index.html na Vercel.');
-        console.error('Błąd ładowania lokalnego SJP:', err);
-        alert('Nie udało się załadować pliku SJP. Wrzuć sjp-myspell-pl-20260401.zip obok index.html w projekcie/Vercel.');
+        setSjpFileStatus('Nie udało się załadować listy. Wrzuć sjp-20260401.zip obok index.html na Vercel.');
+        console.error('Błąd ładowania listy SJP:', err);
+        alert('Nie udało się załadować listy SJP. Najlepiej pobierz sjp-20260401.zip ze strony SJP i wrzuć go obok index.html w projekcie/Vercel.');
         return new Set();
       });
       return sjpWordSetPromise;
