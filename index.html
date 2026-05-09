@@ -10,11 +10,13 @@
       --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;--tile:#f4d28f;--tile-border:#b9852b;
       --cell:#ddc7a1;--board:#315f3e;--shadow:0 18px 50px rgba(0,0,0,.36)
     }
-    *{box-sizing:border-box;user-select:none}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:radial-gradient(circle at top left,#1e3a8a 0,transparent 32%),var(--bg);color:var(--text);min-height:100vh;padding:18px}button,input{font:inherit}.hidden{display:none!important}
+    *{box-sizing:border-box;user-select:none}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:radial-gradient(circle at top left,#1e3a8a 0,transparent 32%),var(--bg);color:var(--text);min-height:100vh;padding:18px}button,input,select{font:inherit}.hidden{display:none!important}
     .wrap{max-width:1500px;margin:0 auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(17,24,39,.86);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:14px 18px;box-shadow:var(--shadow);backdrop-filter:blur(10px);margin-bottom:18px}.title h1{margin:0;font-size:28px;letter-spacing:-.04em}.title span{color:var(--muted);font-size:14px}.badge{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border-radius:999px;background:rgba(251,191,36,.13);border:1px solid rgba(251,191,36,.28);color:#fde68a;white-space:nowrap;font-weight:800}
-    .card{background:rgba(17,24,39,.92);border:1px solid rgba(255,255,255,.09);border-radius:24px;box-shadow:var(--shadow);padding:18px}.center-card{max-width:720px;margin:60px auto}.center-card h2{font-size:32px;margin:0 0 8px;letter-spacing:-.04em}.center-card p{margin:0 0 18px;color:var(--muted);line-height:1.55}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px;margin-bottom:12px}.field label{font-size:13px;color:var(--muted);font-weight:800}.field input{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none}.btn{border:0;border-radius:14px;padding:12px 13px;background:var(--panel2);color:var(--text);font-weight:900;cursor:pointer;transition:.08s}.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}.primary{background:var(--green)!important;color:#052e16!important}.danger{background:var(--red)!important;color:#fff!important}.blue{background:var(--blue)!important;color:#fff!important}.purple{background:var(--purple)!important;color:#fff!important}.wide{width:100%}.small{font-size:13px;color:var(--muted);line-height:1.45}.room-code{font-size:42px;font-weight:950;letter-spacing:.12em;color:#fde68a;text-align:center;background:rgba(251,191,36,.1);border:1px dashed rgba(251,191,36,.35);border-radius:18px;padding:16px;margin:12px 0}.players-list{display:grid;gap:10px;margin:14px 0}.lobby-player{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px}.online{color:#86efac}.offline{color:#fca5a5}
+    .card{background:rgba(17,24,39,.92);border:1px solid rgba(255,255,255,.09);border-radius:24px;box-shadow:var(--shadow);padding:18px}.center-card{max-width:720px;margin:60px auto}.center-card h2{font-size:32px;margin:0 0 8px;letter-spacing:-.04em}.center-card p{margin:0 0 18px;color:var(--muted);line-height:1.55}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px;margin-bottom:12px}.field label{font-size:13px;color:var(--muted);font-weight:800}.field input,.field select{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none}.field select option{background:#111827;color:#e5e7eb}.btn{border:0;border-radius:14px;padding:12px 13px;background:var(--panel2);color:var(--text);font-weight:900;cursor:pointer;transition:.08s}.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.08)}.btn:disabled{opacity:.5;cursor:not-allowed}.primary{background:var(--green)!important;color:#052e16!important}.danger{background:var(--red)!important;color:#fff!important}.blue{background:var(--blue)!important;color:#fff!important}.purple{background:var(--purple)!important;color:#fff!important}.wide{width:100%}.small{font-size:13px;color:var(--muted);line-height:1.45}.room-code{font-size:42px;font-weight:950;letter-spacing:.12em;color:#fde68a;text-align:center;background:rgba(251,191,36,.1);border:1px dashed rgba(251,191,36,.35);border-radius:18px;padding:16px;margin:12px 0}.players-list{display:grid;gap:10px;margin:14px 0}.lobby-player{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px}.online{color:#86efac}.offline{color:#fca5a5}
+    .settings-card{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px;margin:14px 0}.settings-card h3{margin:0 0 10px;font-size:17px}.check-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;color:var(--text);font-weight:800;line-height:1.35}.check-row input{width:18px;height:18px;margin-top:1px;accent-color:#22c55e}.check-row span{display:block}.check-row small{display:block;color:var(--muted);font-weight:600;margin-top:2px}.dim{opacity:.52}
     .game{display:grid;grid-template-columns:minmax(700px,1fr) 370px;gap:18px;align-items:start}.board-wrap,.side,.rack-panel{background:rgba(17,24,39,.9);border:1px solid rgba(255,255,255,.08);border-radius:24px;box-shadow:var(--shadow)}.board-wrap{padding:16px;overflow:auto}.board{width:min(92vw,820px);aspect-ratio:1;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);gap:3px;background:var(--board);padding:8px;border-radius:18px;margin:0 auto;border:4px solid #183826}.cell{position:relative;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--cell);min-width:34px;min-height:34px;color:rgba(17,24,39,.78);font-size:clamp(8px,.7vw,11px);font-weight:950;text-align:center;line-height:1.05;cursor:pointer;transition:.08s;overflow:hidden}.cell:hover{transform:translateY(-1px);filter:brightness(1.05)}.cell.pending{outline:3px solid #fbbf24;outline-offset:-3px}.cell.tw{background:#ef4444;color:#fff}.cell.dw{background:#f59e0b;color:#111827}.cell.tl{background:#2563eb;color:#fff}.cell.dl{background:#93c5fd;color:#0f172a}.cell.center{box-shadow:inset 0 0 0 3px rgba(255,255,255,.5)}.tile{width:100%;height:100%;min-width:34px;min-height:34px;border-radius:9px;background:linear-gradient(145deg,#ffe0a5,var(--tile));border:2px solid var(--tile-border);color:#3b2607;display:flex;align-items:center;justify-content:center;position:relative;font-weight:950;font-size:clamp(17px,1.5vw,25px);box-shadow:inset 0 1px rgba(255,255,255,.55),0 3px 0 #8d5e18;cursor:pointer}.tile small{position:absolute;right:4px;bottom:2px;font-size:10px;font-weight:950;color:#5b3a0a}.tile.blank:after{content:'★';position:absolute;left:4px;top:2px;font-size:9px;opacity:.65}.tile.locked{filter:saturate(.9)}
     .rack-panel{margin-top:18px;padding:16px}.rack-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.rack-head h2{margin:0;font-size:18px}.rack{display:grid;grid-template-columns:repeat(7,70px);gap:10px;min-height:78px;align-items:center;justify-content:center;background:rgba(0,0,0,.18);padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.08);overflow-x:auto}.rack .tile{width:70px;height:70px;font-size:30px}.rack .tile.selected{outline:4px solid var(--accent);transform:translateY(-6px)}.side{padding:16px;display:flex;flex-direction:column;gap:14px;position:sticky;top:18px}.players{display:grid;gap:10px}.player{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:12px;border-radius:17px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08)}.player.active{background:rgba(34,197,94,.13);border-color:rgba(34,197,94,.42)}.player.me{box-shadow:inset 0 0 0 2px rgba(251,191,36,.25)}.player-name{font-weight:850;display:flex;gap:8px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}.score{font-size:24px;font-weight:950;color:#fff}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.info{display:grid;gap:8px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);padding:13px;border-radius:17px;color:var(--muted);font-size:14px;line-height:1.45}.info strong{color:var(--text)}.log{min-height:160px;max-height:270px;overflow:auto;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:17px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted)}.log b{color:var(--text)}
+    .vote-panel{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.28);border-radius:18px;padding:14px;color:#fde68a}.vote-panel h3{margin:0 0 8px;font-size:18px}.vote-panel p{margin:0 0 10px;color:#fef3c7;line-height:1.45}.word-list{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.word-pill{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:6px 10px;font-weight:900;color:#fff}.vote-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.vote-meta{font-size:13px;color:#fef3c7;line-height:1.45;margin-top:8px}
     @media(max-width:1050px){.game{grid-template-columns:1fr}.side{position:static}.board{width:min(94vw,820px)}.rack{grid-template-columns:repeat(7,minmax(46px,1fr))}.rack .tile{width:100%;height:auto;aspect-ratio:1}.grid2{grid-template-columns:1fr}}
   </style>
 </head>
@@ -41,6 +43,32 @@
         <label>Twoja nazwa</label>
         <input id='nameInput' maxlength='18' placeholder='np. Daniel' />
       </div>
+
+      <div class='settings-card'>
+        <h3>Ustawienia pokoju</h3>
+        <label class='check-row'>
+          <input id='dictionaryToggle' type='checkbox' checked />
+          <span>Sprawdzaj poprawność słów w bazie Firebase
+            <small>Ruch przechodzi tylko wtedy, gdy każde ułożone słowo istnieje w wybranym słowniku.</small>
+          </span>
+        </label>
+        <div id='dictionaryLangWrap' class='field'>
+          <label>Język słownika</label>
+          <select id='dictionaryLangSelect'>
+            <option value='pl'>Polski</option>
+            <option value='en'>Angielski</option>
+            <option value='both'>Polski albo angielski</option>
+          </select>
+        </div>
+        <label id='voteToggleWrap' class='check-row dim'>
+          <input id='voteToggle' type='checkbox' checked disabled />
+          <span>Głosowanie nad poprawnością słowa
+            <small>Działa tylko, gdy słownik jest wyłączony. Jeżeli większość pozostałych graczy kliknie „nie zgadzam się”, ruch przepada i gracz traci kolejkę.</small>
+          </span>
+        </label>
+        <p id='settingsHint' class='small' style='margin:8px 0 0'></p>
+      </div>
+
       <div class='grid2'>
         <button id='createRoomBtn' class='btn primary'>Utwórz pokój</button>
         <div>
@@ -56,6 +84,7 @@
       <p>Wyślij kod lub link pozostałym graczom.</p>
       <div id='roomCodeBox' class='room-code'>-----</div>
       <button id='copyLinkBtn' class='btn blue wide'>Kopiuj link do pokoju</button>
+      <div id='lobbySettingsSummary' class='info' style='margin-top:14px'></div>
       <div id='lobbyPlayers' class='players-list'></div>
       <button id='startGameBtn' class='btn primary wide'>Start gry</button>
       <button id='backHomeBtn' class='btn wide' style='margin-top:10px'>Wróć</button>
@@ -83,11 +112,13 @@
           <button id='shuffleBtn' class='btn purple'>Pomieszaj</button>
           <button id='leaveBtn' class='btn danger'>Wyjdź</button>
         </div>
+        <div id='votePanel' class='vote-panel hidden'></div>
         <div class='info'>
           <div><strong>Pokój:</strong> <span id='roomInfo'>—</span></div>
+          <div><strong>Tryb słów:</strong> <span id='validationInfo'>—</span></div>
           <div><strong>Woreczek:</strong> <span id='bagCount'>0</span> liter</div>
           <div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div>
-          <div><strong>Zasada:</strong> pierwszy ruch musi przejść przez środek. Słownik sprawdzacie sami.</div>
+          <div><strong>Zasada:</strong> pierwszy ruch musi przejść przez środek.</div>
         </div>
         <div id='log' class='log'></div>
       </aside>
@@ -101,15 +132,17 @@
 
     // 1) Wklej tutaj konfigurację Firebase Web App.
     // 2) Musisz mieć włączone: Realtime Database oraz najlepiej Authentication -> Anonymous.
+    // 3) Dla słowników dodaj dane pod ścieżkami:
+    //    dictionaries/pl/SŁOWO = true
+    //    dictionaries/en/WORD = true
     const FIREBASE_CONFIG = {
-      apiKey: "AIzaSyA0_fhuy7ofypez2zUhNwdbB61NXxGtPwU",
-      authDomain: "dyszak-1eddc.firebaseapp.com",
-      databaseURL: "https://dyszak-1eddc-default-rtdb.firebaseio.com",
-      projectId: "dyszak-1eddc",
-      storageBucket: "dyszak-1eddc.firebasestorage.app",
-      messagingSenderId: "364073429062",
-      appId: "1:364073429062:web:af2cd1348881d6b92fc247",
-      measurementId: "G-ZT5M0ZWS0E"
+      apiKey: 'WSTAW_API_KEY',
+      authDomain: 'WSTAW_PROJECT.firebaseapp.com',
+      databaseURL: 'https://WSTAW_PROJECT-default-rtdb.europe-west1.firebasedatabase.app',
+      projectId: 'WSTAW_PROJECT',
+      storageBucket: 'WSTAW_PROJECT.appspot.com',
+      messagingSenderId: 'WSTAW_SENDER_ID',
+      appId: 'WSTAW_APP_ID'
     };
 
     const SIZE = 15;
@@ -120,11 +153,13 @@
 
     const els = {
       setupView:q('setupView'),homeView:q('homeView'),lobbyView:q('lobbyView'),gameView:q('gameView'),topBadge:q('topBadge'),setupError:q('setupError'),
-      nameInput:q('nameInput'),joinCodeInput:q('joinCodeInput'),roomCodeBox:q('roomCodeBox'),lobbyPlayers:q('lobbyPlayers'),hostHint:q('hostHint'),startGameBtn:q('startGameBtn'),
-      board:q('board'),rack:q('rack'),rackTitle:q('rackTitle'),movePreview:q('movePreview'),playersPanel:q('playersPanel'),bagCount:q('bagCount'),roomInfo:q('roomInfo'),log:q('log')
+      nameInput:q('nameInput'),joinCodeInput:q('joinCodeInput'),dictionaryToggle:q('dictionaryToggle'),dictionaryLangSelect:q('dictionaryLangSelect'),dictionaryLangWrap:q('dictionaryLangWrap'),voteToggle:q('voteToggle'),voteToggleWrap:q('voteToggleWrap'),settingsHint:q('settingsHint'),
+      roomCodeBox:q('roomCodeBox'),lobbySettingsSummary:q('lobbySettingsSummary'),lobbyPlayers:q('lobbyPlayers'),hostHint:q('hostHint'),startGameBtn:q('startGameBtn'),
+      board:q('board'),rack:q('rack'),rackTitle:q('rackTitle'),movePreview:q('movePreview'),playersPanel:q('playersPanel'),votePanel:q('votePanel'),bagCount:q('bagCount'),roomInfo:q('roomInfo'),validationInfo:q('validationInfo'),log:q('log')
     };
 
     let app, db, auth, myId, currentRoomCode = null, room = null, unsubscribeRoom = null, selectedRackIndex = null;
+    const dictionaryCache = new Map();
     const savedName = localStorage.getItem('literaki_name') || '';
     els.nameInput.value = savedName;
 
@@ -140,7 +175,11 @@
     q('shuffleBtn').onclick = shuffleRack;
     q('leaveBtn').onclick = goHome;
     els.nameInput.oninput = () => localStorage.setItem('literaki_name', cleanName(els.nameInput.value));
+    els.dictionaryToggle.onchange = syncCreateSettings;
+    els.dictionaryLangSelect.onchange = syncCreateSettings;
+    els.voteToggle.onchange = syncCreateSettings;
 
+    syncCreateSettings();
     init();
 
     async function init(){
@@ -175,13 +214,38 @@
       return FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.includes('WSTAW') && FIREBASE_CONFIG.databaseURL && !FIREBASE_CONFIG.databaseURL.includes('WSTAW');
     }
 
+    function syncCreateSettings(){
+      const dictionaryEnabled = els.dictionaryToggle.checked;
+      els.dictionaryLangWrap.classList.toggle('dim', !dictionaryEnabled);
+      els.dictionaryLangSelect.disabled = !dictionaryEnabled;
+      els.voteToggle.disabled = dictionaryEnabled;
+      els.voteToggleWrap.classList.toggle('dim', dictionaryEnabled);
+      if(dictionaryEnabled){
+        els.settingsHint.textContent = `Tryb: automatyczne sprawdzanie słów w bazie (${languageLabel(els.dictionaryLangSelect.value)}).`;
+      }else if(els.voteToggle.checked){
+        els.settingsHint.textContent = 'Tryb: bez słownika, ruchy przechodzą przez głosowanie pozostałych graczy.';
+      }else{
+        els.settingsHint.textContent = 'Tryb: bez słownika i bez głosowania — gracze sami pilnują poprawności.';
+      }
+    }
+
+    function readRoomSettings(){
+      const dictionaryEnabled = els.dictionaryToggle.checked;
+      return {
+        dictionaryEnabled,
+        dictionaryLanguage: els.dictionaryLangSelect.value,
+        votingEnabled: !dictionaryEnabled && els.voteToggle.checked
+      };
+    }
+
     async function createRoom(){
       const name = cleanName(els.nameInput.value) || 'Gracz';
       localStorage.setItem('literaki_name', name);
       const code = await uniqueRoomCode();
+      const settings = readRoomSettings();
       const data = {
         code,status:'lobby',hostId:myId,createdAt:Date.now(),updatedAt:Date.now(),currentIndex:0,moveNumber:0,consecutivePasses:0,
-        order:[myId],players:{[myId]:playerObj(name)},board:{},bag:[],pending:{uid:null,tiles:[]},logs:[logObj('Pokój utworzony. Czekamy na 4 graczy.')]
+        settings,order:[myId],players:{[myId]:playerObj(name)},board:{},bag:[],pending:{uid:null,tiles:[]},challenge:null,logs:[logObj(`Pokój utworzony. Tryb słów: ${settingsLabel(settings)}. Czekamy na 4 graczy.`)]
       };
       await set(roomRef(code), data);
       subscribeRoom(code);
@@ -209,7 +273,7 @@
         if(data.order.length >= 4) return alert('Pokój jest pełny.');
         data.players[myId] = playerObj(name);
         data.order.push(myId);
-        data.logs = addLogToArray(data.logs, `${name} dołącza do pokoju.`);
+        data.logs = addLogToArray(data.logs, `${esc(name)} dołącza do pokoju.`);
         data.updatedAt = Date.now();
         await set(roomRef(code), data);
       }else{
@@ -235,12 +299,17 @@
     function playerObj(name){return {id:myId,name,score:0,rack:[],online:true,lastSeen:Date.now()}}
     function roomRef(code){return ref(db, `rooms/${code}`)}
     function normalizeRoom(data){
-      return {...data,players:data.players || {},order:data.order || [],board:data.board || {},bag:data.bag || [],pending:data.pending || {uid:null,tiles:[]},logs:data.logs || []};
+      return {
+        ...data,
+        players:data.players || {},order:data.order || [],board:data.board || {},bag:data.bag || [],
+        pending:data.pending || {uid:null,tiles:[]},challenge:data.challenge || null,logs:data.logs || [],
+        settings:data.settings || {dictionaryEnabled:false,dictionaryLanguage:'pl',votingEnabled:false}
+      };
     }
 
     function render(){
       if(!room) return;
-      els.topBadge.textContent = room.status === 'lobby' ? `Lobby ${room.code}` : `Tura: ${currentPlayer()?.name || '—'}`;
+      els.topBadge.textContent = room.status === 'lobby' ? `Lobby ${room.code}` : room.status === 'voting' ? 'Głosowanie' : `Tura: ${currentPlayer()?.name || '—'}`;
       els.homeView.classList.add('hidden');
       els.setupView.classList.add('hidden');
       els.lobbyView.classList.toggle('hidden', room.status !== 'lobby');
@@ -250,6 +319,7 @@
 
     function renderLobby(){
       els.roomCodeBox.textContent = room.code;
+      els.lobbySettingsSummary.innerHTML = `<div><strong>Tryb słów:</strong> ${settingsLabel(room.settings)}</div>`;
       els.lobbyPlayers.innerHTML = '';
       room.order.forEach((id, index) => {
         const p = room.players[id];
@@ -267,9 +337,10 @@
     }
 
     function renderGame(){
-      renderBoard();renderRack();renderPlayers();renderLog();
+      renderBoard();renderRack();renderPlayers();renderVotePanel();renderLog();
       els.bagCount.textContent = room.bag.length;
       els.roomInfo.textContent = room.code;
+      els.validationInfo.textContent = settingsLabel(room.settings);
       const me = room.players[myId];
       els.rackTitle.textContent = me ? `Twój stojak — ${me.name}` : 'Obserwator';
       updateMovePreview();
@@ -319,6 +390,46 @@
       });
     }
 
+    function renderVotePanel(){
+      if(room.status !== 'voting' || !room.challenge){
+        els.votePanel.classList.add('hidden');
+        els.votePanel.innerHTML = '';
+        return;
+      }
+      const ch = room.challenge;
+      const submitter = room.players[ch.submitterId];
+      const eligible = room.order.filter(id => id !== ch.submitterId);
+      const votes = ch.votes || {};
+      const agrees = eligible.filter(id => votes[id]?.agree === true).length;
+      const rejects = eligible.filter(id => votes[id]?.agree === false).length;
+      const needed = Math.floor(eligible.length / 2) + 1;
+      const myVote = votes[myId];
+      const canVote = eligible.includes(myId) && !myVote;
+      const wordsHtml = (ch.words || []).map(w => `<span class='word-pill'>${esc(w)}</span>`).join('');
+      let actionHtml = '';
+      if(ch.submitterId === myId){
+        actionHtml = `<p>Czekasz na głosy pozostałych graczy.</p>`;
+      }else if(myVote){
+        actionHtml = `<p>Twój głos: <b>${myVote.agree ? 'zgadzam się' : 'nie zgadzam się'}</b>.</p>`;
+      }else if(canVote){
+        actionHtml = `<div class='vote-actions'><button id='voteAgreeBtn' class='btn primary'>Zgadzam się</button><button id='voteRejectBtn' class='btn danger'>Nie zgadzam się</button></div>`;
+      }else{
+        actionHtml = `<p>Nie możesz głosować w tej rundzie.</p>`;
+      }
+      els.votePanel.classList.remove('hidden');
+      els.votePanel.innerHTML = `
+        <h3>Głosowanie nad słowem</h3>
+        <p><b>${esc(submitter?.name || 'Gracz')}</b> chce zatwierdzić ruch za <b>${ch.score} pkt</b>.</p>
+        <div class='word-list'>${wordsHtml}</div>
+        ${actionHtml}
+        <div class='vote-meta'>Głosy: ${agrees} zgadza się / ${rejects} nie zgadza się. Do rozstrzygnięcia potrzeba ${needed} głosów jednej strony.</div>
+      `;
+      const agreeBtn = q('voteAgreeBtn');
+      const rejectBtn = q('voteRejectBtn');
+      if(agreeBtn) agreeBtn.onclick = () => voteOnChallenge(true);
+      if(rejectBtn) rejectBtn.onclick = () => voteOnChallenge(false);
+    }
+
     function renderLog(){
       els.log.innerHTML = '';
       [...room.logs].slice(-40).reverse().forEach(item=>{
@@ -339,8 +450,9 @@
       next.moveNumber = 0;
       next.consecutivePasses = 0;
       next.pending = {uid:null,tiles:[]};
+      next.challenge = null;
       next.order.forEach(id => { next.players[id].score = 0; next.players[id].rack = []; drawTiles(next.players[id].rack,next.bag,7); });
-      next.logs = addLogToArray(next.logs, 'Gra wystartowała. Pierwszy ruch musi przejść przez środek.');
+      next.logs = addLogToArray(next.logs, `Gra wystartowała. Tryb słów: ${settingsLabel(next.settings)}. Pierwszy ruch musi przejść przez środek.`);
       await saveRoom(next);
     }
 
@@ -375,24 +487,139 @@
     }
 
     async function submitMove(){
-      if(!isMyTurn()) return;
+      if(!isMyTurn() || room.status !== 'playing') return;
       const result = validateAndScoreMove(room);
       if(!result.ok) return alert(result.message);
+
+      if(room.settings?.dictionaryEnabled){
+        const check = await validateWordsWithDictionary(result.words, room.settings.dictionaryLanguage);
+        if(!check.ok){
+          return alert(`Słownik odrzucił ruch. Nie znaleziono: ${check.missing.join(', ')}.`);
+        }
+      }
+
+      if(isVotingMode(room)){
+        await openChallenge(result);
+        return;
+      }
+
       const next = clone(room);
-      const me = next.players[myId];
-      next.pending.tiles.forEach(p => next.board[key(p.r,p.c)] = p.tile);
-      me.score += result.score;
-      drawTiles(me.rack,next.bag,7);
-      next.moveNumber++;
-      next.consecutivePasses = 0;
-      next.pending = {uid:null,tiles:[]};
-      next.logs = addLogToArray(next.logs, `<b>${esc(me.name)}</b> układa ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);
-      if(me.rack.length === 0 && next.bag.length === 0) endGame(next, `${me.name} pozbył się wszystkich liter.`); else next.currentIndex = (next.currentIndex + 1) % next.order.length;
+      acceptMove(next, result, myId);
       await saveRoom(next);
     }
 
+    async function validateWordsWithDictionary(words, langMode){
+      const missing = [];
+      for(const word of words){
+        const ok = await wordExistsInSelectedDictionaries(word, langMode);
+        if(!ok) missing.push(word);
+      }
+      return {ok:missing.length === 0, missing};
+    }
+
+    async function wordExistsInSelectedDictionaries(word, langMode){
+      const langs = langMode === 'both' ? ['pl','en'] : [langMode || 'pl'];
+      for(const lang of langs){
+        if(await checkDictionaryWord(lang, word)) return true;
+      }
+      return false;
+    }
+
+    async function checkDictionaryWord(lang, word){
+      const wordKey = dictKey(word);
+      const cacheKey = `${lang}:${wordKey}`;
+      if(dictionaryCache.has(cacheKey)) return dictionaryCache.get(cacheKey);
+      try{
+        const snap = await get(ref(db, `dictionaries/${lang}/${wordKey}`));
+        const exists = snap.exists() && snap.val() !== false && snap.val() !== null;
+        dictionaryCache.set(cacheKey, exists);
+        return exists;
+      }catch(err){
+        console.error('Błąd sprawdzania słownika:', err);
+        alert('Nie udało się sprawdzić słownika w Firebase. Sprawdź reguły i dane dictionaries/pl lub dictionaries/en.');
+        return false;
+      }
+    }
+
+    function dictKey(word){
+      return String(word || '').trim().toUpperCase().normalize('NFC').replace(/[.#$\[\]\/]/g,'');
+    }
+
+    async function openChallenge(result){
+      const next = clone(room);
+      const me = next.players[myId];
+      next.status = 'voting';
+      next.challenge = {id:`${Date.now()}_${myId}`,submitterId:myId,submitterName:me.name,words:result.words,score:result.score,votes:{},createdAt:Date.now()};
+      next.logs = addLogToArray(next.logs, `<b>${esc(me.name)}</b> zgłasza ruch do głosowania: ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);
+      await saveRoom(next);
+    }
+
+    async function voteOnChallenge(agree){
+      if(!room.challenge || room.status !== 'voting') return;
+      if(room.challenge.submitterId === myId) return alert('Autor ruchu nie głosuje nad swoim ruchem.');
+      const eligible = room.order.filter(id => id !== room.challenge.submitterId);
+      if(!eligible.includes(myId)) return;
+      if(room.challenge.votes?.[myId]) return alert('Już oddałeś głos.');
+
+      const next = clone(room);
+      if(!next.challenge.votes) next.challenge.votes = {};
+      next.challenge.votes[myId] = {agree,name:next.players[myId]?.name || 'Gracz',t:Date.now()};
+      const resolution = challengeResolution(next);
+      if(resolution === 'reject'){
+        rejectMove(next);
+      }else if(resolution === 'accept'){
+        acceptMove(next, {words:next.challenge.words,score:next.challenge.score}, next.challenge.submitterId);
+      }else{
+        next.logs = addLogToArray(next.logs, `<b>${esc(next.players[myId]?.name || 'Gracz')}</b> głosuje: <b>${agree ? 'zgadzam się' : 'nie zgadzam się'}</b>.`);
+      }
+      await saveRoom(next);
+    }
+
+    function challengeResolution(data){
+      const ch = data.challenge;
+      const eligible = data.order.filter(id => id !== ch.submitterId);
+      const votes = ch.votes || {};
+      const agrees = eligible.filter(id => votes[id]?.agree === true).length;
+      const rejects = eligible.filter(id => votes[id]?.agree === false).length;
+      const voted = eligible.filter(id => votes[id]).length;
+      const needed = Math.floor(eligible.length / 2) + 1;
+      if(rejects >= needed) return 'reject';
+      if(agrees >= needed) return 'accept';
+      if(voted >= eligible.length) return rejects >= needed ? 'reject' : 'accept';
+      return 'pending';
+    }
+
+    function acceptMove(next, result, playerId){
+      const player = next.players[playerId];
+      const pending = next.pending?.tiles || [];
+      pending.forEach(p => next.board[key(p.r,p.c)] = p.tile);
+      player.score += result.score;
+      drawTiles(player.rack,next.bag,7);
+      next.moveNumber++;
+      next.consecutivePasses = 0;
+      next.status = 'playing';
+      next.pending = {uid:null,tiles:[]};
+      next.challenge = null;
+      next.logs = addLogToArray(next.logs, `<b>${esc(player.name)}</b> układa ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);
+      if(player.rack.length === 0 && next.bag.length === 0) endGame(next, `${player.name} pozbył się wszystkich liter.`);
+      else next.currentIndex = (next.currentIndex + 1) % next.order.length;
+    }
+
+    function rejectMove(next){
+      const ch = next.challenge;
+      const player = next.players[ch.submitterId];
+      const pending = next.pending?.tiles || [];
+      pending.forEach(p => player.rack.push(p.tile));
+      next.status = 'playing';
+      next.pending = {uid:null,tiles:[]};
+      next.challenge = null;
+      next.consecutivePasses = 0;
+      next.logs = addLogToArray(next.logs, `<b>Ruch odrzucony.</b> Większość graczy nie zgodziła się ze słowem ${esc(ch.words.join(', '))}. <b>${esc(player.name)}</b> traci kolejkę.`);
+      next.currentIndex = (next.currentIndex + 1) % next.order.length;
+    }
+
     async function undoMove(){
-      if(!isMyTurn() || !room.pending?.tiles?.length) return;
+      if(!isMyTurn() || room.status !== 'playing' || !room.pending?.tiles?.length) return;
       const next = clone(room);
       const me = next.players[myId];
       next.pending.tiles.forEach(p => me.rack.push(p.tile));
@@ -402,7 +629,7 @@
     }
 
     async function passTurn(){
-      if(!isMyTurn()) return;
+      if(!isMyTurn() || room.status !== 'playing') return;
       const next = clone(room);
       const me = next.players[myId];
       next.pending.tiles.forEach(p => me.rack.push(p.tile));
@@ -414,7 +641,7 @@
     }
 
     async function exchangeTiles(){
-      if(!isMyTurn()) return;
+      if(!isMyTurn() || room.status !== 'playing') return;
       if(room.pending?.tiles?.length) return alert('Najpierw cofnij litery z planszy.');
       if(room.bag.length < 7) return alert('Wymiana dostępna tylko, gdy w woreczku jest minimum 7 liter.');
       const me = room.players[myId];
@@ -437,7 +664,7 @@ ${rackText}`);
     }
 
     async function shuffleRack(){
-      if(!isMyTurn()) return;
+      if(!isMyTurn() || room.status !== 'playing') return;
       const next = clone(room);
       next.players[myId].rack = shuffle(next.players[myId].rack);
       selectedRackIndex = null;
@@ -501,6 +728,7 @@ ${rackText}`);
     }
 
     function updateMovePreview(){
+      if(room.status === 'voting') return els.movePreview.textContent = 'Głosowanie';
       if(!isMyTurn() || room.status !== 'playing') return els.movePreview.textContent = 'Nie twoja tura';
       const result = validateAndScoreMove(room);
       els.movePreview.textContent = result.ok ? `Ruch: ${result.score} pkt` : 'Ruch: 0 pkt';
@@ -525,6 +753,17 @@ ${rackText}`);
     function currentPlayerId(){return room.order[room.currentIndex]}
     function currentPlayer(){return room.players[currentPlayerId()]}
     function isMyTurn(){return room && currentPlayerId() === myId && room.pending?.uid !== null ? room.pending.uid === myId : currentPlayerId() === myId}
+    function isVotingMode(data){return !data.settings?.dictionaryEnabled && !!data.settings?.votingEnabled}
+    function settingsLabel(settings){
+      if(settings?.dictionaryEnabled) return `słownik: ${languageLabel(settings.dictionaryLanguage)}`;
+      if(settings?.votingEnabled) return 'głosowanie graczy';
+      return 'ręczna kontrola bez głosowania';
+    }
+    function languageLabel(lang){
+      if(lang === 'en') return 'angielski';
+      if(lang === 'both') return 'polski albo angielski';
+      return 'polski';
+    }
     function key(r,c){return `${r}_${c}`}
     function inBounds(r,c){return r>=0&&r<SIZE&&c>=0&&c<SIZE}
     function clone(obj){return structuredClone(obj)}
