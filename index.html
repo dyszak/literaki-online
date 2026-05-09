@@ -17,6 +17,7 @@
     .game{display:grid;grid-template-columns:minmax(700px,1fr) 370px;gap:18px;align-items:start}.board-wrap,.side,.rack-panel{background:rgba(17,24,39,.9);border:1px solid rgba(255,255,255,.08);border-radius:24px;box-shadow:var(--shadow)}.board-wrap{padding:16px;overflow:auto}.board{width:min(92vw,820px);aspect-ratio:1;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);gap:3px;background:var(--board);padding:8px;border-radius:18px;margin:0 auto;border:4px solid #183826}.cell{position:relative;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--cell);min-width:34px;min-height:34px;color:rgba(17,24,39,.78);font-size:clamp(8px,.7vw,11px);font-weight:950;text-align:center;line-height:1.05;cursor:pointer;transition:.08s;overflow:hidden}.cell:hover{transform:translateY(-1px);filter:brightness(1.05)}.cell.pending{outline:3px solid #fbbf24;outline-offset:-3px}.cell.tw{background:#ef4444;color:#fff}.cell.dw{background:#f59e0b;color:#111827}.cell.tl{background:#2563eb;color:#fff}.cell.dl{background:#93c5fd;color:#0f172a}.cell.center{box-shadow:inset 0 0 0 3px rgba(255,255,255,.5)}.tile{width:100%;height:100%;min-width:34px;min-height:34px;border-radius:9px;background:linear-gradient(145deg,#ffe0a5,var(--tile));border:2px solid var(--tile-border);color:#3b2607;display:flex;align-items:center;justify-content:center;position:relative;font-weight:950;font-size:clamp(17px,1.5vw,25px);box-shadow:inset 0 1px rgba(255,255,255,.55),0 3px 0 #8d5e18;cursor:pointer}.tile small{position:absolute;right:4px;bottom:2px;font-size:10px;font-weight:950;color:#5b3a0a}.tile.blank:after{content:'★';position:absolute;left:4px;top:2px;font-size:9px;opacity:.65}.tile.locked{filter:saturate(.9)}
     .rack-panel{margin-top:18px;padding:16px}.rack-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.rack-head h2{margin:0;font-size:18px}.rack{display:grid;grid-template-columns:repeat(7,70px);gap:10px;min-height:78px;align-items:center;justify-content:center;background:rgba(0,0,0,.18);padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.08);overflow-x:auto}.rack .tile{width:70px;height:70px;font-size:30px}.rack .tile.selected{outline:4px solid var(--accent);transform:translateY(-6px)}.side{padding:16px;display:flex;flex-direction:column;gap:14px;position:sticky;top:18px}.players{display:grid;gap:10px}.player{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:12px;border-radius:17px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08)}.player.active{background:rgba(34,197,94,.13);border-color:rgba(34,197,94,.42)}.player.me{box-shadow:inset 0 0 0 2px rgba(251,191,36,.25)}.player-name{font-weight:850;display:flex;gap:8px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}.score{font-size:24px;font-weight:950;color:#fff}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.info{display:grid;gap:8px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);padding:13px;border-radius:17px;color:var(--muted);font-size:14px;line-height:1.45}.info strong{color:var(--text)}.log{min-height:160px;max-height:270px;overflow:auto;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:17px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted)}.log b{color:var(--text)}
     .vote-panel{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.28);border-radius:18px;padding:14px;color:#fde68a}.vote-panel h3{margin:0 0 8px;font-size:18px}.vote-panel p{margin:0 0 10px;color:#fef3c7;line-height:1.45}.word-list{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.word-pill{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:6px 10px;font-weight:900;color:#fff}.vote-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.vote-meta{font-size:13px;color:#fef3c7;line-height:1.45;margin-top:8px}
+    .toast-host{position:fixed;right:18px;bottom:18px;z-index:80;display:grid;gap:10px;max-width:min(380px,calc(100vw - 36px))}.toast{background:rgba(17,24,39,.96);border:1px solid rgba(251,191,36,.36);box-shadow:var(--shadow);border-radius:18px;padding:13px 14px;animation:toastIn .28s ease both;color:var(--text)}.toast b{color:#fde68a}.toast small{display:block;color:var(--muted);margin-top:3px;line-height:1.35}.event-overlay{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.64);backdrop-filter:blur(5px);pointer-events:none}.event-overlay.show{display:flex;animation:overlayFade .28s ease both}.event-card{width:min(520px,92vw);background:linear-gradient(145deg,rgba(17,24,39,.98),rgba(30,41,59,.98));border:1px solid rgba(255,255,255,.12);border-radius:30px;box-shadow:var(--shadow);padding:28px;text-align:center;animation:eventPop .36s cubic-bezier(.2,1.35,.35,1) both}.event-icon{font-size:62px;line-height:1;margin-bottom:10px;filter:drop-shadow(0 12px 22px rgba(0,0,0,.35));animation:swing .9s ease both}.event-card h2{margin:0 0 8px;font-size:32px;letter-spacing:-.04em}.event-card p{margin:0;color:var(--muted);line-height:1.45}.cell.word-flash{animation:cellFlash 1.35s ease both}.cell.word-flash .tile,.tile.celebrate{animation:tileCelebrate 1.1s cubic-bezier(.2,1.45,.3,1) both}.cell.pending .tile{animation:placePop .28s cubic-bezier(.2,1.4,.3,1) both}.player.active{animation:activePulse 1.8s ease-in-out infinite}.badge.timer-warn{animation:timerWarn .8s ease-in-out infinite;color:#fecaca;border-color:rgba(248,113,113,.55);background:rgba(239,68,68,.15)}@keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}@keyframes overlayFade{from{opacity:0}to{opacity:1}}@keyframes eventPop{from{opacity:0;transform:translateY(18px) scale(.92)}to{opacity:1;transform:none}}@keyframes swing{0%{transform:rotate(-12deg) scale(.9)}40%{transform:rotate(8deg) scale(1.08)}70%{transform:rotate(-4deg)}100%{transform:rotate(0) scale(1)}}@keyframes cellFlash{0%{box-shadow:0 0 0 0 rgba(251,191,36,.95);filter:brightness(1.25)}35%{box-shadow:0 0 0 6px rgba(251,191,36,.45);filter:brightness(1.16)}100%{box-shadow:0 0 0 0 rgba(251,191,36,0);filter:none}}@keyframes tileCelebrate{0%{transform:translateY(0) rotate(0)}28%{transform:translateY(-12px) rotate(-4deg) scale(1.08)}58%{transform:translateY(3px) rotate(3deg) scale(.98)}100%{transform:none}}@keyframes placePop{from{opacity:.5;transform:scale(.7) rotate(-6deg)}to{opacity:1;transform:none}}@keyframes activePulse{0%,100%{box-shadow:inset 0 0 0 0 rgba(34,197,94,.0)}50%{box-shadow:inset 0 0 0 2px rgba(34,197,94,.5),0 0 24px rgba(34,197,94,.18)}}@keyframes timerWarn{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
     @media(max-width:1050px){.game{grid-template-columns:1fr}.side{position:static}.board{width:min(94vw,820px)}.rack{grid-template-columns:repeat(7,minmax(46px,1fr))}.rack .tile{width:100%;height:auto;aspect-ratio:1}.grid2{grid-template-columns:1fr}}
   </style>
 </head>
@@ -38,7 +39,7 @@
 
     <section id='homeView' class='card center-card hidden'>
       <h2>Lobby</h2>
-      <p>Stwórz pokój i wyślij znajomym kod albo link. Gra startuje, gdy w lobby są 4 osoby.</p>
+      <p>Stwórz pokój i wyślij znajomym kod albo link. Gra może działać od 2 do 4 osób.</p>
       <div class='field'>
         <label>Twoja nazwa</label>
         <input id='nameInput' maxlength='18' placeholder='np. Daniel' />
@@ -46,6 +47,24 @@
 
       <div class='settings-card'>
         <h3>Ustawienia pokoju</h3>
+        <div class='field'>
+          <label>Liczba graczy</label>
+          <select id='playerCountSelect'>
+            <option value='2'>2 osoby</option>
+            <option value='3'>3 osoby</option>
+            <option value='4' selected>4 osoby</option>
+          </select>
+        </div>
+        <label class='check-row'>
+          <input id='timerToggle' type='checkbox' checked />
+          <span>Limit czasu na ułożenie słowa
+            <small>Po przekroczeniu czasu litery wracają na stojak, a gracz traci kolejkę.</small>
+          </span>
+        </label>
+        <div id='timerSecondsWrap' class='field'>
+          <label>Czas na ruch: 15–600 sekund</label>
+          <input id='timerSecondsInput' type='number' min='15' max='600' step='5' value='120' />
+        </div>
         <label class='check-row'>
           <input id='dictionaryToggle' type='checkbox' checked />
           <span>Sprawdzaj poprawność słów w bazie Firebase
@@ -58,6 +77,14 @@
             <option value='pl'>Polski</option>
             <option value='en'>Angielski</option>
             <option value='both'>Polski albo angielski</option>
+          </select>
+        </div>
+        <div id='dictionarySourceWrap' class='field'>
+          <label>Źródło słownika</label>
+          <select id='dictionarySourceSelect'>
+            <option value='firebase_online' selected>Firebase + online fallback</option>
+            <option value='firebase'>Tylko moja baza Firebase</option>
+            <option value='online'>Tylko online API</option>
           </select>
         </div>
         <label id='voteToggleWrap' class='check-row dim'>
@@ -116,6 +143,7 @@
         <div class='info'>
           <div><strong>Pokój:</strong> <span id='roomInfo'>—</span></div>
           <div><strong>Tryb słów:</strong> <span id='validationInfo'>—</span></div>
+          <div><strong>Czas ruchu:</strong> <span id='timerInfo'>—</span></div>
           <div><strong>Woreczek:</strong> <span id='bagCount'>0</span> liter</div>
           <div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div>
           <div><strong>Zasada:</strong> pierwszy ruch musi przejść przez środek.</div>
@@ -123,6 +151,15 @@
         <div id='log' class='log'></div>
       </aside>
     </section>
+  </div>
+
+  <div id='toastHost' class='toast-host'></div>
+  <div id='eventOverlay' class='event-overlay'>
+    <div class='event-card'>
+      <div id='eventIcon' class='event-icon'>⏱️</div>
+      <h2 id='eventTitle'>Czas minął!</h2>
+      <p id='eventText'>Gracz traci kolejkę.</p>
+    </div>
   </div>
 
   <script type='module'>
@@ -154,12 +191,15 @@
 
     const els = {
       setupView:q('setupView'),homeView:q('homeView'),lobbyView:q('lobbyView'),gameView:q('gameView'),topBadge:q('topBadge'),setupError:q('setupError'),
-      nameInput:q('nameInput'),joinCodeInput:q('joinCodeInput'),dictionaryToggle:q('dictionaryToggle'),dictionaryLangSelect:q('dictionaryLangSelect'),dictionaryLangWrap:q('dictionaryLangWrap'),voteToggle:q('voteToggle'),voteToggleWrap:q('voteToggleWrap'),settingsHint:q('settingsHint'),
+      nameInput:q('nameInput'),joinCodeInput:q('joinCodeInput'),playerCountSelect:q('playerCountSelect'),timerToggle:q('timerToggle'),timerSecondsInput:q('timerSecondsInput'),timerSecondsWrap:q('timerSecondsWrap'),dictionaryToggle:q('dictionaryToggle'),dictionaryLangSelect:q('dictionaryLangSelect'),dictionarySourceSelect:q('dictionarySourceSelect'),dictionaryLangWrap:q('dictionaryLangWrap'),dictionarySourceWrap:q('dictionarySourceWrap'),voteToggle:q('voteToggle'),voteToggleWrap:q('voteToggleWrap'),settingsHint:q('settingsHint'),
       roomCodeBox:q('roomCodeBox'),lobbySettingsSummary:q('lobbySettingsSummary'),lobbyPlayers:q('lobbyPlayers'),hostHint:q('hostHint'),startGameBtn:q('startGameBtn'),
-      board:q('board'),rack:q('rack'),rackTitle:q('rackTitle'),movePreview:q('movePreview'),playersPanel:q('playersPanel'),votePanel:q('votePanel'),bagCount:q('bagCount'),roomInfo:q('roomInfo'),validationInfo:q('validationInfo'),log:q('log')
+      board:q('board'),rack:q('rack'),rackTitle:q('rackTitle'),movePreview:q('movePreview'),playersPanel:q('playersPanel'),votePanel:q('votePanel'),bagCount:q('bagCount'),roomInfo:q('roomInfo'),validationInfo:q('validationInfo'),timerInfo:q('timerInfo'),log:q('log'),toastHost:q('toastHost'),eventOverlay:q('eventOverlay'),eventIcon:q('eventIcon'),eventTitle:q('eventTitle'),eventText:q('eventText')
     };
 
     let app, db, auth, myId, currentRoomCode = null, room = null, unsubscribeRoom = null, selectedRackIndex = null;
+    let timeoutProcessing = false;
+    let lastTurnNotificationKey = '';
+    let lastSeenEventKey = '';
     const dictionaryCache = new Map();
     const savedName = localStorage.getItem('literaki_name') || '';
     els.nameInput.value = savedName;
@@ -178,10 +218,19 @@
     els.nameInput.oninput = () => localStorage.setItem('literaki_name', cleanName(els.nameInput.value));
     els.dictionaryToggle.onchange = syncCreateSettings;
     els.dictionaryLangSelect.onchange = syncCreateSettings;
+    els.dictionarySourceSelect.onchange = syncCreateSettings;
+    els.playerCountSelect.onchange = syncCreateSettings;
+    els.timerToggle.onchange = syncCreateSettings;
+    els.timerSecondsInput.oninput = syncCreateSettings;
     els.voteToggle.onchange = syncCreateSettings;
 
     syncCreateSettings();
     init();
+    setInterval(() => {
+      if(!room || room.status === 'lobby') return;
+      renderTimer();
+      maybeExpireTurn();
+    }, 1000);
 
     async function init(){
       const params = new URLSearchParams(location.search);
@@ -217,29 +266,39 @@
 
     function syncCreateSettings(){
       const dictionaryEnabled = els.dictionaryToggle.checked;
+      const timerEnabled = els.timerToggle.checked;
+      els.timerSecondsWrap.classList.toggle('dim', !timerEnabled);
+      els.timerSecondsInput.disabled = !timerEnabled;
       els.dictionaryLangWrap.classList.toggle('dim', !dictionaryEnabled);
+      els.dictionarySourceWrap.classList.toggle('dim', !dictionaryEnabled);
       els.dictionaryLangSelect.disabled = !dictionaryEnabled;
+      els.dictionarySourceSelect.disabled = !dictionaryEnabled;
       els.voteToggle.disabled = dictionaryEnabled;
       els.voteToggleWrap.classList.toggle('dim', dictionaryEnabled);
       if(dictionaryEnabled){
-        els.settingsHint.textContent = `Tryb: automatyczne sprawdzanie słów w bazie (${languageLabel(els.dictionaryLangSelect.value)}).`;
+        els.settingsHint.textContent = `Tryb: ${els.playerCountSelect.value} graczy, ${timerEnabled ? timerSeconds() + 's na ruch' : 'bez limitu czasu'}, automatyczne sprawdzanie słów (${languageLabel(els.dictionaryLangSelect.value)}, ${sourceLabel(els.dictionarySourceSelect.value)}).`;
       }else if(els.voteToggle.checked){
-        els.settingsHint.textContent = 'Tryb: bez słownika, ruchy przechodzą przez głosowanie pozostałych graczy.';
+        els.settingsHint.textContent = `Tryb: ${els.playerCountSelect.value} graczy, ${timerEnabled ? timerSeconds() + 's na ruch' : 'bez limitu czasu'}, bez słownika, ruchy przechodzą przez głosowanie pozostałych graczy.`;
       }else{
-        els.settingsHint.textContent = 'Tryb: bez słownika i bez głosowania — gracze sami pilnują poprawności.';
+        els.settingsHint.textContent = `Tryb: ${els.playerCountSelect.value} graczy, ${timerEnabled ? timerSeconds() + 's na ruch' : 'bez limitu czasu'}, bez słownika i bez głosowania — gracze sami pilnują poprawności.`;
       }
     }
 
     function readRoomSettings(){
       const dictionaryEnabled = els.dictionaryToggle.checked;
       return {
+        playerCount: Number(els.playerCountSelect.value) || 4,
+        timerEnabled: els.timerToggle.checked,
+        turnTimeLimitSeconds: timerSeconds(),
         dictionaryEnabled,
         dictionaryLanguage: els.dictionaryLangSelect.value,
+        dictionarySource: els.dictionarySourceSelect.value,
         votingEnabled: !dictionaryEnabled && els.voteToggle.checked
       };
     }
 
     async function createRoom(){
+      await requestNotificationPermission();
       const name = cleanName(els.nameInput.value) || 'Gracz';
       localStorage.setItem('literaki_name', name);
       const code = await uniqueRoomCode();
@@ -262,6 +321,7 @@
     }
 
     async function joinRoom(code){
+      await requestNotificationPermission();
       code = String(code || '').replace(/[^A-Z0-9]/g,'').toUpperCase();
       if(!code) return alert('Wpisz kod pokoju.');
       const name = cleanName(els.nameInput.value) || 'Gracz';
@@ -271,7 +331,7 @@
       const data = normalizeRoom(snap.val());
       if(!data.players[myId]){
         if(data.status !== 'lobby') return alert('Ta gra już wystartowała. Dołączyć mogą tylko gracze, którzy byli w lobby.');
-        if(data.order.length >= 4) return alert('Pokój jest pełny.');
+        if(data.order.length >= targetPlayerCount(data)) return alert('Pokój jest pełny.');
         data.players[myId] = playerObj(name);
         data.order.push(myId);
         data.logs = addLogToArray(data.logs, `${esc(name)} dołącza do pokoju.`);
@@ -304,7 +364,7 @@
         ...data,
         players:data.players || {},order:data.order || [],board:data.board || {},bag:data.bag || [],
         pending:data.pending || {uid:null,tiles:[]},challenge:data.challenge || null,logs:data.logs || [],
-        settings:data.settings || {dictionaryEnabled:false,dictionaryLanguage:'pl',votingEnabled:false}
+        settings:data.settings || {playerCount:4,timerEnabled:true,turnTimeLimitSeconds:120,dictionaryEnabled:false,dictionaryLanguage:'pl',dictionarySource:'firebase',votingEnabled:false}
       };
     }
 
@@ -320,7 +380,7 @@
 
     function renderLobby(){
       els.roomCodeBox.textContent = room.code;
-      els.lobbySettingsSummary.innerHTML = `<div><strong>Tryb słów:</strong> ${settingsLabel(room.settings)}</div>`;
+      els.lobbySettingsSummary.innerHTML = `<div><strong>Liczba graczy:</strong> ${targetPlayerCount(room)}</div><div><strong>Tryb słów:</strong> ${settingsLabel(room.settings)}</div><div><strong>Limit czasu:</strong> ${timerLabel(room.settings)}</div>`;
       els.lobbyPlayers.innerHTML = '';
       room.order.forEach((id, index) => {
         const p = room.players[id];
@@ -333,8 +393,8 @@
       els.startGameBtn.disabled = !isHost;
       els.startGameBtn.textContent = isHost ? 'Start gry' : 'Tylko host może zacząć';
       els.hostHint.innerHTML = isHost
-        ? `Jesteś hostem. Graczy w lobby: <b>${room.order.length}/4</b>. Start jest blokowany, dopóki nie ma 4 osób.`
-        : `Czekasz, aż host rozpocznie grę. Graczy w lobby: <b>${room.order.length}/4</b>.`;
+        ? `Jesteś hostem. Graczy w lobby: <b>${room.order.length}/${targetPlayerCount(room)}</b>. Start jest blokowany, dopóki nie ma kompletu osób.`
+        : `Czekasz, aż host rozpocznie grę. Graczy w lobby: <b>${room.order.length}/${targetPlayerCount(room)}</b>.`;
     }
 
     function renderGame(){
@@ -342,6 +402,9 @@
       els.bagCount.textContent = room.bag.length;
       els.roomInfo.textContent = room.code;
       els.validationInfo.textContent = settingsLabel(room.settings);
+      renderTimer();
+      checkTurnNotification();
+      handleLastEvent();
       const me = room.players[myId];
       els.rackTitle.textContent = me ? `Twój stojak — ${me.name}` : 'Obserwator';
       updateMovePreview();
@@ -358,7 +421,13 @@
         const pending = pendingAt(r,c);
         const tile = pending?.tile || room.board[key(r,c)];
         if(pending) cell.classList.add('pending');
-        if(tile) cell.appendChild(tileEl(tile, !pending)); else cell.textContent = labelForMultiplier(mult,r,c);
+        const celebrate = isCelebratedCell(r,c);
+        if(celebrate) cell.classList.add('word-flash');
+        if(tile){
+          const node = tileEl(tile, !pending);
+          if(celebrate) node.classList.add('celebrate');
+          cell.appendChild(node);
+        } else cell.textContent = labelForMultiplier(mult,r,c);
         cell.onclick = () => onCellClick(r,c);
         els.board.appendChild(cell);
       }
@@ -442,7 +511,7 @@
 
     async function startGame(){
       if(room.hostId !== myId) return;
-      if(room.order.length !== 4) return alert('Do startu potrzeba dokładnie 4 graczy.');
+      if(room.order.length !== targetPlayerCount(room)) return alert(`Do startu potrzeba dokładnie ${targetPlayerCount(room)} graczy.`);
       const next = clone(room);
       next.status = 'playing';
       next.board = {};
@@ -452,6 +521,7 @@
       next.consecutivePasses = 0;
       next.pending = {uid:null,tiles:[]};
       next.challenge = null;
+      next.turnStartedAt = Date.now();
       next.order.forEach(id => { next.players[id].score = 0; next.players[id].rack = []; drawTiles(next.players[id].rack,next.bag,7); });
       next.logs = addLogToArray(next.logs, `Gra wystartowała. Tryb słów: ${settingsLabel(next.settings)}. Pierwszy ruch musi przejść przez środek.`);
       await saveRoom(next);
@@ -493,7 +563,7 @@
       if(!result.ok) return alert(result.message);
 
       if(room.settings?.dictionaryEnabled){
-        const check = await validateWordsWithDictionary(result.words, room.settings.dictionaryLanguage);
+        const check = await validateWordsWithDictionary(result.words, room.settings.dictionaryLanguage, room.settings.dictionarySource);
         if(!check.ok){
           return alert(`Słownik odrzucił ruch. Nie znaleziono: ${check.missing.join(', ')}.`);
         }
@@ -509,19 +579,22 @@
       await saveRoom(next);
     }
 
-    async function validateWordsWithDictionary(words, langMode){
+    async function validateWordsWithDictionary(words, langMode, sourceMode = 'firebase'){
       const missing = [];
       for(const word of words){
-        const ok = await wordExistsInSelectedDictionaries(word, langMode);
+        const ok = await wordExistsInSelectedDictionaries(word, langMode, sourceMode);
         if(!ok) missing.push(word);
       }
       return {ok:missing.length === 0, missing};
     }
 
-    async function wordExistsInSelectedDictionaries(word, langMode){
+    async function wordExistsInSelectedDictionaries(word, langMode, sourceMode = 'firebase'){
       const langs = langMode === 'both' ? ['pl','en'] : [langMode || 'pl'];
+      const useFirebase = sourceMode === 'firebase' || sourceMode === 'firebase_online';
+      const useOnline = sourceMode === 'online' || sourceMode === 'firebase_online';
       for(const lang of langs){
-        if(await checkDictionaryWord(lang, word)) return true;
+        if(useFirebase && await checkDictionaryWord(lang, word)) return true;
+        if(useOnline && await checkOnlineWord(lang, word)) return true;
       }
       return false;
     }
@@ -536,10 +609,52 @@
         dictionaryCache.set(cacheKey, exists);
         return exists;
       }catch(err){
-        console.error('Błąd sprawdzania słownika:', err);
-        alert('Nie udało się sprawdzić słownika w Firebase. Sprawdź reguły i dane dictionaries/pl lub dictionaries/en.');
+        console.warn('Błąd sprawdzania słownika Firebase:', err);
         return false;
       }
+    }
+
+    async function checkOnlineWord(lang, word){
+      const wordKey = dictKey(word);
+      const cacheKey = `online:${lang}:${wordKey}`;
+      if(dictionaryCache.has(cacheKey)) return dictionaryCache.get(cacheKey);
+      let exists = false;
+      try{
+        if(lang === 'en'){
+          exists = await checkDictionaryApiDev(wordKey);
+          if(!exists) exists = await checkPoocooWord('en', wordKey);
+        }else if(lang === 'pl'){
+          exists = await checkPoocooWord('pl', wordKey);
+        }
+      }catch(err){
+        console.warn('Online dictionary error:', err);
+        exists = false;
+      }
+      dictionaryCache.set(cacheKey, exists);
+      return exists;
+    }
+
+    async function checkDictionaryApiDev(word){
+      const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word.toLowerCase())}`;
+      const res = await fetch(url);
+      return res.ok;
+    }
+
+    async function checkPoocooWord(lang, word){
+      const base = lang === 'pl' ? 'https://api.poocoo.pl' : 'https://api.poocoo.app';
+      const qWord = normalizeForPoocoo(word, lang);
+      const params = new URLSearchParams({length:String([...qWord].length), startsWith:qWord, endsWith:qWord, page:'1', pageSize:'20'});
+      const res = await fetch(`${base}/api/v1/words?${params.toString()}`);
+      if(!res.ok) return false;
+      const data = await res.json();
+      const words = Array.isArray(data?.data) ? data.data : [];
+      return words.some(w => normalizeForPoocoo(w, lang) === qWord);
+    }
+
+    function normalizeForPoocoo(word, lang){
+      const normalized = String(word || '').trim().toLowerCase().normalize('NFC');
+      if(lang === 'en') return normalized.normalize('NFD').replace(/[̀-ͯ]/g,'');
+      return normalized;
     }
 
     function dictKey(word){
@@ -594,6 +709,7 @@
       const player = next.players[playerId];
       const pending = next.pending?.tiles || [];
       pending.forEach(p => next.board[key(p.r,p.c)] = p.tile);
+      next.lastEvent = {type:'word',playerId,playerName:player.name,words:result.words,score:result.score,tiles:pending.map(p=>({r:p.r,c:p.c,letter:p.tile.letter})),t:Date.now()};
       player.score += result.score;
       drawTiles(player.rack,next.bag,7);
       next.moveNumber++;
@@ -604,6 +720,7 @@
       next.logs = addLogToArray(next.logs, `<b>${esc(player.name)}</b> układa ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);
       if(player.rack.length === 0 && next.bag.length === 0) endGame(next, `${player.name} pozbył się wszystkich liter.`);
       else next.currentIndex = (next.currentIndex + 1) % next.order.length;
+      next.turnStartedAt = Date.now();
     }
 
     function rejectMove(next){
@@ -616,7 +733,9 @@
       next.challenge = null;
       next.consecutivePasses = 0;
       next.logs = addLogToArray(next.logs, `<b>Ruch odrzucony.</b> Większość graczy nie zgodziła się ze słowem ${esc(ch.words.join(', '))}. <b>${esc(player.name)}</b> traci kolejkę.`);
+      next.lastEvent = {type:'reject',playerId:ch.submitterId,playerName:player.name,words:ch.words,t:Date.now()};
       next.currentIndex = (next.currentIndex + 1) % next.order.length;
+      next.turnStartedAt = Date.now();
     }
 
     async function undoMove(){
@@ -638,6 +757,7 @@
       next.consecutivePasses++;
       next.logs = addLogToArray(next.logs, `<b>${esc(me.name)}</b> pasuje.`);
       if(next.consecutivePasses >= next.order.length * 2) endGame(next, 'Za dużo pasów z rzędu.'); else next.currentIndex = (next.currentIndex + 1) % next.order.length;
+      next.turnStartedAt = Date.now();
       await saveRoom(next);
     }
 
@@ -661,6 +781,7 @@ ${rackText}`);
       next.consecutivePasses = 0;
       next.logs = addLogToArray(next.logs, `<b>${esc(p.name)}</b> wymienia ${returned.length} liter.`);
       next.currentIndex = (next.currentIndex + 1) % next.order.length;
+      next.turnStartedAt = Date.now();
       await saveRoom(next);
     }
 
@@ -756,14 +877,150 @@ ${rackText}`);
     function isMyTurn(){return room && currentPlayerId() === myId && room.pending?.uid !== null ? room.pending.uid === myId : currentPlayerId() === myId}
     function isVotingMode(data){return !data.settings?.dictionaryEnabled && !!data.settings?.votingEnabled}
     function settingsLabel(settings){
-      if(settings?.dictionaryEnabled) return `słownik: ${languageLabel(settings.dictionaryLanguage)}`;
+      if(settings?.dictionaryEnabled) return `słownik: ${languageLabel(settings.dictionaryLanguage)} (${sourceLabel(settings.dictionarySource)})`;
       if(settings?.votingEnabled) return 'głosowanie graczy';
       return 'ręczna kontrola bez głosowania';
+    }
+    function timerSeconds(){
+      const raw = Number(els.timerSecondsInput?.value || 120);
+      return Math.min(600, Math.max(15, Math.round(raw)));
+    }
+    function renderTimer(){
+      if(!els.timerInfo || !room) return;
+      if(!room.settings?.timerEnabled || room.status === 'finished'){
+        els.topBadge.classList.remove('timer-warn');
+        els.timerInfo.textContent = 'bez limitu';
+        return;
+      }
+      if(room.status === 'voting'){
+        els.topBadge.classList.remove('timer-warn');
+        els.timerInfo.textContent = 'pauza podczas głosowania';
+        return;
+      }
+      const left = secondsLeft(room);
+      els.timerInfo.textContent = `${formatTime(left)} / ${room.settings.turnTimeLimitSeconds || 120}s`;
+      els.timerInfo.style.color = left <= 10 ? '#fca5a5' : '';
+      els.topBadge.classList.toggle('timer-warn', left <= 10 && room.status === 'playing');
+    }
+    function secondsLeft(data){
+      if(!data?.settings?.timerEnabled || !data.turnStartedAt) return Infinity;
+      const limit = Math.max(15, Number(data.settings.turnTimeLimitSeconds || 120));
+      return Math.max(0, Math.ceil((data.turnStartedAt + limit * 1000 - Date.now()) / 1000));
+    }
+    function formatTime(total){
+      if(!Number.isFinite(total)) return '∞';
+      const m = Math.floor(total / 60);
+      const s = total % 60;
+      return `${m}:${String(s).padStart(2,'0')}`;
+    }
+    async function maybeExpireTurn(){
+      if(timeoutProcessing || !room || room.status !== 'playing' || !room.settings?.timerEnabled) return;
+      if(secondsLeft(room) > 0) return;
+      timeoutProcessing = true;
+      try{
+        const next = clone(room);
+        if(next.status !== 'playing' || !next.settings?.timerEnabled || secondsLeft(next) > 0) return;
+        const playerId = currentPlayerId();
+        const player = next.players[playerId];
+        if(next.pending?.uid === playerId){
+          (next.pending.tiles || []).forEach(p => player.rack.push(p.tile));
+        }
+        next.pending = {uid:null,tiles:[]};
+        next.consecutivePasses++;
+        next.logs = addLogToArray(next.logs, `<b>${esc(player?.name || 'Gracz')}</b> nie zmieścił się w czasie i traci kolejkę.`);
+        next.lastEvent = {type:'timeout',playerId,playerName:player?.name || 'Gracz',t:Date.now()};
+        if(next.consecutivePasses >= next.order.length * 2) endGame(next, 'Za dużo utraconych/pominiętych tur z rzędu.');
+        else {
+          next.currentIndex = (next.currentIndex + 1) % next.order.length;
+          next.turnStartedAt = Date.now();
+        }
+        await saveRoom(next);
+      }finally{
+        setTimeout(() => timeoutProcessing = false, 1200);
+      }
+    }
+    function timerLabel(settings){
+      if(!settings?.timerEnabled) return 'bez limitu';
+      return `${Math.max(15, Number(settings.turnTimeLimitSeconds || 120))} sekund na ruch`;
+    }
+    async function requestNotificationPermission(){
+      if(!('Notification' in window)) return;
+      if(Notification.permission === 'default'){
+        try{ await Notification.requestPermission(); }catch(_){ }
+      }
+    }
+    function browserNotify(title, body){
+      if('Notification' in window && Notification.permission === 'granted'){
+        try{ new Notification(title, {body, icon: location.origin + '/favicon.ico'}); }catch(_){ }
+      }
+    }
+    function showToast(title, text){
+      if(!els.toastHost) return;
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<b>${esc(title)}</b><small>${esc(text)}</small>`;
+      els.toastHost.prepend(toast);
+      setTimeout(() => {toast.style.opacity = '0'; toast.style.transform = 'translateY(10px) scale(.98)';}, 4200);
+      setTimeout(() => toast.remove(), 4700);
+    }
+    function checkTurnNotification(){
+      if(!room || room.status !== 'playing' || !isMyTurn()) return;
+      const turnKey = `${room.code}:${room.currentIndex}:${room.turnStartedAt || 0}`;
+      if(lastTurnNotificationKey === turnKey) return;
+      lastTurnNotificationKey = turnKey;
+      showToast('Twoja kolej!', 'Ułóż słowo na planszy.');
+      browserNotify('Twoja kolej w Literakach', `Pokój ${room.code}: teraz grasz ty.`);
+      showEventOverlay('turn','Twoja kolej!','Masz teraz czas na ułożenie słowa.');
+    }
+    function handleLastEvent(){
+      if(!room?.lastEvent?.t) return;
+      const eventKey = `${room.lastEvent.type}:${room.lastEvent.t}:${room.lastEvent.playerId || ''}`;
+      if(lastSeenEventKey === eventKey) return;
+      lastSeenEventKey = eventKey;
+      const ev = room.lastEvent;
+      if(ev.type === 'word'){
+        showToast('Słowo zatwierdzone', `${ev.playerName || 'Gracz'} zdobywa ${ev.score || 0} pkt: ${(ev.words || []).join(', ')}`);
+        showEventOverlay('word','Ładny ruch!', `${ev.playerName || 'Gracz'}: ${(ev.words || []).join(', ')} za ${ev.score || 0} pkt.`);
+      }
+      if(ev.type === 'timeout'){
+        showToast('Czas minął', `${ev.playerName || 'Gracz'} traci kolejkę.`);
+        showEventOverlay('timeout','Czas minął!', `${ev.playerName || 'Gracz'} nie zdążył ułożyć słowa.`);
+      }
+      if(ev.type === 'reject'){
+        showToast('Ruch odrzucony', `${ev.playerName || 'Gracz'} traci kolejkę.`);
+        showEventOverlay('reject','Ruch odrzucony', 'Większość graczy nie zgodziła się ze słowem.');
+      }
+    }
+    function showEventOverlay(type,title,text){
+      if(!els.eventOverlay) return;
+      const icons = {turn:'🎲',word:'✨',timeout:'⏱️',reject:'🚫'};
+      els.eventIcon.textContent = icons[type] || '✨';
+      els.eventTitle.textContent = title;
+      els.eventText.textContent = text;
+      els.eventOverlay.classList.remove('show');
+      void els.eventOverlay.offsetWidth;
+      els.eventOverlay.classList.add('show');
+      clearTimeout(showEventOverlay._timer);
+      showEventOverlay._timer = setTimeout(() => els.eventOverlay.classList.remove('show'), type === 'timeout' ? 2600 : 1800);
+    }
+    function isCelebratedCell(r,c){
+      const ev = room?.lastEvent;
+      if(!ev || ev.type !== 'word' || !Array.isArray(ev.tiles)) return false;
+      return ev.tiles.some(t => t.r === r && t.c === c);
     }
     function languageLabel(lang){
       if(lang === 'en') return 'angielski';
       if(lang === 'both') return 'polski albo angielski';
       return 'polski';
+    }
+    function sourceLabel(source){
+      if(source === 'online') return 'online API';
+      if(source === 'firebase_online') return 'Firebase + online';
+      return 'Firebase';
+    }
+    function targetPlayerCount(data){
+      const n = Number(data?.settings?.playerCount || 4);
+      return Math.min(4, Math.max(2, n));
     }
     function key(r,c){return `${r}_${c}`}
     function inBounds(r,c){return r>=0&&r<SIZE&&c>=0&&c<SIZE}
