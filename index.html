@@ -223,10 +223,12 @@
       if(room.status === 'lobby') return;
       renderTimer();
       if(room.status === 'voting'){
+        heartbeatOnline();
         renderVotePanel();
         maybeResolveVotingTimeout();
         return;
       }
+      heartbeatOnline();
       maybeSkipOfflineTurn();
       maybeExpireTurn();
     }, 1000);
@@ -636,7 +638,21 @@
     }
 
     function activeVotePlayerIds(data, submitterId){
-      return (data.order || []).filter(id => id !== submitterId && data.players?.[id]?.online !== false);
+      const ids = (data.order || []).filter(id => id !== submitterId && data.players?.[id]?.online !== false);
+      if(data === room && myId && myId !== submitterId && data.players?.[myId] && !ids.includes(myId)){
+        ids.push(myId);
+      }
+      return ids;
+    }
+
+    async function heartbeatOnline(){
+      if(!currentRoomCode || !myId || !db || !room?.players?.[myId]) return;
+      const now = Date.now();
+      if(heartbeatOnline.last && now - heartbeatOnline.last < 15000) return;
+      heartbeatOnline.last = now;
+      try{
+        await update(ref(db, `rooms/${currentRoomCode}/players/${myId}`), {online:true,lastSeen:now});
+      }catch(_){ }
     }
 
     function votingSecondsLeft(challenge){
@@ -646,15 +662,27 @@
 
     async function maybeResolveVotingTimeout(){
       if(votingResolveProcessing || !room || room.status !== 'voting' || !room.challenge) return;
-      if(votingSecondsLeft(room.challenge) > 0) return;
+      const left = votingSecondsLeft(room.challenge);
+      if(left > 0) return;
       votingResolveProcessing = true;
       try{
         const next = clone(room);
-        if(next.status !== 'voting' || !next.challenge || votingSecondsLeft(next.challenge) > 0) return;
-        const resolution = challengeResolution(next);
-        if(resolution === 'reject') rejectMove(next, true);
-        else acceptMove(next, {words:next.challenge.words,score:next.challenge.score}, next.challenge.submitterId, true);
+        if(next.status !== 'voting' || !next.challenge) return;
+
+        const ch = next.challenge;
+        const eligible = activeVotePlayerIds(next, ch.submitterId);
+        const votes = ch.votes || {};
+        const rejects = eligible.filter(id => votes[id]?.agree === false).length;
+        const thresholds = voteThresholds(next, eligible.length);
+        const shouldReject = eligible.length > 0 && rejects >= thresholds.reject;
+
+        if(shouldReject) rejectMove(next, true);
+        else acceptMove(next, {words:ch.words || [],score:Number(ch.score || 0)}, ch.submitterId, true);
+
         await saveRoom(next);
+      }catch(err){
+        console.error('Nie udało się automatycznie zakończyć głosowania:', err);
+        showToast('Błąd głosowania', 'Nie udało się automatycznie zakończyć głosowania. Spróbuj odświeżyć stronę.');
       }finally{
         setTimeout(() => votingResolveProcessing = false, 1200);
       }
