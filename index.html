@@ -9,7 +9,7 @@
     *{box-sizing:border-box;user-select:none}body{margin:0;min-height:100vh;padding:18px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,#1e3a8a 0,transparent 32%),var(--bg);color:var(--text)}button,input,select{font:inherit}.hidden{display:none!important}.wrap{max-width:1500px;margin:0 auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:rgba(17,24,39,.88);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:14px 18px;box-shadow:var(--shadow);backdrop-filter:blur(10px);margin-bottom:18px}.title h1{margin:0;font-size:28px;letter-spacing:-.04em}.title span{color:var(--muted);font-size:14px}.top-badges{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border-radius:999px;background:rgba(251,191,36,.13);border:1px solid rgba(251,191,36,.28);color:#fde68a;white-space:nowrap;font-weight:850}.badge.warn{animation:timerWarn .8s ease-in-out infinite;color:#fecaca;border-color:rgba(248,113,113,.55);background:rgba(239,68,68,.15)}
     .card{background:rgba(17,24,39,.92);border:1px solid rgba(255,255,255,.09);border-radius:24px;box-shadow:var(--shadow);padding:18px}.center-card{max-width:720px;margin:60px auto}.center-card h2{font-size:32px;margin:0 0 8px;letter-spacing:-.04em}.center-card p{margin:0 0 18px;color:var(--muted);line-height:1.55}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px;margin-bottom:12px}.field label{font-size:13px;color:var(--muted);font-weight:850}.field input,.field select{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none}.field select option{background:#111827;color:#e5e7eb}.btn{border:0;border-radius:14px;padding:12px 13px;background:var(--panel2);color:var(--text);font-weight:900;cursor:pointer;transition:.08s}.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.08)}.btn:disabled{opacity:.45;cursor:not-allowed}.primary{background:var(--green)!important;color:#052e16!important}.danger{background:var(--red)!important;color:#fff!important}.blue{background:var(--blue)!important;color:#fff!important}.purple{background:var(--purple)!important;color:#fff!important}.wide{width:100%}.small{font-size:13px;color:var(--muted);line-height:1.45}.settings-card{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px;margin:14px 0}.settings-card h3{margin:0 0 10px;font-size:17px}.check-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;color:var(--text);font-weight:850;line-height:1.35}.check-row input{width:18px;height:18px;margin-top:1px;accent-color:#22c55e}.check-row small{display:block;color:var(--muted);font-weight:600;margin-top:2px}.dim{opacity:.55}.room-code{font-size:42px;font-weight:950;letter-spacing:.12em;color:#fde68a;text-align:center;background:rgba(251,191,36,.1);border:1px dashed rgba(251,191,36,.35);border-radius:18px;padding:16px;margin:12px 0}.players-list{display:grid;gap:10px;margin:14px 0}.lobby-player{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px}.online{color:#86efac}.offline{color:#fca5a5}
     .game{display:grid;grid-template-columns:minmax(700px,1fr) 370px;gap:18px;align-items:start}.board-wrap,.side,.rack-panel{background:rgba(17,24,39,.9);border:1px solid rgba(255,255,255,.08);border-radius:24px;box-shadow:var(--shadow)}.board-wrap{padding:16px;overflow:auto}.board{width:min(92vw,820px);aspect-ratio:1;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);gap:3px;background:var(--board);padding:8px;border-radius:18px;margin:0 auto;border:4px solid #183826}.cell{position:relative;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--cell);min-width:34px;min-height:34px;color:rgba(17,24,39,.78);font-size:clamp(8px,.7vw,11px);font-weight:950;text-align:center;line-height:1.05;cursor:pointer;transition:.08s;overflow:hidden}.cell:hover{transform:translateY(-1px);filter:brightness(1.05)}.cell.pending{outline:3px solid #fbbf24;outline-offset:-3px}.cell.tw{background:#ef4444;color:#fff}.cell.dw{background:#f59e0b;color:#111827}.cell.tl{background:#2563eb;color:#fff}.cell.dl{background:#93c5fd;color:#0f172a}.cell.center{box-shadow:inset 0 0 0 3px rgba(255,255,255,.5)}.cell.word-flash{animation:cellFlash 1.25s ease both}.tile{width:100%;height:100%;min-width:34px;min-height:34px;border-radius:9px;background:linear-gradient(145deg,#ffe0a5,var(--tile));border:2px solid var(--tile-border);color:#3b2607;display:flex;align-items:center;justify-content:center;position:relative;font-weight:950;font-size:clamp(17px,1.5vw,25px);box-shadow:inset 0 1px rgba(255,255,255,.55),0 3px 0 #8d5e18;cursor:pointer}.tile small{position:absolute;right:4px;bottom:2px;font-size:10px;font-weight:950;color:#5b3a0a}.tile.blank:after{content:"★";position:absolute;left:4px;top:2px;font-size:9px;opacity:.65}.tile.locked{filter:saturate(.9)}.cell.pending .tile{animation:placePop .25s cubic-bezier(.2,1.4,.3,1) both}.tile.celebrate{animation:tileCelebrate 1.05s cubic-bezier(.2,1.45,.3,1) both}
-    .rack-panel{margin-top:18px;padding:16px}.rack-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.rack-head h2{margin:0;font-size:18px}.rack{display:grid;grid-template-columns:repeat(7,70px);gap:10px;min-height:78px;align-items:center;justify-content:center;background:rgba(0,0,0,.18);padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.08);overflow-x:auto}.rack .tile{width:70px;height:70px;font-size:30px}.rack .tile.selected{outline:4px solid var(--accent);transform:translateY(-6px)}.rack.shuffling{overflow:visible}.rack.shuffling .tile{z-index:3;pointer-events:none;filter:none;will-change:transform}.rack.invalid-drop{animation:rackInvalid .45s ease both;border-color:rgba(239,68,68,.75);box-shadow:0 0 0 4px rgba(239,68,68,.16),inset 0 0 0 2px rgba(239,68,68,.22)}.drag-layer{position:fixed;inset:0;z-index:95;pointer-events:none}.drag-ghost{position:fixed;width:70px;height:70px;transform:translate3d(-50%,-50%,0) rotate(var(--drag-rot,0deg));opacity:.94;transition:left .055s linear,top .055s linear,transform .075s ease-out;will-change:left,top,transform}.drag-ghost .tile{width:70px;height:70px;min-width:70px;min-height:70px;box-shadow:0 18px 26px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.55)}.drag-name{position:absolute;left:50%;top:76px;transform:translateX(-50%);background:rgba(15,23,42,.9);border:1px solid rgba(255,255,255,.16);color:#fff;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900;white-space:nowrap}.cell.drag-target{outline:4px solid #60a5fa;outline-offset:-4px;filter:brightness(1.08)}.side{padding:16px;display:flex;flex-direction:column;gap:14px;position:sticky;top:18px}.players{display:grid;gap:10px}.player{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:12px;border-radius:17px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08)}.player.active{background:rgba(34,197,94,.13);border-color:rgba(34,197,94,.42);animation:activePulse 1.8s ease-in-out infinite}.player.me{box-shadow:inset 0 0 0 2px rgba(251,191,36,.25)}.player-name{font-weight:850;display:flex;gap:8px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}.score{font-size:24px;font-weight:950;color:#fff}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.info{display:grid;gap:8px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);padding:13px;border-radius:17px;color:var(--muted);font-size:14px;line-height:1.45}.info strong{color:var(--text)}.log{min-height:160px;max-height:270px;overflow:auto;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:17px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted)}.log b{color:var(--text)}
+    .rack-panel{margin-top:18px;padding:16px}.rack-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.rack-head h2{margin:0;font-size:18px}.rack{display:grid;grid-template-columns:repeat(7,70px);gap:10px;min-height:78px;align-items:center;justify-content:center;background:rgba(0,0,0,.18);padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.08);overflow-x:auto}.rack .tile{width:70px;height:70px;font-size:30px}.rack .tile.selected{outline:4px solid var(--accent);transform:translateY(-6px)}.rack .tile.drag-hidden{visibility:hidden}.rack.shuffling{overflow:visible}.rack.shuffling .tile{z-index:3;pointer-events:none;filter:none;will-change:transform}.rack.invalid-drop{animation:rackInvalid .45s ease both;border-color:rgba(239,68,68,.75);box-shadow:0 0 0 4px rgba(239,68,68,.16),inset 0 0 0 2px rgba(239,68,68,.22)}.drag-layer{position:fixed;inset:0;z-index:95;pointer-events:none}.drag-ghost{position:fixed;width:70px;height:70px;transform:translate3d(-50%,-50%,0) rotate(var(--drag-rot,0deg));opacity:.94;transition:left .055s linear,top .055s linear,transform .075s ease-out;will-change:left,top,transform}.drag-ghost .tile{width:70px;height:70px;min-width:70px;min-height:70px;box-shadow:0 18px 26px rgba(0,0,0,.35),inset 0 1px rgba(255,255,255,.55)}.drag-name{position:absolute;left:50%;top:76px;transform:translateX(-50%);background:rgba(15,23,42,.9);border:1px solid rgba(255,255,255,.16);color:#fff;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900;white-space:nowrap}.cell.drag-target{outline:4px solid #60a5fa;outline-offset:-4px;filter:brightness(1.08)}.side{padding:16px;display:flex;flex-direction:column;gap:14px;position:sticky;top:18px}.players{display:grid;gap:10px}.player{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:12px;border-radius:17px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08)}.player.active{background:rgba(34,197,94,.13);border-color:rgba(34,197,94,.42);animation:activePulse 1.8s ease-in-out infinite}.player.me{box-shadow:inset 0 0 0 2px rgba(251,191,36,.25)}.player-name{font-weight:850;display:flex;gap:8px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}.score{font-size:24px;font-weight:950;color:#fff}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.info{display:grid;gap:8px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);padding:13px;border-radius:17px;color:var(--muted);font-size:14px;line-height:1.45}.info strong{color:var(--text)}.log{min-height:160px;max-height:270px;overflow:auto;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:17px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted)}.log b{color:var(--text)}
     .vote-panel{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.28);border-radius:18px;padding:14px;color:#fde68a}.vote-panel h3{margin:0 0 8px;font-size:18px}.vote-panel p{margin:0 0 10px;color:#fef3c7;line-height:1.45}.word-list{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.word-pill{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:6px 10px;font-weight:900;color:#fff}.vote-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.vote-meta{font-size:13px;color:#fef3c7;line-height:1.45;margin-top:8px}.vote-progress{width:100%;height:12px;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin:10px 0}.vote-progress-fill{height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#fbbf24,#ef4444);border-radius:999px;transition:width .25s linear}.vote-progress.danger .vote-progress-fill{animation:timerWarn .8s ease-in-out infinite}.vote-time{font-weight:950;color:#fff}
     .toast-host{position:fixed;right:18px;bottom:18px;z-index:80;display:grid;gap:10px;max-width:min(380px,calc(100vw - 36px))}.toast{background:rgba(17,24,39,.96);border:1px solid rgba(251,191,36,.36);box-shadow:var(--shadow);border-radius:18px;padding:13px 14px;animation:toastIn .28s ease both;color:var(--text)}.toast b{color:#fde68a}.toast small{display:block;color:var(--muted);margin-top:3px;line-height:1.35}.event-overlay{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.64);backdrop-filter:blur(5px);pointer-events:none}.event-overlay.show{display:flex;animation:overlayFade .28s ease both}.event-card{width:min(520px,92vw);background:linear-gradient(145deg,rgba(17,24,39,.98),rgba(30,41,59,.98));border:1px solid rgba(255,255,255,.12);border-radius:30px;box-shadow:var(--shadow);padding:28px;text-align:center;animation:eventPop .36s cubic-bezier(.2,1.35,.35,1) both}.event-icon{font-size:62px;line-height:1;margin-bottom:10px;filter:drop-shadow(0 12px 22px rgba(0,0,0,.35));animation:swing .9s ease both}.event-card h2{margin:0 0 8px;font-size:32px;letter-spacing:-.04em}.event-card p{margin:0;color:var(--muted);line-height:1.45}.ui-modal-backdrop{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.72);backdrop-filter:blur(7px);padding:18px}.ui-modal-backdrop.show{display:flex;animation:overlayFade .2s ease both}.ui-modal{width:min(520px,94vw);background:linear-gradient(145deg,rgba(17,24,39,.98),rgba(30,41,59,.98));border:1px solid rgba(255,255,255,.12);border-radius:26px;box-shadow:var(--shadow);padding:20px;animation:eventPop .24s cubic-bezier(.2,1.25,.3,1) both}.ui-modal h3{margin:0 0 8px;font-size:24px;letter-spacing:-.03em}.ui-modal p{margin:0 0 14px;color:var(--muted);line-height:1.5;white-space:pre-wrap}.ui-modal input{width:100%;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none;margin:4px 0 14px}.ui-modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}.ui-modal-actions .btn{min-width:105px}.ui-exchange-grid{display:grid;grid-template-columns:repeat(7,minmax(42px,1fr));gap:10px;margin:12px 0 16px}.ui-exchange-choice{border:0;background:transparent;padding:0;cursor:pointer;border-radius:14px}.ui-exchange-choice .tile{width:100%;height:auto;aspect-ratio:1;min-width:0;min-height:0}.ui-exchange-choice.selected{outline:4px solid #60a5fa;outline-offset:3px;background:rgba(96,165,250,.12)}.ui-letter-grid{display:grid;grid-template-columns:repeat(7,minmax(34px,1fr));gap:8px;margin:12px 0 16px}.ui-letter-choice{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:var(--text);border-radius:12px;padding:10px 0;font-weight:950;cursor:pointer}.ui-letter-choice:hover{background:rgba(251,191,36,.2);border-color:rgba(251,191,36,.45);transform:translateY(-1px)}
     @keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}@keyframes overlayFade{from{opacity:0}to{opacity:1}}@keyframes eventPop{from{opacity:0;transform:translateY(18px) scale(.92)}to{opacity:1;transform:none}}@keyframes swing{0%{transform:rotate(-12deg) scale(.9)}40%{transform:rotate(8deg) scale(1.08)}70%{transform:rotate(-4deg)}100%{transform:rotate(0) scale(1)}}@keyframes cellFlash{0%{box-shadow:0 0 0 0 rgba(251,191,36,.95);filter:brightness(1.25)}35%{box-shadow:0 0 0 6px rgba(251,191,36,.45);filter:brightness(1.16)}100%{box-shadow:0 0 0 0 rgba(251,191,36,0);filter:none}}@keyframes tileCelebrate{0%{transform:translateY(0) rotate(0)}28%{transform:translateY(-12px) rotate(-4deg) scale(1.08)}58%{transform:translateY(3px) rotate(3deg) scale(.98)}100%{transform:none}}@keyframes placePop{from{opacity:.5;transform:scale(.7) rotate(-6deg)}to{opacity:1;transform:none}}@keyframes activePulse{0%,100%{box-shadow:inset 0 0 0 0 rgba(34,197,94,0)}50%{box-shadow:inset 0 0 0 2px rgba(34,197,94,.5),0 0 24px rgba(34,197,94,.18)}}@keyframes timerWarn{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}@keyframes rackInvalid{0%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}100%{transform:translateX(0)}}
@@ -18,13 +18,13 @@
   </style>
 </head>
 <body>
-  <div id="versionBadge" class="version-badge">v6.7</div>
+  <div id="versionBadge" class="version-badge">v6.8</div>
   <div class="wrap">
     <section class="topbar"><div class="title"><h1>Literaki Online</h1><span>Lobby online, głosowanie, timer i gra dla 2–4 osób.</span></div><div class="top-badges"><div id="turnTimerBadge" class="badge">Czas: —</div><div id="topBadge" class="badge">Ładowanie…</div></div></section>
     <section id="loadingView" class="card center-card"><h2>Ładowanie gry</h2><p id="loadingText">Łączę aplikację z Firebase.</p></section>
     <section id="homeView" class="card center-card hidden"><h2>Lobby</h2><p>Stwórz pokój i wyślij znajomym kod albo link. Gra może działać od 2 do 4 osób.</p><div class="field"><label>Twoja nazwa</label><input id="nameInput" maxlength="18" placeholder="np. Daniel" /></div><div class="settings-card"><h3>Ustawienia pokoju</h3><div class="field"><label>Liczba graczy</label><select id="playerCountSelect"><option value="2">2 osoby</option><option value="3">3 osoby</option><option value="4" selected>4 osoby</option></select></div><label class="check-row"><input id="timerToggle" type="checkbox" checked /><span>Limit czasu na ułożenie słowa<small>Po przekroczeniu czasu litery wracają na stojak, a gracz traci kolejkę.</small></span></label><div id="timerSecondsWrap" class="field"><label>Czas na ruch: 15–600 sekund</label><input id="timerSecondsInput" type="number" min="15" max="600" step="5" value="120" /></div><label class="check-row"><input id="voteToggle" type="checkbox" checked /><span>Głosowanie nad poprawnością słowa<small>Po zatwierdzeniu ruchu pozostali gracze głosują. Jeżeli wymagana liczba aktywnych graczy kliknie „nie zgadzam się”, ruch przepada.</small></span></label><p id="settingsHint" class="small" style="margin:8px 0 0"></p></div><div class="grid2"><button id="createRoomBtn" class="btn primary">Utwórz pokój</button><div><input id="joinCodeInput" maxlength="6" placeholder="Kod pokoju" style="width:100%;margin-bottom:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none;text-transform:uppercase" /><button id="joinRoomBtn" class="btn blue wide">Dołącz</button></div></div><p class="small" style="margin-top:16px">To prosta gra ze wspólnym stanem w Firebase. Do gry ze znajomymi wystarczy, ale nie jest odporna na cheatowanie.</p></section>
     <section id="lobbyView" class="card center-card hidden"><h2>Pokój</h2><p>Wyślij kod lub link pozostałym graczom.</p><div id="roomCodeBox" class="room-code">-----</div><button id="copyLinkBtn" class="btn blue wide">Kopiuj link do pokoju</button><div id="lobbySettingsSummary" class="info" style="margin-top:14px"></div><div id="lobbyPlayers" class="players-list"></div><button id="startGameBtn" class="btn primary wide">Start gry</button><button id="backHomeBtn" class="btn wide" style="margin-top:10px">Wróć</button><p class="small" id="hostHint" style="margin-top:14px"></p></section>
-    <section id="gameView" class="game hidden"><main><div class="board-wrap"><div id="board" class="board"></div></div><div class="rack-panel"><div class="rack-head"><h2 id="rackTitle">Stojak</h2><span id="movePreview" class="badge">Ruch: 0 pkt</span></div><div id="rack" class="rack"></div></div></main><aside class="side"><div id="playersPanel" class="players"></div><div class="controls"><button id="playBtn" class="btn primary">Zatwierdź</button><button id="undoBtn" class="btn">Cofnij literę</button><button id="exchangeBtn" class="btn blue">Wymień</button><button id="passBtn" class="btn">Pas</button><button id="shuffleBtn" class="btn purple">Pomieszaj</button><button id="leaveBtn" class="btn danger">Wyjdź</button></div><div id="votePanel" class="vote-panel hidden"></div><div class="info"><div><strong>Wersja:</strong> <span id="gameVersionInfo">v6.7</span></div><div><strong>Pokój:</strong> <span id="roomInfo">—</span></div><div><strong>Tryb słów:</strong> <span id="validationInfo">głosowanie</span></div><div><strong>Czas ruchu:</strong> <span id="timerInfo">—</span></div><div><strong>Woreczek:</strong> <span id="bagCount">0</span> liter</div><div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div></div><div id="log" class="log"></div></aside></section>
+    <section id="gameView" class="game hidden"><main><div class="board-wrap"><div id="board" class="board"></div></div><div class="rack-panel"><div class="rack-head"><h2 id="rackTitle">Stojak</h2><span id="movePreview" class="badge">Ruch: 0 pkt</span></div><div id="rack" class="rack"></div></div></main><aside class="side"><div id="playersPanel" class="players"></div><div class="controls"><button id="playBtn" class="btn primary">Zatwierdź</button><button id="undoBtn" class="btn">Cofnij literę</button><button id="exchangeBtn" class="btn blue">Wymień</button><button id="passBtn" class="btn">Pas</button><button id="shuffleBtn" class="btn purple">Pomieszaj</button><button id="leaveBtn" class="btn danger">Wyjdź</button></div><div id="votePanel" class="vote-panel hidden"></div><div class="info"><div><strong>Wersja:</strong> <span id="gameVersionInfo">v6.8</span></div><div><strong>Pokój:</strong> <span id="roomInfo">—</span></div><div><strong>Tryb słów:</strong> <span id="validationInfo">głosowanie</span></div><div><strong>Czas ruchu:</strong> <span id="timerInfo">—</span></div><div><strong>Woreczek:</strong> <span id="bagCount">0</span> liter</div><div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div></div><div id="log" class="log"></div></aside></section>
   </div>
   <div id="dragLayer" class="drag-layer"></div>
   <div id="toastHost" class="toast-host"></div><div id="eventOverlay" class="event-overlay"><div class="event-card"><div id="eventIcon" class="event-icon">✨</div><h2 id="eventTitle">Ruch!</h2><p id="eventText"></p></div></div><div id="uiModalBackdrop" class="ui-modal-backdrop"><div class="ui-modal"><h3 id="uiModalTitle">Komunikat</h3><p id="uiModalText"></p><input id="uiModalInput" class="hidden" /><div id="uiModalActions" class="ui-modal-actions"></div></div></div>
@@ -33,7 +33,7 @@
     import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
     import { getDatabase, ref, get, set, update, onValue, onDisconnect, runTransaction } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
     const FIREBASE_CONFIG={apiKey:"AIzaSyA0_fhuy7ofypez2zUhNwdbB61NXxGtPwU",authDomain:"dyszak-1eddc.firebaseapp.com",databaseURL:"https://dyszak-1eddc-default-rtdb.firebaseio.com",projectId:"dyszak-1eddc",storageBucket:"dyszak-1eddc.firebasestorage.app",messagingSenderId:"364073429062",appId:"1:364073429062:web:af2cd1348881d6b92fc247",measurementId:"G-ZT5M0ZWS0E"};
-    const APP_VERSION=6.7;
+    const APP_VERSION=6.8;
     const SIZE=15,CENTER=7,VOTING_SECONDS=30,ONLINE_STALE_MS=45000,DRAG_SYNC_MS=110,DRAG_SYNC_MIN_DELTA=.012;
     const LETTER_VALUES={A:1,E:1,I:1,N:1,O:1,R:1,S:1,W:1,Z:1,C:2,D:2,K:2,L:2,M:2,P:2,T:2,Y:2,B:3,G:3,H:3,J:3,Ł:3,U:3,Ą:5,Ę:5,F:5,Ó:5,Ś:5,Ż:5,Ć:6,Ń:7,Ź:9,'*':0};
     const LETTER_DISTRIBUTION=[['A',9],['E',7],['I',8],['N',5],['O',6],['R',4],['S',4],['W',4],['Z',5],['C',3],['D',3],['K',3],['L',3],['M',3],['P',3],['T',3],['Y',4],['B',2],['G',2],['H',2],['J',2],['Ł',2],['U',2],['Ą',1],['Ę',1],['F',1],['Ó',1],['Ś',1],['Ż',1],['Ć',1],['Ń',1],['Ź',1],['*',2]];
@@ -41,7 +41,7 @@
     const $=id=>document.getElementById(id);
     const els={versionBadge:$('versionBadge'),loadingView:$('loadingView'),loadingText:$('loadingText'),homeView:$('homeView'),lobbyView:$('lobbyView'),gameView:$('gameView'),topBadge:$('topBadge'),turnTimerBadge:$('turnTimerBadge'),nameInput:$('nameInput'),playerCountSelect:$('playerCountSelect'),timerToggle:$('timerToggle'),timerSecondsInput:$('timerSecondsInput'),timerSecondsWrap:$('timerSecondsWrap'),voteToggle:$('voteToggle'),settingsHint:$('settingsHint'),joinCodeInput:$('joinCodeInput'),roomCodeBox:$('roomCodeBox'),lobbySettingsSummary:$('lobbySettingsSummary'),lobbyPlayers:$('lobbyPlayers'),hostHint:$('hostHint'),startGameBtn:$('startGameBtn'),board:$('board'),rack:$('rack'),rackTitle:$('rackTitle'),movePreview:$('movePreview'),playersPanel:$('playersPanel'),votePanel:$('votePanel'),gameVersionInfo:$('gameVersionInfo'),roomInfo:$('roomInfo'),validationInfo:$('validationInfo'),timerInfo:$('timerInfo'),bagCount:$('bagCount'),log:$('log'),dragLayer:$('dragLayer'),toastHost:$('toastHost'),eventOverlay:$('eventOverlay'),eventIcon:$('eventIcon'),eventTitle:$('eventTitle'),eventText:$('eventText'),uiModalBackdrop:$('uiModalBackdrop'),uiModalTitle:$('uiModalTitle'),uiModalText:$('uiModalText'),uiModalInput:$('uiModalInput'),uiModalActions:$('uiModalActions')};
     let app,auth,db,myId,currentRoomCode=null,room=null,unsubscribeRoom=null,unsubscribeDrags=null,selectedRackIndex=null,serverOffset=0;
-    let liveDragsState={},dragStorageMode='external',lastRoomCoreSignature='';
+    let liveDragsState={},dragStorageMode='external',lastRoomCoreSignature='',seenReturnAnimations=new Set();
     let busyTimeout=false,busySkip=false,busyVoteResolve=false,lastTurnKey='',lastEventKey='',lastHeartbeat=0,activeCelebrationKey='',activeCelebrationUntil=0,rackShuffleAnimating=false,rackShuffleTimer=null,rackShuffleAnimations=[];
     let dragState=null,lastDragSync=0,lastDragSyncBx=null,lastDragSyncBy=null,dragMoveHandler=null,dragUpHandler=null,lastLocalDragPos=null,localDragGhost=null,localDragAnimFrame=null,localDragVisual=null;
     els.nameInput.value=localStorage.getItem('literaki_name')||'';
@@ -138,8 +138,15 @@
       const drags=liveDragsState||{};
       const boardRect=els.board.getBoundingClientRect();
       Object.entries(drags).forEach(([uid,d])=>{
-        if(uid===myId)return;
         if(!d||!d.active||!d.tile)return;
+        if(d.kind==='return'){
+          animateReturnToPlayerPanel(uid,d);
+          return;
+        }
+        if(uid===myId)return;
+        if(room&&uid!==currentPlayerId())return;        return;
+        }
+        if(uid===myId)return;
         if(room&&uid!==currentPlayerId())return;
         const age=serverNow()-Number(d.t||0);
         if(age>1800)return;
@@ -486,7 +493,8 @@
       e.preventDefault();
       const p=clampPointToBoard(e.clientX,e.clientY);
       const bp=boardPercentFromPoint(p.x,p.y);
-      dragState={source:'rack',index,tile,startX:e.clientX,startY:e.clientY,didDrag:false,lastTarget:null,lastX:p.x,lastY:p.y,rot:0,bx:bp.bx,by:bp.by};
+      dragState={source:'rack',index,tile,rackNode:e.currentTarget,startX:e.clientX,startY:e.clientY,didDrag:false,lastTarget:null,lastX:p.x,lastY:p.y,rot:0,bx:bp.bx,by:bp.by};
+      if(dragState.rackNode)dragState.rackNode.classList.add('drag-hidden');
       lastLocalDragPos={x:p.x,y:p.y};
       createLocalDragGhost(tile,p.x,p.y,0);
       dragMoveHandler=ev=>handleRackDragMove(ev);
@@ -541,14 +549,20 @@
         if(!ok)await returnPendingTileToRack(state.fromR,state.fromC,true,{x:state.lastX||p.x,y:state.lastY||p.y});
         return;
       }
-      if(target&&!isCellOccupied(room,target.r,target.c))await placeRackTileAt(target.r,target.c,state.index);
-      else{
-        animateTileBackToRack(state.tile,state.lastX||p.x,state.lastY||p.y);
+      if(target&&!isCellOccanimateTileBackToRack(state.tile,state.lastX||p.x,state.lastY||p.y,{onFinish:()=>{if(state.rackNode)state.rackNode.classList.remove('drag-hidden')}});
+        flashRackInvalid();        animateTileBackToRack(state.tile,state.lastX||p.x,state.lastY||p.y,{onFinish:()=>{if(state.rackNode)state.rackNode.classList.remove('drag-hidden')}});
         flashRackInvalid();
       }
     }
 
+    function setDraggedRackTileHidden(hidden){
+      if(dragState?.rackNode){
+        dragState.rackNode.classList.toggle('drag-hidden',!!hidden);
+      }
+    }
+
     function cancelRackDrag(){
+      setDraggedRackTileHidden(false);
       if(dragMoveHandler)window.removeEventListener('pointermove',dragMoveHandler);
       if(dragUpHandler){window.removeEventListener('pointerup',dragUpHandler);window.removeEventListener('pointercancel',dragUpHandler);}
       document.querySelectorAll('.cell.drag-target').forEach(cell=>cell.classList.remove('drag-target'));
@@ -693,8 +707,8 @@
       return{x:Math.min(emptySlot.right-35,last.right+42),y:last.top+last.height/2};
     }
 
-    function animateTileBackToRack(tile,startX,startY){
-      if(!els.dragLayer||!tile)return;
+    function animateTileBackToRack(tile,startX,startY,options={}){
+      if(!els.dragLayer||!tile){options.onFinish?.();return Promise.resolve();}
       const end=pointForRackReturn();
       const ghost=document.createElement('div');
       ghost.className='drag-ghost';
@@ -707,12 +721,72 @@
       const dx=end.x-startX;
       const dy=end.y-startY;
       const rot=Math.max(-20,Math.min(20,dx*.08));
-      ghost.animate([
-        {left:`${startX}px`,top:`${startY}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(1)',opacity:.96,offset:0},
-        {left:`${startX+dx*.55}px`,top:`${startY+dy*.45-42}px`,transform:`translate3d(-50%,-50%,0) rotate(${rot}deg) scale(1.08)`,opacity:.96,offset:.48},
-        {left:`${end.x}px`,top:`${end.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(.96)',opacity:.86,offset:1}
-      ],{duration:520,easing:'cubic-bezier(.18,.85,.25,1)',fill:'forwards'}).onfinish=()=>ghost.remove();
-      setTimeout(()=>ghost.remove(),700);
+      publishReturnAnimation(tile,startX,startY,options.playerId||myId);
+      return new Promise(resolve=>{
+        const anim=ghost.animate([
+          {left:`${startX}px`,top:`${startY}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(1)',opacity:.96,offset:0},
+          {left:`${startX+dx*.55}px`,top:`${startY+dy*.45-42}px`,transform:`translate3d(-50%,-50%,0) rotate(${rot}deg) scale(1.08)`,opacity:.96,offset:.48},
+          {left:`${end.x}px`,top:`${end.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(.96)',opacity:.86,offset:1}
+        ],{duration:560,easing:'cubic-bezier(.18,.85,.25,1)',fill:'forwards'});
+        const done=()=>{ghost.remove();options.onFinish?.();resolve();};
+        anim.onfinish=done;
+        anim.oncancel=done;
+        setTimeout(done,760);
+      });
+    }
+
+    function publishReturnAnimation(tile,startX,startY,playerId){
+      if(!currentRoomCode||!db||!tile)return;
+      const bp=boardPercentFromPoint(startX,startY);
+      const id=`return_${playerId}_${Date.now()}_${Math.floor(Math.random()*9999)}`;
+      const payload={active:true,kind:'return',playerId,tile,bx:bp.bx,by:bp.by,t:serverNow()};
+      const base=dragStorageMode==='external'?`roomDrags/${currentRoomCode}`:`rooms/${currentRoomCode}/liveDrags`;
+      set(ref(db,`${base}/${id}`),payload).catch(()=>{
+        if(dragStorageMode==='external'){
+          dragStorageMode='room';
+          set(ref(db,`rooms/${currentRoomCode}/liveDrags/${id}`),payload).catch(()=>{});
+        }
+      });
+      setTimeout(()=>{
+        set(ref(db,`roomDrags/${currentRoomCode}/${id}`),null).catch(()=>{});
+        set(ref(db,`rooms/${currentRoomCode}/liveDrags/${id}`),null).catch(()=>{});
+      },1400);
+    }
+
+    function pointForPlayerPanel(playerId){
+      const ids=room?.order||[];
+      const index=ids.indexOf(playerId);
+      const row=index>=0?els.playersPanel.children[index]:null;
+      if(row){
+        const rect=row.getBoundingClientRect();
+        return{x:rect.left+rect.width*.78,y:rect.top+rect.height/2};
+      }
+      const rect=els.playersPanel.getBoundingClientRect();
+      return{x:rect.left+rect.width/2,y:rect.top+30};
+    }
+
+    function animateReturnToPlayerPanel(key,d){
+      if(seenReturnAnimations.has(key)||!d?.tile||d.playerId===myId)return;
+      seenReturnAnimations.add(key);
+      const start=dragPosFromBoardPercent(d.bx,d.by);
+      const end=pointForPlayerPanel(d.playerId);
+      const ghost=document.createElement('div');
+      ghost.className='drag-ghost';
+      ghost.style.left=`${start.x}px`;
+      ghost.style.top=`${start.y}px`;
+      ghost.style.setProperty('--drag-rot','0deg');
+      ghost.appendChild(tileEl(d.tile,false));
+      els.dragLayer.appendChild(ghost);
+      const dx=end.x-start.x;
+      const dy=end.y-start.y;
+      const rot=Math.max(-22,Math.min(22,dx*.08));
+      const anim=ghost.animate([
+        {left:`${start.x}px`,top:`${start.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(1)',opacity:.94,offset:0},
+        {left:`${start.x+dx*.55}px`,top:`${start.y+dy*.45-36}px`,transform:`translate3d(-50%,-50%,0) rotate(${rot}deg) scale(1.06)`,opacity:.9,offset:.55},
+        {left:`${end.x}px`,top:`${end.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(.55)',opacity:0,offset:1}
+      ],{duration:720,easing:'cubic-bezier(.18,.85,.25,1)',fill:'forwards'});
+      anim.onfinish=()=>ghost.remove();
+      setTimeout(()=>ghost.remove(),900);
     }
 
     function makeMultipliers(){const m=Array.from({length:SIZE},()=>Array.from({length:SIZE},()=>''));const set=(t,cs)=>cs.forEach(([r,c])=>m[r][c]=t);set('tw',[[0,0],[0,7],[0,14],[7,0],[7,14],[14,0],[14,7],[14,14]]);set('dw',[[1,1],[2,2],[3,3],[4,4],[7,7],[10,10],[11,11],[12,12],[13,13],[1,13],[2,12],[3,11],[4,10],[10,4],[11,3],[12,2],[13,1]]);set('tl',[[1,5],[1,9],[5,1],[5,5],[5,9],[5,13],[9,1],[9,5],[9,9],[9,13],[13,5],[13,9]]);set('dl',[[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12],[7,3],[7,11],[8,2],[8,6],[8,8],[8,12],[11,0],[11,7],[11,14],[12,6],[12,8],[14,3],[14,11]]);return m}
