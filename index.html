@@ -119,7 +119,7 @@
         <div id='playersPanel' class='players'></div>
         <div class='controls'>
           <button id='playBtn' class='btn primary'>Zatwierdź</button>
-          <button id='undoBtn' class='btn'>Cofnij</button>
+          <button id='undoBtn' class='btn'>Cofnij literę</button>
           <button id='exchangeBtn' class='btn blue'>Wymień</button>
           <button id='passBtn' class='btn'>Pas</button>
           <button id='shuffleBtn' class='btn purple'>Pomieszaj</button>
@@ -430,9 +430,16 @@
         if(tile){
           const node = tileEl(tile, !pending);
           if(celebrate) node.classList.add('celebrate');
+          if(pending){
+            node.title = 'Kliknij, aby zdjąć tę literę z planszy';
+            node.onclick = e => {
+              e.stopPropagation();
+              removePendingTile(r,c);
+            };
+          }
           cell.appendChild(node);
         } else cell.textContent = labelForMultiplier(mult,r,c);
-        cell.onclick = () => onCellClick(r,c);
+        cell.onclick = () => pending ? removePendingTile(r,c) : onCellClick(r,c);
         els.board.appendChild(cell);
       }
     }
@@ -533,6 +540,31 @@
       next.order.forEach(id => { next.players[id].score = 0; next.players[id].rack = []; drawTiles(next.players[id].rack,next.bag,7); });
       next.logs = addLogToArray(next.logs, `Gra wystartowała. Tryb słów: ${settingsLabel(next.settings)}. Pierwszy ruch musi przejść przez środek.`);
       await saveRoom(next);
+    }
+
+    async function removePendingTile(r,c){
+      if(!room || room.status !== 'playing') return;
+      if(room.pending?.uid !== myId) return;
+      const existing = pendingAt(r,c);
+      if(!existing) return;
+      const next = clone(room);
+      const me = next.players[myId];
+      const idx = (next.pending?.tiles || []).findIndex(p => p.r === r && p.c === c);
+      if(idx < 0) return;
+      const [removed] = next.pending.tiles.splice(idx,1);
+      me.rack.push(removed.tile);
+      if(!next.pending.tiles.length) next.pending = {uid:null,tiles:[]};
+      selectedRackIndex = null;
+      await saveRoom(next);
+    }
+
+    async function removeLastPendingTile(){
+      if(!room || room.status !== 'playing') return;
+      if(room.pending?.uid !== myId) return;
+      const tiles = room.pending?.tiles || [];
+      if(!tiles.length) return;
+      const last = tiles[tiles.length - 1];
+      await removePendingTile(last.r,last.c);
     }
 
     async function onCellClick(r,c){
@@ -737,12 +769,7 @@
 
     async function undoMove(){
       if(!isMyTurn() || room.status !== 'playing' || !room.pending?.tiles?.length) return;
-      const next = clone(room);
-      const me = next.players[myId];
-      next.pending.tiles.forEach(p => me.rack.push(p.tile));
-      next.pending = {uid:null,tiles:[]};
-      selectedRackIndex = null;
-      await saveRoom(next);
+      await removeLastPendingTile();
     }
 
     async function passTurn(){
