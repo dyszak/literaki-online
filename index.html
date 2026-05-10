@@ -18,13 +18,13 @@
   </style>
 </head>
 <body>
-  <div id="versionBadge" class="version-badge">v7.4</div>
+  <div id="versionBadge" class="version-badge">v8</div>
   <div class="wrap">
     <section class="topbar"><div class="title"><h1>Literaki Online</h1><span>Lobby online, głosowanie, timer i gra dla 2–4 osób.</span></div><div class="top-badges"><div id="turnTimerBadge" class="badge">Czas: —</div><div id="topBadge" class="badge">Ładowanie…</div></div></section>
     <section id="loadingView" class="card center-card"><h2>Ładowanie gry</h2><p id="loadingText">Łączę aplikację z Firebase.</p></section>
     <section id="homeView" class="card center-card hidden"><h2>Lobby</h2><p>Stwórz pokój i wyślij znajomym kod albo link. Gra może działać od 2 do 4 osób.</p><div class="field"><label>Twoja nazwa</label><input id="nameInput" maxlength="18" placeholder="np. Daniel" /></div><div class="settings-card"><h3>Ustawienia pokoju</h3><div class="field"><label>Liczba graczy</label><select id="playerCountSelect"><option value="2">2 osoby</option><option value="3">3 osoby</option><option value="4" selected>4 osoby</option></select></div><label class="check-row"><input id="timerToggle" type="checkbox" checked /><span>Limit czasu na ułożenie słowa<small>Po przekroczeniu czasu litery wracają na stojak, a gracz traci kolejkę.</small></span></label><div id="timerSecondsWrap" class="field"><label>Czas na ruch: 15–600 sekund</label><input id="timerSecondsInput" type="number" min="15" max="600" step="5" value="120" /></div><label class="check-row"><input id="voteToggle" type="checkbox" checked /><span>Głosowanie nad poprawnością słowa<small>Po zatwierdzeniu ruchu pozostali gracze głosują. Jeżeli wymagana liczba aktywnych graczy kliknie „nie zgadzam się”, ruch przepada.</small></span></label><p id="settingsHint" class="small" style="margin:8px 0 0"></p></div><div class="grid2"><button id="createRoomBtn" class="btn primary">Utwórz pokój</button><div><input id="joinCodeInput" maxlength="6" placeholder="Kod pokoju" style="width:100%;margin-bottom:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none;text-transform:uppercase" /><button id="joinRoomBtn" class="btn blue wide">Dołącz</button></div></div><p class="small" style="margin-top:16px">To prosta gra ze wspólnym stanem w Firebase. Do gry ze znajomymi wystarczy, ale nie jest odporna na cheatowanie.</p></section>
     <section id="lobbyView" class="card center-card hidden"><h2>Pokój</h2><p>Wyślij kod lub link pozostałym graczom.</p><div id="roomCodeBox" class="room-code">-----</div><button id="copyLinkBtn" class="btn blue wide">Kopiuj link do pokoju</button><div id="lobbySettingsSummary" class="info" style="margin-top:14px"></div><div id="lobbyPlayers" class="players-list"></div><button id="startGameBtn" class="btn primary wide">Start gry</button><button id="backHomeBtn" class="btn wide" style="margin-top:10px">Wróć</button><p class="small" id="hostHint" style="margin-top:14px"></p></section>
-    <section id="gameView" class="game hidden"><main><div class="board-wrap"><div id="board" class="board"></div></div><div class="rack-panel"><div class="rack-head"><h2 id="rackTitle">Stojak</h2><span id="movePreview" class="badge">Ruch: 0 pkt</span></div><div id="rack" class="rack"></div></div></main><aside class="side"><div id="playersPanel" class="players"></div><div class="controls"><button id="playBtn" class="btn primary">Zatwierdź</button><button id="undoBtn" class="btn">Cofnij literę</button><button id="exchangeBtn" class="btn blue">Wymień</button><button id="passBtn" class="btn">Pas</button><button id="shuffleBtn" class="btn purple">Pomieszaj</button><button id="leaveBtn" class="btn danger">Wyjdź</button></div><div id="votePanel" class="vote-panel hidden"></div><div class="info"><div><strong>Wersja:</strong> <span id="gameVersionInfo">v7.4</span></div><div><strong>Pokój:</strong> <span id="roomInfo">—</span></div><div><strong>Tryb słów:</strong> <span id="validationInfo">głosowanie</span></div><div><strong>Czas ruchu:</strong> <span id="timerInfo">—</span></div><div><strong>Woreczek:</strong> <span id="bagCount">0</span> liter</div><div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div></div><div id="log" class="log"></div></aside></section>
+    <section id="gameView" class="game hidden"><main><div class="board-wrap"><div id="board" class="board"></div></div><div class="rack-panel"><div class="rack-head"><h2 id="rackTitle">Stojak</h2><span id="movePreview" class="badge">Ruch: 0 pkt</span></div><div id="rack" class="rack"></div></div></main><aside class="side"><div id="playersPanel" class="players"></div><div class="controls"><button id="playBtn" class="btn primary">Zatwierdź</button><button id="undoBtn" class="btn">Cofnij literę</button><button id="exchangeBtn" class="btn blue">Wymień</button><button id="passBtn" class="btn">Pas</button><button id="shuffleBtn" class="btn purple">Pomieszaj</button><button id="leaveBtn" class="btn danger">Wyjdź</button></div><div id="votePanel" class="vote-panel hidden"></div><div class="info"><div><strong>Wersja:</strong> <span id="gameVersionInfo">v8</span></div><div><strong>Pokój:</strong> <span id="roomInfo">—</span></div><div><strong>Tryb słów:</strong> <span id="validationInfo">głosowanie</span></div><div><strong>Czas ruchu:</strong> <span id="timerInfo">—</span></div><div><strong>Woreczek:</strong> <span id="bagCount">0</span> liter</div><div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div></div><div id="log" class="log"></div></aside></section>
   </div>
   <div id="dragLayer" class="drag-layer"></div>
   <div id="toastHost" class="toast-host"></div><div id="eventOverlay" class="event-overlay"><div class="event-card"><div id="eventIcon" class="event-icon">✨</div><h2 id="eventTitle">Ruch!</h2><p id="eventText"></p></div></div><div id="uiModalBackdrop" class="ui-modal-backdrop"><div class="ui-modal"><h3 id="uiModalTitle">Komunikat</h3><p id="uiModalText"></p><input id="uiModalInput" class="hidden" /><div id="uiModalActions" class="ui-modal-actions"></div></div></div>
@@ -33,7 +33,7 @@
     import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
     import { getDatabase, ref, get, set, update, onValue, onDisconnect, runTransaction } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
     const FIREBASE_CONFIG={apiKey:"AIzaSyA0_fhuy7ofypez2zUhNwdbB61NXxGtPwU",authDomain:"dyszak-1eddc.firebaseapp.com",databaseURL:"https://dyszak-1eddc-default-rtdb.firebaseio.com",projectId:"dyszak-1eddc",storageBucket:"dyszak-1eddc.firebasestorage.app",messagingSenderId:"364073429062",appId:"1:364073429062:web:af2cd1348881d6b92fc247",measurementId:"G-ZT5M0ZWS0E"};
-    const APP_VERSION=7.4;
+    const APP_VERSION=8;
     const SIZE=15,CENTER=7,VOTING_SECONDS=30,ONLINE_STALE_MS=45000,DRAG_SYNC_MS=110,DRAG_SYNC_MIN_DELTA=.012;
     const LETTER_VALUES={A:1,E:1,I:1,N:1,O:1,R:1,S:1,W:1,Z:1,C:2,D:2,K:2,L:2,M:2,P:2,T:2,Y:2,B:3,G:3,H:3,J:3,Ł:3,U:3,Ą:5,Ę:5,F:5,Ó:5,Ś:5,Ż:5,Ć:6,Ń:7,Ź:9,'*':0};
     const LETTER_DISTRIBUTION=[['A',9],['E',7],['I',8],['N',5],['O',6],['R',4],['S',4],['W',4],['Z',5],['C',3],['D',3],['K',3],['L',3],['M',3],['P',3],['T',3],['Y',4],['B',2],['G',2],['H',2],['J',2],['Ł',2],['U',2],['Ą',1],['Ę',1],['F',1],['Ó',1],['Ś',1],['Ż',1],['Ć',1],['Ń',1],['Ź',1],['*',2]];
@@ -472,117 +472,160 @@
       if(!isMyTurn()||room.status!=='playing'||room.pending?.uid!==myId||rackShuffleAnimating)return;
       if(e.button!==undefined&&e.button!==0)return;
       e.preventDefault();
-      const p=clampPointToBoard(e.clientX,e.clientY);
-      const bp=boardPercentFromPoint(p.x,p.y);
-      dragState={source:'board',fromR:r,fromC:c,tile:pending.tile,startX:e.clientX,startY:e.clientY,didDrag:false,lastTarget:{r,c},lastX:p.x,lastY:p.y,rot:0,bx:bp.bx,by:bp.by};
-      lastLocalDragPos={x:p.x,y:p.y};
-      createLocalDragGhost(pending.tile,p.x,p.y,0);
-      dragMoveHandler=ev=>handleRackDragMove(ev);
-      dragUpHandler=ev=>finishRackDrag(ev);
-      window.addEventListener('pointermove',dragMoveHandler,{passive:false});
-      window.addEventListener('pointerup',dragUpHandler,{once:true});
-      window.addEventListener('pointercancel',dragUpHandler,{once:true});
+      const point=clampPointToBoard(e.clientX,e.clientY);
+      beginTileDrag({source:'board',tile:pending.tile,fromR:r,fromC:c,startClientX:e.clientX,startClientY:e.clientY,startX:point.x,startY:point.y});
     }
 
     function startRackDrag(e,index,tile){
       if(!isMyTurn()||room.status!=='playing'||rackShuffleAnimating)return;
       if(e.button!==undefined&&e.button!==0)return;
       e.preventDefault();
-      const p=clampPointToBoard(e.clientX,e.clientY);
-      const bp=boardPercentFromPoint(p.x,p.y);
-      dragState={source:'rack',index,tile,rackNode:e.currentTarget,startX:e.clientX,startY:e.clientY,didDrag:false,lastTarget:null,lastX:p.x,lastY:p.y,rot:0,bx:bp.bx,by:bp.by,ghostStarted:false};
-      lastLocalDragPos={x:p.x,y:p.y};
-      dragMoveHandler=ev=>handleRackDragMove(ev);
-      dragUpHandler=ev=>finishRackDrag(ev);
+      const point=clampPointToBoard(e.clientX,e.clientY);
+      beginTileDrag({source:'rack',tile,index,rackNode:e.currentTarget,startClientX:e.clientX,startClientY:e.clientY,startX:point.x,startY:point.y});
+    }
+
+    function beginTileDrag(config){
+      cancelRackDrag(false);
+      const bp=boardPercentFromPoint(config.startX,config.startY);
+      dragState={
+        ...config,
+        didDrag:false,
+        ghostStarted:false,
+        lastTarget:config.source==='board'?{r:config.fromR,c:config.fromC}:null,
+        lastX:config.startX,
+        lastY:config.startY,
+        bx:bp.bx,
+        by:bp.by,
+        rot:0
+      };
+      lastLocalDragPos={x:config.startX,y:config.startY};
+      dragMoveHandler=handleTileDragMove;
+      dragUpHandler=finishTileDrag;
       window.addEventListener('pointermove',dragMoveHandler,{passive:false});
       window.addEventListener('pointerup',dragUpHandler,{once:true});
       window.addEventListener('pointercancel',dragUpHandler,{once:true});
     }
 
-    function handleRackDragMove(e){
-      if(!dragState)return;
-      const dist=Math.hypot(e.clientX-dragState.startX,e.clientY-dragState.startY);
-      if(dist<4&&!dragState.didDrag)return;
-      e.preventDefault();
-      dragState.didDrag=true;
-      if(!dragState.ghostStarted){
-        dragState.ghostStarted=true;
-        if(dragState.source==='rack')setDraggedRackTileHidden(true);
-        createLocalDragGhost(dragState.tile,dragState.lastX,dragState.lastY,0);
-      }
-      const p=clampPointToBoard(e.clientX,e.clientY);
-      const prev=lastLocalDragPos||p;
-      const dx=p.x-prev.x;
-      const rot=Math.max(-18,Math.min(18,dx*.22));
-      const bp=boardPercentFromPoint(p.x,p.y);
-      lastLocalDragPos=p;
-      dragState.lastX=p.x;dragState.lastY=p.y;dragState.rot=rot;dragState.bx=bp.bx;dragState.by=bp.by;
-      dragState.lastTarget=cellFromBoardPercent(bp.bx,bp.by);
-      updateLocalDragGhost(p.x,p.y,rot);
-      document.querySelectorAll('.cell.drag-target').forEach(cell=>cell.classList.remove('drag-target'));
-      if(dragState.lastTarget){
-        const cell=els.board.children[dragState.lastTarget.r*SIZE+dragState.lastTarget.c];
-        if(cell){
-          const free=dragState.source==='board'
-            ? !isCellOccupiedExcept(room,dragState.lastTarget.r,dragState.lastTarget.c,dragState.fromR,dragState.fromC)
-            : !isCellOccupied(room,dragState.lastTarget.r,dragState.lastTarget.c);
-          if(free)cell.classList.add('drag-target');
-        }
-      }
-      syncLiveDrag(bp.bx,bp.by,dragState.lastTarget,rot);
+    function ensureDragGhost(){
+      if(!dragState||dragState.ghostStarted)return;
+      dragState.ghostStarted=true;
+      if(dragState.source==='rack'&&dragState.rackNode)dragState.rackNode.classList.add('drag-hidden');
+      createLocalDragGhost(dragState.tile,dragState.lastX,dragState.lastY,0);
     }
 
-    async function finishRackDrag(e){
+    function handleTileDragMove(e){
+      if(!dragState)return;
+      const distance=Math.hypot(e.clientX-dragState.startClientX,e.clientY-dragState.startClientY);
+      if(distance<5&&!dragState.didDrag)return;
+      e.preventDefault();
+      dragState.didDrag=true;
+      ensureDragGhost();
+
+      const releasedInsideBoard=isPointInsideBoard(e.clientX,e.clientY);
+      const point=releasedInsideBoard?clampPointToBoard(e.clientX,e.clientY):{x:e.clientX,y:e.clientY};
+      const prev=lastLocalDragPos||point;
+      const dx=point.x-prev.x;
+      const rot=Math.max(-18,Math.min(18,dx*.22));
+      lastLocalDragPos=point;
+
+      dragState.lastX=point.x;
+      dragState.lastY=point.y;
+      dragState.rot=rot;
+
+      const bp=releasedInsideBoard?boardPercentFromPoint(point.x,point.y):null;
+      dragState.bx=bp?.bx ?? dragState.bx;
+      dragState.by=bp?.by ?? dragState.by;
+      dragState.lastTarget=bp?cellFromBoardPercent(bp.bx,bp.by):null;
+
+      updateLocalDragGhost(point.x,point.y,rot);
+      updateDragTargetHighlight();
+      if(bp)syncLiveDrag(bp.bx,bp.by,dragState.lastTarget,rot);
+    }
+
+    async function finishTileDrag(e){
       window.removeEventListener('pointermove',dragMoveHandler);
       window.removeEventListener('pointercancel',dragUpHandler);
-      document.querySelectorAll('.cell.drag-target').forEach(cell=>cell.classList.remove('drag-target'));
+      clearDragTargetHighlight();
+
       const state=dragState;
-      dragState=null;dragMoveHandler=null;dragUpHandler=null;lastLocalDragPos=null;
+      dragState=null;
+      dragMoveHandler=null;
+      dragUpHandler=null;
+      lastLocalDragPos=null;
       clearLiveDrag();
-      if(!state?.didDrag){setDraggedRackTileHidden(false);removeLocalDragGhost();return;}
+
+      if(!state?.didDrag){
+        if(state?.rackNode)state.rackNode.classList.remove('drag-hidden');
+        removeLocalDragGhost();
+        return;
+      }
 
       const releasedOnRack=isPointOnRack(e.clientX,e.clientY);
       const releasedInsideBoard=isPointInsideBoard(e.clientX,e.clientY);
-      const rawPoint={x:e.clientX,y:e.clientY};
-      const p=releasedInsideBoard?clampPointToBoard(e.clientX,e.clientY):rawPoint;
-      const bp=releasedInsideBoard?boardPercentFromPoint(p.x,p.y):null;
+      const point=releasedInsideBoard?clampPointToBoard(e.clientX,e.clientY):{x:e.clientX,y:e.clientY};
+      const bp=releasedInsideBoard?boardPercentFromPoint(point.x,point.y):null;
       const target=bp?cellFromBoardPercent(bp.bx,bp.by):null;
+
       removeLocalDragGhost();
 
       if(state.source==='board'){
         if(releasedOnRack||!releasedInsideBoard){
-          await returnPendingTileToRack(state.fromR,state.fromC,false,rawPoint);
+          await returnPendingTileToRack(state.fromR,state.fromC,false,point);
           return;
         }
-        const ok=target&&!isCellOccupiedExcept(room,target.r,target.c,state.fromR,state.fromC)&&await movePendingTileTo(state.fromR,state.fromC,target.r,target.c);
-        if(!ok)await returnPendingTileToRack(state.fromR,state.fromC,true,{x:state.lastX||p.x,y:state.lastY||p.y});
+        const canMove=target&&!isCellOccupiedExcept(room,target.r,target.c,state.fromR,state.fromC);
+        const moved=canMove&&await movePendingTileTo(state.fromR,state.fromC,target.r,target.c);
+        if(!moved)await returnPendingTileToRack(state.fromR,state.fromC,true,point);
         return;
       }
 
       if(releasedOnRack||!releasedInsideBoard){
-        animateTileBackToRack(state.tile,rawPoint.x,rawPoint.y,{onFinish:()=>{if(state.rackNode)state.rackNode.classList.remove('drag-hidden')}});
+        await animateTileBackToRack(state.tile,point.x,point.y,{onFinish:()=>state.rackNode?.classList.remove('drag-hidden')});
         return;
       }
-      if(target&&!isCellOccupied(room,target.r,target.c))await placeRackTileAt(target.r,target.c,state.index);
-      else{
-        animateTileBackToRack(state.tile,state.lastX||p.x,state.lastY||p.y,{onFinish:()=>{if(state.rackNode)state.rackNode.classList.remove('drag-hidden')}});
+
+      if(target&&!isCellOccupied(room,target.r,target.c)){
+        await placeRackTileAt(target.r,target.c,state.index);
+      }else{
+        await animateTileBackToRack(state.tile,point.x,point.y,{onFinish:()=>state.rackNode?.classList.remove('drag-hidden')});
         flashRackInvalid();
       }
     }
 
-    function cancelRackDrag(){
-      setDraggedRackTileHidden(false);
+    function cancelRackDrag(clearRemote=true){
       if(dragMoveHandler)window.removeEventListener('pointermove',dragMoveHandler);
-      if(dragUpHandler){window.removeEventListener('pointerup',dragUpHandler);window.removeEventListener('pointercancel',dragUpHandler);}
-      document.querySelectorAll('.cell.drag-target').forEach(cell=>cell.classList.remove('drag-target'));
-      dragState=null;dragMoveHandler=null;dragUpHandler=null;lastLocalDragPos=null;
+      if(dragUpHandler){
+        window.removeEventListener('pointerup',dragUpHandler);
+        window.removeEventListener('pointercancel',dragUpHandler);
+      }
+      if(dragState?.rackNode)dragState.rackNode.classList.remove('drag-hidden');
+      clearDragTargetHighlight();
+      dragState=null;
+      dragMoveHandler=null;
+      dragUpHandler=null;
+      lastLocalDragPos=null;
       removeLocalDragGhost();
-      clearLiveDrag();
+      if(clearRemote)clearLiveDrag();
+    }
+
+    function clearDragTargetHighlight(){
+      document.querySelectorAll('.cell.drag-target').forEach(cell=>cell.classList.remove('drag-target'));
+    }
+
+    function updateDragTargetHighlight(){
+      clearDragTargetHighlight();
+      if(!dragState?.lastTarget)return;
+      const cell=els.board.children[dragState.lastTarget.r*SIZE+dragState.lastTarget.c];
+      if(!cell)return;
+      const free=dragState.source==='board'
+        ? !isCellOccupiedExcept(room,dragState.lastTarget.r,dragState.lastTarget.c,dragState.fromR,dragState.fromC)
+        : !isCellOccupied(room,dragState.lastTarget.r,dragState.lastTarget.c);
+      if(free)cell.classList.add('drag-target');
     }
 
     function createLocalDragGhost(tile,x,y,rot){
       removeLocalDragGhost();
-      if(!els.dragLayer)return;
+      if(!els.dragLayer||!tile)return;
       localDragGhost=document.createElement('div');
       localDragGhost.className='drag-ghost';
       localDragGhost.dataset.local='true';
@@ -608,9 +651,9 @@
       if(!localDragGhost||!localDragVisual)return;
       const step=()=>{
         if(!localDragGhost||!localDragVisual){localDragAnimFrame=null;return;}
-        localDragVisual.x+= (localDragVisual.targetX-localDragVisual.x)*.32;
-        localDragVisual.y+= (localDragVisual.targetY-localDragVisual.y)*.32;
-        localDragVisual.rot+= (localDragVisual.targetRot-localDragVisual.rot)*.28;
+        localDragVisual.x+=(localDragVisual.targetX-localDragVisual.x)*.34;
+        localDragVisual.y+=(localDragVisual.targetY-localDragVisual.y)*.34;
+        localDragVisual.rot+=(localDragVisual.targetRot-localDragVisual.rot)*.3;
         drawLocalDragGhost();
         localDragAnimFrame=requestAnimationFrame(step);
       };
@@ -674,26 +717,10 @@
       const now=Date.now();
       const moved=lastDragSyncBx===null||Math.abs(bx-lastDragSyncBx)>DRAG_SYNC_MIN_DELTA||Math.abs(by-lastDragSyncBy)>DRAG_SYNC_MIN_DELTA;
       if(now-lastDragSync<DRAG_SYNC_MS&&!moved)return;
-      lastDragSync=now;
-      lastDragSyncBx=bx;
-      lastDragSyncBy=by;
+      lastDragSync=now;lastDragSyncBx=bx;lastDragSyncBy=by;
       if(!currentRoomCode||!dragState)return;
-
-      const payload={
-        active:true,
-        name:room.players[myId]?.name||'Gracz',
-        tile:dragState.tile,
-        bx:Math.max(0,Math.min(1,bx)),
-        by:Math.max(0,Math.min(1,by)),
-        rot,
-        target:target||null,
-        t:serverNow()
-      };
-
-      const path=dragStorageMode==='external'
-        ? `roomDrags/${currentRoomCode}/${myId}`
-        : `rooms/${currentRoomCode}/liveDrags/${myId}`;
-
+      const payload={active:true,name:room.players[myId]?.name||'Gracz',tile:dragState.tile,bx:Math.max(0,Math.min(1,bx)),by:Math.max(0,Math.min(1,by)),rot,target:target||null,t:serverNow()};
+      const path=dragStorageMode==='external'?`roomDrags/${currentRoomCode}/${myId}`:`rooms/${currentRoomCode}/liveDrags/${myId}`;
       set(ref(db,path),payload).catch(()=>{
         if(dragStorageMode==='external'){
           dragStorageMode='room';
@@ -703,8 +730,7 @@
     }
 
     function clearLiveDrag(){
-      lastDragSyncBx=null;
-      lastDragSyncBy=null;
+      lastDragSyncBx=null;lastDragSyncBy=null;
       if(!currentRoomCode||!db)return;
       set(ref(db,`roomDrags/${currentRoomCode}/${myId}`),null).catch(()=>{});
       set(ref(db,`rooms/${currentRoomCode}/liveDrags/${myId}`),null).catch(()=>{});
@@ -729,50 +755,27 @@
 
     function animateTileBackToRack(tile,startX,startY,options={}){
       return new Promise(resolve=>{
-        const shouldHideRackTile=!!options.hideRackUntilFinish&&tile?.id!==undefined;
-        if(shouldHideRackTile){
-          returningRackTileIds.add(tile.id);
-          if(els.rack)renderRack();
-        }
-        if(!els.dragLayer||!tile){
-          if(shouldHideRackTile){returningRackTileIds.delete(tile.id);if(els.rack)renderRack();}
-          if(options.onFinish)options.onFinish();
-          resolve();
-          return;
-        }
+        if(!els.dragLayer||!tile){options.onFinish?.();resolve();return;}
         const end=pointForRackReturn();
         const ghost=document.createElement('div');
         ghost.className='drag-ghost';
-        ghost.dataset.returning='true';
+        ghost.dataset.returnAnim='true';
         ghost.style.left=`${startX}px`;
         ghost.style.top=`${startY}px`;
         ghost.style.setProperty('--drag-rot','0deg');
         ghost.appendChild(tileEl(tile,false));
         els.dragLayer.appendChild(ghost);
-
         const dx=end.x-startX;
         const dy=end.y-startY;
         const rot=Math.max(-20,Math.min(20,dx*.08));
         publishReturnAnimation(tile,startX,startY,options.playerId||myId);
-
         const anim=ghost.animate([
           {left:`${startX}px`,top:`${startY}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(1)',opacity:.96},
           {left:`${startX+dx*.55}px`,top:`${startY+dy*.45-42}px`,transform:`translate3d(-50%,-50%,0) rotate(${rot}deg) scale(1.08)`,opacity:.96},
           {left:`${end.x}px`,top:`${end.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(.96)',opacity:.86}
         ],{duration:760,easing:'cubic-bezier(.16,.82,.22,1)',fill:'forwards'});
-
         let finished=false;
-        const done=()=>{
-          if(finished)return;
-          finished=true;
-          ghost.remove();
-          if(shouldHideRackTile){
-            returningRackTileIds.delete(tile.id);
-            if(els.rack)renderRack();
-          }
-          if(options.onFinish)options.onFinish();
-          resolve();
-        };
+        const done=()=>{if(finished)return;finished=true;ghost.remove();options.onFinish?.();resolve();};
         anim.onfinish=done;
         anim.oncancel=done;
         setTimeout(done,980);
@@ -781,7 +784,7 @@
 
     function publishReturnAnimation(tile,startX,startY,playerId){
       if(!currentRoomCode||!db||!tile)return;
-      const bp=boardPercentFromPoint(startX,startY);
+      const bp=boardPercentFromPoint(Math.max(els.board.getBoundingClientRect().left,Math.min(els.board.getBoundingClientRect().right,startX)),Math.max(els.board.getBoundingClientRect().top,Math.min(els.board.getBoundingClientRect().bottom,startY)));
       const id=`return_${playerId}_${Date.now()}_${Math.floor(Math.random()*9999)}`;
       const payload={active:true,kind:'return',playerId,tile,bx:bp.bx,by:bp.by,t:serverNow()};
       const path=dragStorageMode==='external'?`roomDrags/${currentRoomCode}/${id}`:`rooms/${currentRoomCode}/liveDrags/${id}`;
@@ -801,10 +804,7 @@
       const ids=room?.order||[];
       const index=ids.indexOf(playerId);
       const row=index>=0?els.playersPanel.children[index]:null;
-      if(row){
-        const rect=row.getBoundingClientRect();
-        return{x:rect.left+rect.width*.78,y:rect.top+rect.height/2};
-      }
+      if(row){const rect=row.getBoundingClientRect();return{x:rect.left+rect.width*.78,y:rect.top+rect.height/2};}
       const rect=els.playersPanel.getBoundingClientRect();
       return{x:rect.left+rect.width/2,y:rect.top+30};
     }
@@ -816,12 +816,12 @@
       const end=pointForPlayerPanel(d.playerId);
       const ghost=document.createElement('div');
       ghost.className='drag-ghost';
+      ghost.dataset.returnAnim='true';
       ghost.style.left=`${start.x}px`;
       ghost.style.top=`${start.y}px`;
       ghost.style.setProperty('--drag-rot','0deg');
       ghost.appendChild(tileEl(d.tile,false));
       els.dragLayer.appendChild(ghost);
-
       const dx=end.x-start.x;
       const dy=end.y-start.y;
       const rot=Math.max(-22,Math.min(22,dx*.08));
