@@ -18,13 +18,13 @@
   </style>
 </head>
 <body>
-  <div id="versionBadge" class="version-badge">v6.8</div>
+  <div id="versionBadge" class="version-badge">v6.9</div>
   <div class="wrap">
     <section class="topbar"><div class="title"><h1>Literaki Online</h1><span>Lobby online, głosowanie, timer i gra dla 2–4 osób.</span></div><div class="top-badges"><div id="turnTimerBadge" class="badge">Czas: —</div><div id="topBadge" class="badge">Ładowanie…</div></div></section>
     <section id="loadingView" class="card center-card"><h2>Ładowanie gry</h2><p id="loadingText">Łączę aplikację z Firebase.</p></section>
     <section id="homeView" class="card center-card hidden"><h2>Lobby</h2><p>Stwórz pokój i wyślij znajomym kod albo link. Gra może działać od 2 do 4 osób.</p><div class="field"><label>Twoja nazwa</label><input id="nameInput" maxlength="18" placeholder="np. Daniel" /></div><div class="settings-card"><h3>Ustawienia pokoju</h3><div class="field"><label>Liczba graczy</label><select id="playerCountSelect"><option value="2">2 osoby</option><option value="3">3 osoby</option><option value="4" selected>4 osoby</option></select></div><label class="check-row"><input id="timerToggle" type="checkbox" checked /><span>Limit czasu na ułożenie słowa<small>Po przekroczeniu czasu litery wracają na stojak, a gracz traci kolejkę.</small></span></label><div id="timerSecondsWrap" class="field"><label>Czas na ruch: 15–600 sekund</label><input id="timerSecondsInput" type="number" min="15" max="600" step="5" value="120" /></div><label class="check-row"><input id="voteToggle" type="checkbox" checked /><span>Głosowanie nad poprawnością słowa<small>Po zatwierdzeniu ruchu pozostali gracze głosują. Jeżeli wymagana liczba aktywnych graczy kliknie „nie zgadzam się”, ruch przepada.</small></span></label><p id="settingsHint" class="small" style="margin:8px 0 0"></p></div><div class="grid2"><button id="createRoomBtn" class="btn primary">Utwórz pokój</button><div><input id="joinCodeInput" maxlength="6" placeholder="Kod pokoju" style="width:100%;margin-bottom:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none;text-transform:uppercase" /><button id="joinRoomBtn" class="btn blue wide">Dołącz</button></div></div><p class="small" style="margin-top:16px">To prosta gra ze wspólnym stanem w Firebase. Do gry ze znajomymi wystarczy, ale nie jest odporna na cheatowanie.</p></section>
     <section id="lobbyView" class="card center-card hidden"><h2>Pokój</h2><p>Wyślij kod lub link pozostałym graczom.</p><div id="roomCodeBox" class="room-code">-----</div><button id="copyLinkBtn" class="btn blue wide">Kopiuj link do pokoju</button><div id="lobbySettingsSummary" class="info" style="margin-top:14px"></div><div id="lobbyPlayers" class="players-list"></div><button id="startGameBtn" class="btn primary wide">Start gry</button><button id="backHomeBtn" class="btn wide" style="margin-top:10px">Wróć</button><p class="small" id="hostHint" style="margin-top:14px"></p></section>
-    <section id="gameView" class="game hidden"><main><div class="board-wrap"><div id="board" class="board"></div></div><div class="rack-panel"><div class="rack-head"><h2 id="rackTitle">Stojak</h2><span id="movePreview" class="badge">Ruch: 0 pkt</span></div><div id="rack" class="rack"></div></div></main><aside class="side"><div id="playersPanel" class="players"></div><div class="controls"><button id="playBtn" class="btn primary">Zatwierdź</button><button id="undoBtn" class="btn">Cofnij literę</button><button id="exchangeBtn" class="btn blue">Wymień</button><button id="passBtn" class="btn">Pas</button><button id="shuffleBtn" class="btn purple">Pomieszaj</button><button id="leaveBtn" class="btn danger">Wyjdź</button></div><div id="votePanel" class="vote-panel hidden"></div><div class="info"><div><strong>Wersja:</strong> <span id="gameVersionInfo">v6.8</span></div><div><strong>Pokój:</strong> <span id="roomInfo">—</span></div><div><strong>Tryb słów:</strong> <span id="validationInfo">głosowanie</span></div><div><strong>Czas ruchu:</strong> <span id="timerInfo">—</span></div><div><strong>Woreczek:</strong> <span id="bagCount">0</span> liter</div><div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div></div><div id="log" class="log"></div></aside></section>
+    <section id="gameView" class="game hidden"><main><div class="board-wrap"><div id="board" class="board"></div></div><div class="rack-panel"><div class="rack-head"><h2 id="rackTitle">Stojak</h2><span id="movePreview" class="badge">Ruch: 0 pkt</span></div><div id="rack" class="rack"></div></div></main><aside class="side"><div id="playersPanel" class="players"></div><div class="controls"><button id="playBtn" class="btn primary">Zatwierdź</button><button id="undoBtn" class="btn">Cofnij literę</button><button id="exchangeBtn" class="btn blue">Wymień</button><button id="passBtn" class="btn">Pas</button><button id="shuffleBtn" class="btn purple">Pomieszaj</button><button id="leaveBtn" class="btn danger">Wyjdź</button></div><div id="votePanel" class="vote-panel hidden"></div><div class="info"><div><strong>Wersja:</strong> <span id="gameVersionInfo">v6.9</span></div><div><strong>Pokój:</strong> <span id="roomInfo">—</span></div><div><strong>Tryb słów:</strong> <span id="validationInfo">głosowanie</span></div><div><strong>Czas ruchu:</strong> <span id="timerInfo">—</span></div><div><strong>Woreczek:</strong> <span id="bagCount">0</span> liter</div><div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div></div><div id="log" class="log"></div></aside></section>
   </div>
   <div id="dragLayer" class="drag-layer"></div>
   <div id="toastHost" class="toast-host"></div><div id="eventOverlay" class="event-overlay"><div class="event-card"><div id="eventIcon" class="event-icon">✨</div><h2 id="eventTitle">Ruch!</h2><p id="eventText"></p></div></div><div id="uiModalBackdrop" class="ui-modal-backdrop"><div class="ui-modal"><h3 id="uiModalTitle">Komunikat</h3><p id="uiModalText"></p><input id="uiModalInput" class="hidden" /><div id="uiModalActions" class="ui-modal-actions"></div></div></div>
@@ -33,7 +33,7 @@
     import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
     import { getDatabase, ref, get, set, update, onValue, onDisconnect, runTransaction } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
     const FIREBASE_CONFIG={apiKey:"AIzaSyA0_fhuy7ofypez2zUhNwdbB61NXxGtPwU",authDomain:"dyszak-1eddc.firebaseapp.com",databaseURL:"https://dyszak-1eddc-default-rtdb.firebaseio.com",projectId:"dyszak-1eddc",storageBucket:"dyszak-1eddc.firebasestorage.app",messagingSenderId:"364073429062",appId:"1:364073429062:web:af2cd1348881d6b92fc247",measurementId:"G-ZT5M0ZWS0E"};
-    const APP_VERSION=6.8;
+    const APP_VERSION=6.9;
     const SIZE=15,CENTER=7,VOTING_SECONDS=30,ONLINE_STALE_MS=45000,DRAG_SYNC_MS=110,DRAG_SYNC_MIN_DELTA=.012;
     const LETTER_VALUES={A:1,E:1,I:1,N:1,O:1,R:1,S:1,W:1,Z:1,C:2,D:2,K:2,L:2,M:2,P:2,T:2,Y:2,B:3,G:3,H:3,J:3,Ł:3,U:3,Ą:5,Ę:5,F:5,Ó:5,Ś:5,Ż:5,Ć:6,Ń:7,Ź:9,'*':0};
     const LETTER_DISTRIBUTION=[['A',9],['E',7],['I',8],['N',5],['O',6],['R',4],['S',4],['W',4],['Z',5],['C',3],['D',3],['K',3],['L',3],['M',3],['P',3],['T',3],['Y',4],['B',2],['G',2],['H',2],['J',2],['Ł',2],['U',2],['Ą',1],['Ę',1],['F',1],['Ó',1],['Ś',1],['Ż',1],['Ć',1],['Ń',1],['Ź',1],['*',2]];
@@ -142,9 +142,6 @@
         if(d.kind==='return'){
           animateReturnToPlayerPanel(uid,d);
           return;
-        }
-        if(uid===myId)return;
-        if(room&&uid!==currentPlayerId())return;        return;
         }
         if(uid===myId)return;
         if(room&&uid!==currentPlayerId())return;
@@ -549,8 +546,9 @@
         if(!ok)await returnPendingTileToRack(state.fromR,state.fromC,true,{x:state.lastX||p.x,y:state.lastY||p.y});
         return;
       }
-      if(target&&!isCellOccanimateTileBackToRack(state.tile,state.lastX||p.x,state.lastY||p.y,{onFinish:()=>{if(state.rackNode)state.rackNode.classList.remove('drag-hidden')}});
-        flashRackInvalid();        animateTileBackToRack(state.tile,state.lastX||p.x,state.lastY||p.y,{onFinish:()=>{if(state.rackNode)state.rackNode.classList.remove('drag-hidden')}});
+      if(target&&!isCellOccupied(room,target.r,target.c))await placeRackTileAt(target.r,target.c,state.index);
+      else{
+        animateTileBackToRack(state.tile,state.lastX||p.x,state.lastY||p.y,{onFinish:()=>{if(state.rackNode)state.rackNode.classList.remove('drag-hidden')}});
         flashRackInvalid();
       }
     }
@@ -699,36 +697,50 @@
     }
 
     function pointForRackReturn(){
-      const emptySlot=els.rack?.getBoundingClientRect();
-      const tiles=[...els.rack.querySelectorAll('.tile')];
-      if(!emptySlot)return{x:window.innerWidth/2,y:window.innerHeight-90};
-      if(!tiles.length)return{x:emptySlot.left+emptySlot.width/2,y:emptySlot.top+emptySlot.height/2};
+      const rackRect=els.rack?.getBoundingClientRect();
+      const tiles=[...els.rack.querySelectorAll('.tile:not(.drag-hidden)')];
+      if(!rackRect)return{x:window.innerWidth/2,y:window.innerHeight-90};
+      if(!tiles.length)return{x:rackRect.left+rackRect.width/2,y:rackRect.top+rackRect.height/2};
       const last=tiles[tiles.length-1].getBoundingClientRect();
-      return{x:Math.min(emptySlot.right-35,last.right+42),y:last.top+last.height/2};
+      return{x:Math.min(rackRect.right-35,last.right+42),y:last.top+last.height/2};
     }
 
     function animateTileBackToRack(tile,startX,startY,options={}){
-      if(!els.dragLayer||!tile){options.onFinish?.();return Promise.resolve();}
-      const end=pointForRackReturn();
-      const ghost=document.createElement('div');
-      ghost.className='drag-ghost';
-      ghost.dataset.returning='true';
-      ghost.style.left=`${startX}px`;
-      ghost.style.top=`${startY}px`;
-      ghost.style.setProperty('--drag-rot','0deg');
-      ghost.appendChild(tileEl(tile,false));
-      els.dragLayer.appendChild(ghost);
-      const dx=end.x-startX;
-      const dy=end.y-startY;
-      const rot=Math.max(-20,Math.min(20,dx*.08));
-      publishReturnAnimation(tile,startX,startY,options.playerId||myId);
       return new Promise(resolve=>{
+        if(!els.dragLayer||!tile){
+          if(options.onFinish)options.onFinish();
+          resolve();
+          return;
+        }
+        const end=pointForRackReturn();
+        const ghost=document.createElement('div');
+        ghost.className='drag-ghost';
+        ghost.dataset.returning='true';
+        ghost.style.left=`${startX}px`;
+        ghost.style.top=`${startY}px`;
+        ghost.style.setProperty('--drag-rot','0deg');
+        ghost.appendChild(tileEl(tile,false));
+        els.dragLayer.appendChild(ghost);
+
+        const dx=end.x-startX;
+        const dy=end.y-startY;
+        const rot=Math.max(-20,Math.min(20,dx*.08));
+        publishReturnAnimation(tile,startX,startY,options.playerId||myId);
+
         const anim=ghost.animate([
-          {left:`${startX}px`,top:`${startY}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(1)',opacity:.96,offset:0},
-          {left:`${startX+dx*.55}px`,top:`${startY+dy*.45-42}px`,transform:`translate3d(-50%,-50%,0) rotate(${rot}deg) scale(1.08)`,opacity:.96,offset:.48},
-          {left:`${end.x}px`,top:`${end.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(.96)',opacity:.86,offset:1}
+          {left:`${startX}px`,top:`${startY}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(1)',opacity:.96},
+          {left:`${startX+dx*.55}px`,top:`${startY+dy*.45-42}px`,transform:`translate3d(-50%,-50%,0) rotate(${rot}deg) scale(1.08)`,opacity:.96},
+          {left:`${end.x}px`,top:`${end.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(.96)',opacity:.86}
         ],{duration:560,easing:'cubic-bezier(.18,.85,.25,1)',fill:'forwards'});
-        const done=()=>{ghost.remove();options.onFinish?.();resolve();};
+
+        let finished=false;
+        const done=()=>{
+          if(finished)return;
+          finished=true;
+          ghost.remove();
+          if(options.onFinish)options.onFinish();
+          resolve();
+        };
         anim.onfinish=done;
         anim.oncancel=done;
         setTimeout(done,760);
@@ -740,8 +752,8 @@
       const bp=boardPercentFromPoint(startX,startY);
       const id=`return_${playerId}_${Date.now()}_${Math.floor(Math.random()*9999)}`;
       const payload={active:true,kind:'return',playerId,tile,bx:bp.bx,by:bp.by,t:serverNow()};
-      const base=dragStorageMode==='external'?`roomDrags/${currentRoomCode}`:`rooms/${currentRoomCode}/liveDrags`;
-      set(ref(db,`${base}/${id}`),payload).catch(()=>{
+      const path=dragStorageMode==='external'?`roomDrags/${currentRoomCode}/${id}`:`rooms/${currentRoomCode}/liveDrags/${id}`;
+      set(ref(db,path),payload).catch(()=>{
         if(dragStorageMode==='external'){
           dragStorageMode='room';
           set(ref(db,`rooms/${currentRoomCode}/liveDrags/${id}`),payload).catch(()=>{});
@@ -777,19 +789,20 @@
       ghost.style.setProperty('--drag-rot','0deg');
       ghost.appendChild(tileEl(d.tile,false));
       els.dragLayer.appendChild(ghost);
+
       const dx=end.x-start.x;
       const dy=end.y-start.y;
       const rot=Math.max(-22,Math.min(22,dx*.08));
       const anim=ghost.animate([
-        {left:`${start.x}px`,top:`${start.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(1)',opacity:.94,offset:0},
-        {left:`${start.x+dx*.55}px`,top:`${start.y+dy*.45-36}px`,transform:`translate3d(-50%,-50%,0) rotate(${rot}deg) scale(1.06)`,opacity:.9,offset:.55},
-        {left:`${end.x}px`,top:`${end.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(.55)',opacity:0,offset:1}
+        {left:`${start.x}px`,top:`${start.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(1)',opacity:.94},
+        {left:`${start.x+dx*.55}px`,top:`${start.y+dy*.45-36}px`,transform:`translate3d(-50%,-50%,0) rotate(${rot}deg) scale(1.06)`,opacity:.9},
+        {left:`${end.x}px`,top:`${end.y}px`,transform:'translate3d(-50%,-50%,0) rotate(0deg) scale(.55)',opacity:0}
       ],{duration:720,easing:'cubic-bezier(.18,.85,.25,1)',fill:'forwards'});
       anim.onfinish=()=>ghost.remove();
       setTimeout(()=>ghost.remove(),900);
     }
 
-    function makeMultipliers(){const m=Array.from({length:SIZE},()=>Array.from({length:SIZE},()=>''));const set=(t,cs)=>cs.forEach(([r,c])=>m[r][c]=t);set('tw',[[0,0],[0,7],[0,14],[7,0],[7,14],[14,0],[14,7],[14,14]]);set('dw',[[1,1],[2,2],[3,3],[4,4],[7,7],[10,10],[11,11],[12,12],[13,13],[1,13],[2,12],[3,11],[4,10],[10,4],[11,3],[12,2],[13,1]]);set('tl',[[1,5],[1,9],[5,1],[5,5],[5,9],[5,13],[9,1],[9,5],[9,9],[9,13],[13,5],[13,9]]);set('dl',[[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12],[7,3],[7,11],[8,2],[8,6],[8,8],[8,12],[11,0],[11,7],[11,14],[12,6],[12,8],[14,3],[14,11]]);return m}
+    function makeMultip){const m=Array.from({length:SIZE},()=>Array.from({length:SIZE},()=>''));const set=(t,cs)=>cs.forEach(([r,c])=>m[r][c]=t);set('tw',[[0,0],[0,7],[0,14],[7,0],[7,14],[14,0],[14,7],[14,14]]);set('dw',[[1,1],[2,2],[3,3],[4,4],[7,7],[10,10],[11,11],[12,12],[13,13],[1,13],[2,12],[3,11],[4,10],[10,4],[11,3],[12,2],[13,1]]);set('tl',[[1,5],[1,9],[5,1],[5,5],[5,9],[5,13],[9,1],[9,5],[9,9],[9,13],[13,5],[13,9]]);set('dl',[[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12],[7,3],[7,11],[8,2],[8,6],[8,8],[8,12],[11,0],[11,7],[11,14],[12,6],[12,8],[14,3],[14,11]]);return m}
   </script>
 </body>
 </html>
