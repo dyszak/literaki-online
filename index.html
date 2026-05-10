@@ -55,7 +55,21 @@
     function subscribeRoom(code){if(unsubscribeRoom)unsubscribeRoom();currentRoomCode=code;history.replaceState(null,'',`?room=${code}`);unsubscribeRoom=onValue(roomRef(code),snap=>{if(!snap.exists())return goHome(false);room=normalizeRoom(snap.val());render()});update(ref(db,`rooms/${code}/players/${myId}`),{online:true,lastSeen:serverNow()}).catch(()=>{});onDisconnect(ref(db,`rooms/${code}/players/${myId}`)).update({online:false,lastSeen:Date.now()}).catch(()=>{})}
     function playerObj(name){return{id:myId,name,score:0,rack:[],online:true,lastSeen:serverNow()}}
     function roomRef(code){return ref(db,`rooms/${code}`)}
-    function normalizeRoom(d){return{...d,settings:{playerCount:4,timerEnabled:true,turnTimeLimitSeconds:120,votingEnabled:true,...(d.settings||{})},players:d.players||{},order:d.order||[],board:d.board||{},bag:d.bag||[],pending:d.pending||{uid:null,tiles:[]},challenge:d.challenge||null,logs:d.logs||[]}}
+    function normalizeRoom(d){
+      const players={...(d.players||{})};
+      Object.keys(players).forEach(id=>{
+        players[id]={...players[id],rack:asArray(players[id]?.rack)};
+      });
+      const pending=d.pending||{uid:null,tiles:[]};
+      const challenge=d.challenge||null;
+      if(challenge&&challenge.eligibleVoterIds)challenge.eligibleVoterIds=asArray(challenge.eligibleVoterIds);
+      return{...d,settings:{playerCount:4,timerEnabled:true,turnTimeLimitSeconds:120,votingEnabled:true,...(d.settings||{})},players,order:asArray(d.order),board:d.board||{},bag:asArray(d.bag),pending:{uid:pending.uid||null,tiles:asArray(pending.tiles)},challenge,logs:asArray(d.logs)}
+    }
+    function asArray(value){
+      if(Array.isArray(value))return value.filter(v=>v!==undefined&&v!==null);
+      if(value&&typeof value==='object')return Object.keys(value).sort((a,b)=>Number(a)-Number(b)).map(k=>value[k]).filter(v=>v!==undefined&&v!==null);
+      return[];
+    }
     function render(){if(!room)return;els.loadingView.classList.add('hidden');els.homeView.classList.add('hidden');els.lobbyView.classList.toggle('hidden',room.status!=='lobby');els.gameView.classList.toggle('hidden',room.status==='lobby');els.topBadge.textContent=room.status==='lobby'?`Lobby ${room.code}`:room.status==='voting'?'Głosowanie':room.status==='finished'?'Koniec gry':`Tura: ${currentPlayer()?.name||'—'}`;if(room.status==='lobby')renderLobby();else renderGame()}
     function renderLobby(){els.roomCodeBox.textContent=room.code;els.lobbySettingsSummary.innerHTML=`<div><strong>Liczba graczy:</strong> ${targetPlayerCount(room)}</div><div><strong>Tryb:</strong> ${settingsLabel(room.settings)}</div>`;els.lobbyPlayers.innerHTML='';room.order.forEach((id,i)=>{const p=room.players[id]||{};const row=document.createElement('div');row.className='lobby-player';row.innerHTML=`<b>${i+1}. ${esc(p.name||'Gracz')} ${id===myId?'(ty)':''}</b><span class='${isPlayerOnline(room,id)?'online':'offline'}'>${isPlayerOnline(room,id)?'online':'offline'}</span>`;els.lobbyPlayers.appendChild(row)});const host=room.hostId===myId;els.startGameBtn.disabled=!host||room.order.length!==targetPlayerCount(room);els.startGameBtn.textContent=host?'Start gry':'Tylko host może zacząć';els.hostHint.innerHTML=host?`Graczy w lobby: <b>${room.order.length}/${targetPlayerCount(room)}</b>.`:`Czekasz na hosta. Graczy: <b>${room.order.length}/${targetPlayerCount(room)}</b>.`;els.turnTimerBadge.textContent='Czas: —';els.turnTimerBadge.classList.remove('warn')}
     function renderGame(){renderBoard();renderRack();renderPlayers();renderVotePanel();renderLog();els.roomInfo.textContent=room.code;els.validationInfo.textContent=room.settings.votingEnabled?'głosowanie graczy':'bez głosowania';els.bagCount.textContent=room.bag.length;els.rackTitle.textContent=room.players[myId]?`Twój stojak — ${room.players[myId].name}`:'Obserwator';updateMovePreview();renderTimer();checkTurnNotification();handleLastEvent();const active=isMyTurn()&&room.status==='playing';['playBtn','undoBtn','exchangeBtn','passBtn'].forEach(id=>$(id).disabled=!active);$('shuffleBtn').disabled=!(room.players[myId]&&(room.status==='playing'||room.status==='voting'))}
@@ -68,7 +82,7 @@
     async function onCellClick(r,c){if(!isMyTurn()||room.status!=='playing')return;if(room.board[k(r,c)]||selectedRackIndex===null)return;const next=clone(room);const me=next.players[myId];const tile=me.rack.splice(selectedRackIndex,1)[0];selectedRackIndex=null;if(!tile)return;if(tile.blank&&tile.letter==='*'){const chosen=await uiBlankLetterPrompt();if(!chosen){me.rack.push(tile);return render()}tile.letter=chosen;tile.value=0}if(!next.pending.uid)next.pending={uid:myId,tiles:[]};next.pending.tiles.push({r,c,tile});await saveRoom(next)}
     async function removePendingTile(r,c){if(!room||room.status!=='playing'||room.pending?.uid!==myId)return;const idx=(room.pending.tiles||[]).findIndex(p=>p.r===r&&p.c===c);if(idx<0)return;const next=clone(room);const me=next.players[myId];const [removed]=next.pending.tiles.splice(idx,1);me.rack.push(removed.tile);if(!next.pending.tiles.length)next.pending={uid:null,tiles:[]};selectedRackIndex=null;await saveRoom(next)}
     async function undoMove(){if(!isMyTurn()||room.status!=='playing'||!room.pending?.tiles?.length)return;const last=room.pending.tiles[room.pending.tiles.length-1];await removePendingTile(last.r,last.c)}
-    async function submitMove(){if(!isMyTurn()||room.status!=='playing')return;const result=validateAndScoreMove(room);if(!result.ok)return uiAlert(result.message);const voters=availableVotePlayerIds(room,myId);if(room.settings.votingEnabled&&voters.length>0{const now=serverNow();const next=clone(room);const thresholds=voteThresholdsForCounts(voters.length+1,voters.length);next.status='voting';next.challenge={id:`${now}_${myId}`,submitterId:myId,eligibleVoterIds:voters,rejectNeeded:thresholds.reject,acceptNeeded:thresholds.accept,words:result.words,score:result.score,wordTiles:result.wordTiles,votes:{},createdAt:now,endsAt:now+VOTING_SECONDS*1000};next.logs=addLog(next.logs,`<b>${esc(next.players[myId].name)}</b> zgłasza do głosowania: ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);await saveRoom(next)}else{const next=clone(room);acceptMove(next,result,myId,false);await saveRoom(next)}}
+    async function submitMove(){if(!isMyTurn()||room.status!=='playing')return;const result=validateAndScoreMove(room);if(!result.ok)return uiAlert(result.message);const voters=availableVotePlayerIds(room,myId);if(room.settings.votingEnabled && voters.length > 0) {const now=serverNow();const next=clone(room);const thresholds=voteThresholdsForCounts(voters.length+1,voters.length);next.status='voting';next.challenge={id:`${now}_${myId}`,submitterId:myId,eligibleVoterIds:voters,rejectNeeded:thresholds.reject,acceptNeeded:thresholds.accept,words:result.words,score:result.score,wordTiles:result.wordTiles,votes:{},createdAt:now,endsAt:now+VOTING_SECONDS*1000};next.logs=addLog(next.logs,`<b>${esc(next.players[myId].name)}</b> zgłasza do głosowania: ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);await saveRoom(next)}else{const next=clone(room);acceptMove(next,result,myId,false);await saveRoom(next)}}
     async function voteOnChallenge(agree){
       if(!room||room.status!=='voting'||!room.challenge)return;
       const localChallengeId = room.challenge.id;
@@ -121,8 +135,40 @@
     function votingSecondsLeft(ch,now=serverNow()){if(!ch)return VOTING_SECONDS;const ends=Number(ch.endsAt)||((Number(ch.createdAt)||now)+VOTING_SECONDS*1000);const left=Math.ceil((ends-now)/1000);return Number.isFinite(left)?Math.max(0,Math.min(VOTING_SECONDS,left)):VOTING_SECONDS}
     function votingProgressPercent(ch,now=serverNow()){return Math.max(0,Math.min(100,(votingSecondsLeft(ch,now)/VOTING_SECONDS)*100))}
     async function resolveVotingTransaction(forceTimeout){if(busyVoteResolve||!currentRoomCode)return;busyVoteResolve=true;try{await runTransaction(roomRef(currentRoomCode),current=>{if(!current||current.status!=='voting'||!current.challenge)return current;const data=normalizeRoom(current);const now=serverNow();if(!forceTimeout&&votingSecondsLeft(data.challenge,now)>0&&challengeResolution(data,now)==='pending')return current;const res=challengeResolution(data,now);if(res==='pending')return current;if(res==='reject')rejectMove(data,forceTimeout);else acceptMove(data,{words:data.challenge.words||[],score:Number(data.challenge.score||0),wordTiles:data.challenge.wordTiles||[]},data.challenge.submitterId,forceTimeout);data.updatedAt=now;return data})}catch(err){console.error('Błąd rozstrzygania głosowania:',err);showToast('Błąd głosowania','Nie udało się automatycznie zakończyć głosowania.')}finally{setTimeout(()=>busyVoteResolve=false,700)}}
-    function acceptMove(next,result,playerId,byTime){const player=next.players[playerId];const pending=next.pending?.tiles||[];pending.forEach(p=>next.board[k(p.r,p.c)]=p.tile);player.score+=Number(result.score||0);drawTiles(player.rack,next.bag,7);next.moveNumber++;next.consecutivePasses=0;next.status='playing';next.pending={uid:null,tiles:[]};next.challenge=null;next.lastEvent={type:'word',playerId,playerName:player.name,words:result.words||[],score:result.score||0,tiles:result.wordTiles||pending.map(p=>({r:p.r,c:p.c,letter:p.tile.letter})),t:serverNow()};next.logs=addLog(next.logs,`${byTime?'<b>Głosowanie zakończone po czasie.</b> ':''}<b>${esc(player.name)}</b> układa ${esc((result.words||[]).join(', '))} za <b>${result.score||0} pkt</b>.`);if(player.rack.length===0&&next.bag.length===0)endGame(next,`${player.name} pozbył się wszystkich liter.`);else advanceTurn(next)}
-    function rejectMove(next,byTime){const ch=next.challenge;const player=next.players[ch.submitterId];(next.pending?.tiles||[]).forEach(p=>player.rack.push(p.tile));next.status='playing';next.pending={uid:null,tiles:[]};next.challenge=null;next.consecutivePasses=0;next.logs=addLog(next.logs,`<b>Ruch odrzucony.</b> ${byTime?'Głosowanie zakończyło się po czasie. ':''}<b>${esc(player.name)}</b> traci kolejkę.`);next.lastEvent={type:'reject',playerName:player.name,t:serverNow()};advanceTurn(next)}
+    function acceptMove(next,result,playerId,byTime){
+      const player=next.players[playerId];
+      if(!player){next.status='playing';next.pending={uid:null,tiles:[]};next.challenge=null;advanceTurn(next);return;}
+      player.rack=asArray(player.rack);
+      next.bag=asArray(next.bag);
+      const pending=asArray(next.pending?.tiles);
+      pending.forEach(p=>{if(p?.tile)next.board[k(p.r,p.c)]=p.tile});
+      player.score=Number(player.score||0)+Number(result.score||0);
+      drawTiles(player.rack,next.bag,7);
+      next.moveNumber++;
+      next.consecutivePasses=0;
+      next.status='playing';
+      next.pending={uid:null,tiles:[]};
+      next.challenge=null;
+      next.lastEvent={type:'word',playerId,playerName:player.name||'Gracz',words:result.words||[],score:result.score||0,tiles:result.wordTiles||pending.map(p=>({r:p.r,c:p.c,letter:p.tile?.letter||''})),t:serverNow()};
+      next.logs=addLog(next.logs,`${byTime?'<b>Głosowanie zakończone po czasie.</b> ':''}<b>${esc(player.name||'Gracz')}</b> układa ${esc((result.words||[]).join(', '))} za <b>${result.score||0} pkt</b>.`);
+      if(player.rack.length===0&&next.bag.length===0)endGame(next,`${player.name||'Gracz'} pozbył się wszystkich liter.`);else advanceTurn(next);
+    }
+    function rejectMove(next,byTime){
+      const ch=next.challenge;
+      if(!ch||!next.players?.[ch.submitterId]){
+        next.status='playing';next.pending={uid:null,tiles:[]};next.challenge=null;advanceTurn(next);return;
+      }
+      const player=next.players[ch.submitterId];
+      player.rack=asArray(player.rack);
+      asArray(next.pending?.tiles).forEach(p=>{if(p?.tile)player.rack.push(p.tile)});
+      next.status='playing';
+      next.pending={uid:null,tiles:[]};
+      next.challenge=null;
+      next.consecutivePasses=0;
+      next.logs=addLog(next.logs,`<b>Ruch odrzucony.</b> ${byTime?'Głosowanie zakończyło się po czasie. ':''}<b>${esc(player.name||'Gracz')}</b> traci kolejkę.`);
+      next.lastEvent={type:'reject',playerName:player.name||'Gracz',t:serverNow()};
+      advanceTurn(next);
+    }
     function tick(){if(!room)return;heartbeatOnline();if(room.status==='voting'){renderTimer();renderVotePanel();if(votingSecondsLeft(room.challenge)<=0)resolveVotingTransaction(true);return}if(room.status==='playing'){renderTimer();maybeSkipOfflineTurn();maybeExpireTurn()}}
     async function heartbeatOnline(){if(!currentRoomCode||!myId||!room?.players?.[myId])return;const now=serverNow();if(now-lastHeartbeat<10000)return;lastHeartbeat=now;update(ref(db,`rooms/${currentRoomCode}/players/${myId}`),{online:true,lastSeen:now}).catch(()=>{})}
     async function maybeSkipOfflineTurn(){if(busySkip||!room||room.status!=='playing')return;const pid=currentPlayerId(),p=room.players[pid];if(!p||isPlayerOnline(room,pid))return;busySkip=true;try{const next=clone(room);const id=next.order[next.currentIndex],pl=next.players[id];if(!pl||isPlayerOnline(next,id))return;if(next.pending?.uid===id)(next.pending.tiles||[]).forEach(t=>pl.rack.push(t.tile));next.pending={uid:null,tiles:[]};next.logs=addLog(next.logs,`<b>${esc(pl.name)}</b> jest offline, więc jego tura została pominięta.`);next.lastEvent={type:'offlineSkip',playerName:pl.name,t:serverNow()};next.consecutivePasses++;advanceOrEnd(next,'Za dużo pominiętych tur z rzędu.');await saveRoom(next)}finally{setTimeout(()=>busySkip=false,1200)}}
