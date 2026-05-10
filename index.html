@@ -479,7 +479,7 @@
       const thresholds = voteThresholds(room, eligible.length);
       const needed = thresholds.reject;
       const left = votingSecondsLeft(ch);
-      const progress = Math.max(0, Math.min(100, (left / VOTING_SECONDS) * 100));
+      const progress = votingProgressPercent(ch);
       const myVote = votes[myId];
       const canVote = eligible.includes(myId) && !myVote;
       const wordsHtml = (ch.words || []).map(w => `<span class='word-pill'>${esc(w)}</span>`).join('');
@@ -500,7 +500,7 @@
         <div class='word-list'>${wordsHtml}</div>
         ${actionHtml}
         <div class='vote-progress ${left <= 10 ? 'danger' : ''}'><div class='vote-progress-fill' style='width:${progress}%'></div></div>
-        <div class='vote-meta'>Czas głosowania: <span class='vote-time'>${left}s</span>. Głosy online: ${agrees} zgadza się / ${rejects} nie zgadza się. Do odrzucenia ruchu potrzeba ${needed || 1} głosów przeciw.</div>
+        <div class='vote-meta'>Czas głosowania: <span class='vote-time'>${formatTime(left)}</span>. Głosy online: ${agrees} zgadza się / ${rejects} nie zgadza się. Do odrzucenia ruchu potrzeba ${needed || 1} głosów przeciw.</div>
       `;
       const agreeBtn = q('voteAgreeBtn');
       const rejectBtn = q('voteRejectBtn');
@@ -584,7 +584,8 @@
       const next = clone(room);
       const me = next.players[myId];
       next.status = 'voting';
-      next.challenge = {id:`${Date.now()}_${myId}`,submitterId:myId,submitterName:me.name,words:result.words,score:result.score,votes:{},createdAt:Date.now()};
+      const now = Date.now();
+      next.challenge = {id:`${now}_${myId}`,submitterId:myId,submitterName:me.name,words:result.words,score:result.score,votes:{},createdAt:now,endsAt:now + VOTING_SECONDS * 1000};
       next.logs = addLogToArray(next.logs, `<b>${esc(me.name)}</b> zgłasza ruch do głosowania: ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);
       await saveRoom(next);
     }
@@ -656,8 +657,21 @@
     }
 
     function votingSecondsLeft(challenge){
-      if(!challenge?.createdAt) return VOTING_SECONDS;
-      return Math.max(0, Math.ceil((challenge.createdAt + VOTING_SECONDS * 1000 - Date.now()) / 1000));
+      if(!challenge) return VOTING_SECONDS;
+      const createdAt = Number(challenge.createdAt);
+      const rawEndsAt = Number(challenge.endsAt);
+      const fallbackEndsAt = Number.isFinite(createdAt) && createdAt > 0 ? createdAt + VOTING_SECONDS * 1000 : Date.now() + VOTING_SECONDS * 1000;
+      const endsAt = Number.isFinite(rawEndsAt) && rawEndsAt > 0 ? rawEndsAt : fallbackEndsAt;
+      const left = Math.ceil((endsAt - Date.now()) / 1000);
+      if(!Number.isFinite(left)) return VOTING_SECONDS;
+      return Math.max(0, Math.min(VOTING_SECONDS, left));
+    }
+
+    function votingProgressPercent(challenge){
+      const left = votingSecondsLeft(challenge);
+      const percent = (left / VOTING_SECONDS) * 100;
+      if(!Number.isFinite(percent)) return 100;
+      return Math.max(0, Math.min(100, percent));
     }
 
     async function maybeResolveVotingTimeout(){
