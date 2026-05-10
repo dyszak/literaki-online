@@ -18,13 +18,13 @@
   </style>
 </head>
 <body>
-  <div id="versionBadge" class="version-badge">v7.2</div>
+  <div id="versionBadge" class="version-badge">v7.3</div>
   <div class="wrap">
     <section class="topbar"><div class="title"><h1>Literaki Online</h1><span>Lobby online, głosowanie, timer i gra dla 2–4 osób.</span></div><div class="top-badges"><div id="turnTimerBadge" class="badge">Czas: —</div><div id="topBadge" class="badge">Ładowanie…</div></div></section>
     <section id="loadingView" class="card center-card"><h2>Ładowanie gry</h2><p id="loadingText">Łączę aplikację z Firebase.</p></section>
     <section id="homeView" class="card center-card hidden"><h2>Lobby</h2><p>Stwórz pokój i wyślij znajomym kod albo link. Gra może działać od 2 do 4 osób.</p><div class="field"><label>Twoja nazwa</label><input id="nameInput" maxlength="18" placeholder="np. Daniel" /></div><div class="settings-card"><h3>Ustawienia pokoju</h3><div class="field"><label>Liczba graczy</label><select id="playerCountSelect"><option value="2">2 osoby</option><option value="3">3 osoby</option><option value="4" selected>4 osoby</option></select></div><label class="check-row"><input id="timerToggle" type="checkbox" checked /><span>Limit czasu na ułożenie słowa<small>Po przekroczeniu czasu litery wracają na stojak, a gracz traci kolejkę.</small></span></label><div id="timerSecondsWrap" class="field"><label>Czas na ruch: 15–600 sekund</label><input id="timerSecondsInput" type="number" min="15" max="600" step="5" value="120" /></div><label class="check-row"><input id="voteToggle" type="checkbox" checked /><span>Głosowanie nad poprawnością słowa<small>Po zatwierdzeniu ruchu pozostali gracze głosują. Jeżeli wymagana liczba aktywnych graczy kliknie „nie zgadzam się”, ruch przepada.</small></span></label><p id="settingsHint" class="small" style="margin:8px 0 0"></p></div><div class="grid2"><button id="createRoomBtn" class="btn primary">Utwórz pokój</button><div><input id="joinCodeInput" maxlength="6" placeholder="Kod pokoju" style="width:100%;margin-bottom:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none;text-transform:uppercase" /><button id="joinRoomBtn" class="btn blue wide">Dołącz</button></div></div><p class="small" style="margin-top:16px">To prosta gra ze wspólnym stanem w Firebase. Do gry ze znajomymi wystarczy, ale nie jest odporna na cheatowanie.</p></section>
     <section id="lobbyView" class="card center-card hidden"><h2>Pokój</h2><p>Wyślij kod lub link pozostałym graczom.</p><div id="roomCodeBox" class="room-code">-----</div><button id="copyLinkBtn" class="btn blue wide">Kopiuj link do pokoju</button><div id="lobbySettingsSummary" class="info" style="margin-top:14px"></div><div id="lobbyPlayers" class="players-list"></div><button id="startGameBtn" class="btn primary wide">Start gry</button><button id="backHomeBtn" class="btn wide" style="margin-top:10px">Wróć</button><p class="small" id="hostHint" style="margin-top:14px"></p></section>
-    <section id="gameView" class="game hidden"><main><div class="board-wrap"><div id="board" class="board"></div></div><div class="rack-panel"><div class="rack-head"><h2 id="rackTitle">Stojak</h2><span id="movePreview" class="badge">Ruch: 0 pkt</span></div><div id="rack" class="rack"></div></div></main><aside class="side"><div id="playersPanel" class="players"></div><div class="controls"><button id="playBtn" class="btn primary">Zatwierdź</button><button id="undoBtn" class="btn">Cofnij literę</button><button id="exchangeBtn" class="btn blue">Wymień</button><button id="passBtn" class="btn">Pas</button><button id="shuffleBtn" class="btn purple">Pomieszaj</button><button id="leaveBtn" class="btn danger">Wyjdź</button></div><div id="votePanel" class="vote-panel hidden"></div><div class="info"><div><strong>Wersja:</strong> <span id="gameVersionInfo">v7.2</span></div><div><strong>Pokój:</strong> <span id="roomInfo">—</span></div><div><strong>Tryb słów:</strong> <span id="validationInfo">głosowanie</span></div><div><strong>Czas ruchu:</strong> <span id="timerInfo">—</span></div><div><strong>Woreczek:</strong> <span id="bagCount">0</span> liter</div><div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div></div><div id="log" class="log"></div></aside></section>
+    <section id="gameView" class="game hidden"><main><div class="board-wrap"><div id="board" class="board"></div></div><div class="rack-panel"><div class="rack-head"><h2 id="rackTitle">Stojak</h2><span id="movePreview" class="badge">Ruch: 0 pkt</span></div><div id="rack" class="rack"></div></div></main><aside class="side"><div id="playersPanel" class="players"></div><div class="controls"><button id="playBtn" class="btn primary">Zatwierdź</button><button id="undoBtn" class="btn">Cofnij literę</button><button id="exchangeBtn" class="btn blue">Wymień</button><button id="passBtn" class="btn">Pas</button><button id="shuffleBtn" class="btn purple">Pomieszaj</button><button id="leaveBtn" class="btn danger">Wyjdź</button></div><div id="votePanel" class="vote-panel hidden"></div><div class="info"><div><strong>Wersja:</strong> <span id="gameVersionInfo">v7.3</span></div><div><strong>Pokój:</strong> <span id="roomInfo">—</span></div><div><strong>Tryb słów:</strong> <span id="validationInfo">głosowanie</span></div><div><strong>Czas ruchu:</strong> <span id="timerInfo">—</span></div><div><strong>Woreczek:</strong> <span id="bagCount">0</span> liter</div><div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div></div><div id="log" class="log"></div></aside></section>
   </div>
   <div id="dragLayer" class="drag-layer"></div>
   <div id="toastHost" class="toast-host"></div><div id="eventOverlay" class="event-overlay"><div class="event-card"><div id="eventIcon" class="event-icon">✨</div><h2 id="eventTitle">Ruch!</h2><p id="eventText"></p></div></div><div id="uiModalBackdrop" class="ui-modal-backdrop"><div class="ui-modal"><h3 id="uiModalTitle">Komunikat</h3><p id="uiModalText"></p><input id="uiModalInput" class="hidden" /><div id="uiModalActions" class="ui-modal-actions"></div></div></div>
@@ -33,7 +33,7 @@
     import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
     import { getDatabase, ref, get, set, update, onValue, onDisconnect, runTransaction } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
     const FIREBASE_CONFIG={apiKey:"AIzaSyA0_fhuy7ofypez2zUhNwdbB61NXxGtPwU",authDomain:"dyszak-1eddc.firebaseapp.com",databaseURL:"https://dyszak-1eddc-default-rtdb.firebaseio.com",projectId:"dyszak-1eddc",storageBucket:"dyszak-1eddc.firebasestorage.app",messagingSenderId:"364073429062",appId:"1:364073429062:web:af2cd1348881d6b92fc247",measurementId:"G-ZT5M0ZWS0E"};
-    const APP_VERSION=7.2;
+    const APP_VERSION=7.3;
     const SIZE=15,CENTER=7,VOTING_SECONDS=30,ONLINE_STALE_MS=45000,DRAG_SYNC_MS=110,DRAG_SYNC_MIN_DELTA=.012;
     const LETTER_VALUES={A:1,E:1,I:1,N:1,O:1,R:1,S:1,W:1,Z:1,C:2,D:2,K:2,L:2,M:2,P:2,T:2,Y:2,B:3,G:3,H:3,J:3,Ł:3,U:3,Ą:5,Ę:5,F:5,Ó:5,Ś:5,Ż:5,Ć:6,Ń:7,Ź:9,'*':0};
     const LETTER_DISTRIBUTION=[['A',9],['E',7],['I',8],['N',5],['O',6],['R',4],['S',4],['W',4],['Z',5],['C',3],['D',3],['K',3],['L',3],['M',3],['P',3],['T',3],['Y',4],['B',2],['G',2],['H',2],['J',2],['Ł',2],['U',2],['Ą',1],['Ę',1],['F',1],['Ó',1],['Ś',1],['Ż',1],['Ć',1],['Ń',1],['Ź',1],['*',2]];
@@ -44,6 +44,7 @@
     let liveDragsState={},dragStorageMode='external',lastRoomCoreSignature='',seenReturnAnimations=new Set();
     let busyTimeout=false,busySkip=false,busyVoteResolve=false,lastTurnKey='',lastEventKey='',lastHeartbeat=0,activeCelebrationKey='',activeCelebrationUntil=0,rackShuffleAnimating=false,rackShuffleTimer=null,rackShuffleAnimations=[];
     let dragState=null,lastDragSync=0,lastDragSyncBx=null,lastDragSyncBy=null,dragMoveHandler=null,dragUpHandler=null,lastLocalDragPos=null,localDragGhost=null,localDragAnimFrame=null,localDragVisual=null;
+    const returningRackTileIds=new Set();
     els.nameInput.value=localStorage.getItem('literaki_name')||'';
     $('createRoomBtn').onclick=createRoom;$('joinRoomBtn').onclick=()=>joinRoom(els.joinCodeInput.value);$('copyLinkBtn').onclick=copyRoomLink;$('startGameBtn').onclick=startGame;$('backHomeBtn').onclick=goHome;$('playBtn').onclick=submitMove;$('undoBtn').onclick=undoMove;$('exchangeBtn').onclick=exchangeTiles;$('passBtn').onclick=passTurn;$('shuffleBtn').onclick=shuffleRack;$('leaveBtn').onclick=goHome;
     els.nameInput.oninput=()=>localStorage.setItem('literaki_name',cleanName(els.nameInput.value));[els.playerCountSelect,els.timerToggle,els.timerSecondsInput,els.voteToggle].forEach(el=>el.addEventListener('input',syncSettingsHint));
@@ -120,7 +121,7 @@
     function renderLobby(){els.roomCodeBox.textContent=room.code;els.lobbySettingsSummary.innerHTML=`<div><strong>Liczba graczy:</strong> ${targetPlayerCount(room)}</div><div><strong>Tryb:</strong> ${settingsLabel(room.settings)}</div>`;els.lobbyPlayers.innerHTML='';room.order.forEach((id,i)=>{const p=room.players[id]||{};const row=document.createElement('div');row.className='lobby-player';row.innerHTML=`<b>${i+1}. ${esc(p.name||'Gracz')} ${id===myId?'(ty)':''}</b><span class='${isPlayerOnline(room,id)?'online':'offline'}'>${isPlayerOnline(room,id)?'online':'offline'}</span>`;els.lobbyPlayers.appendChild(row)});const host=room.hostId===myId;els.startGameBtn.disabled=!host||room.order.length!==targetPlayerCount(room);els.startGameBtn.textContent=host?'Start gry':'Tylko host może zacząć';els.hostHint.innerHTML=host?`Graczy w lobby: <b>${room.order.length}/${targetPlayerCount(room)}</b>.`:`Czekasz na hosta. Graczy: <b>${room.order.length}/${targetPlayerCount(room)}</b>.`;els.turnTimerBadge.textContent='Czas: —';els.turnTimerBadge.classList.remove('warn')}
     function renderGame(){if(dragState&&(!isMyTurn()||room.status!=='playing'))cancelRackDrag();handleLastEvent();renderBoard();if(!rackShuffleAnimating)renderRack();renderPlayers();renderVotePanel();renderLiveDrags();renderLog();if(els.gameVersionInfo)els.gameVersionInfo.textContent=`v${APP_VERSION}`;els.roomInfo.textContent=room.code;els.validationInfo.textContent=room.settings.votingEnabled?'głosowanie graczy':'bez głosowania';els.bagCount.textContent=room.bag.length;els.rackTitle.textContent=room.players[myId]?`Twój stojak — ${room.players[myId].name}`:'Obserwator';updateMovePreview();renderTimer();checkTurnNotification();const active=isMyTurn()&&room.status==='playing';['playBtn','undoBtn','exchangeBtn','passBtn'].forEach(id=>$(id).disabled=!active);$('shuffleBtn').disabled=rackShuffleAnimating||!(room.players[myId]&&(room.status==='playing'||room.status==='voting'))}
     function renderBoard(){els.board.innerHTML='';for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const cell=document.createElement('div');const mult=MULTIPLIERS[r][c];cell.className=`cell ${mult||''} ${r===CENTER&&c===CENTER?'center':''}`;const pending=pendingAt(r,c);const tile=pending?.tile||room.board[k(r,c)];const celeb=isCelebratedCell(r,c);if(pending)cell.classList.add('pending');if(celeb)cell.classList.add('word-flash');if(tile){const node=tileEl(tile,!pending);if(celeb)node.classList.add('celebrate');if(pending){node.title='Przeciągnij, aby przenieść, albo kliknij, aby zdjąć tę literę';node.onpointerdown=e=>startBoardPendingDrag(e,r,c,pending);node.onclick=e=>{if(dragState?.didDrag)return;e.stopPropagation();removePendingTile(r,c)}}cell.appendChild(node)}else cell.textContent=labelForMultiplier(mult,r,c);cell.onclick=()=>pending?removePendingTile(r,c):onCellClick(r,c);els.board.appendChild(cell)}}
-    function renderRack(){els.rack.innerHTML='';const me=room.players[myId];if(!me)return;(me.rack||[]).forEach((tile,i)=>{const node=tileEl(tile,false);node.classList.toggle('selected',selectedRackIndex===i);node.onpointerdown=e=>startRackDrag(e,i,tile);
+    function renderRack(){els.rack.innerHTML='';const me=room.players[myId];if(!me)return;(me.rack||[]).forEach((tile,i)=>{const node=tileEl(tile,false);node.classList.toggle('selected',selectedRackIndex===i);node.classList.toggle('drag-hidden',returningRackTileIds.has(tile?.id));node.onpointerdown=e=>startRackDrag(e,i,tile);
         node.onclick=()=>{if(dragState?.didDrag)return;if(!isMyTurn()||room.status!=='playing')return;selectedRackIndex=selectedRackIndex===i?null:i;renderRack()};els.rack.appendChild(node)})}
     function renderPlayers(){els.playersPanel.innerHTML='';room.order.forEach((id,i)=>{const p=room.players[id]||{};const online=isPlayerOnline(room,id);const row=document.createElement('div');row.className=`player ${i===room.currentIndex?'active':''} ${id===myId?'me':''}`;row.innerHTML=`<div><div class='player-name'><span class='dot' style='background:${online?['#22c55e','#3b82f6','#f97316','#a855f7'][i%4]:'#64748b'}'></span>${esc(p.name||'Gracz')} ${id===myId?'(ty)':''}</div><div class='small ${online?'online':'offline'}'>${online?'online':'offline'}</div></div><div class='score'>${p.score||0}</div>`;els.playersPanel.appendChild(row)})}
     function renderLog(){els.log.innerHTML='';[...room.logs].slice(-50).reverse().forEach(item=>{const div=document.createElement('div');div.innerHTML=item.html||esc(item.text||'');els.log.appendChild(div)})}
@@ -222,7 +223,7 @@
       const pending=pendingAt(r,c);
       if(pending?.tile){
         const p=startPoint||pointForCell(r,c);
-        animateTileBackToRack(pending.tile,p.x,p.y);
+        animateTileBackToRack(pending.tile,p.x,p.y,{hideRackUntilFinish:true});
       }
       await removePendingTile(r,c,false);
       if(showError)flashRackInvalid();
@@ -241,7 +242,7 @@
       const existing=pendingAt(r,c);
       if(animateBack&&existing?.tile){
         const p=pointForCell(r,c);
-        animateTileBackToRack(existing.tile,p.x,p.y);
+        animateTileBackToRack(existing.tile,p.x,p.y,{hideRackUntilFinish:true});
       }
       const idx=asArray(room.pending.tiles).findIndex(p=>p.r===r&&p.c===c);
       if(idx<0)return;
@@ -302,7 +303,7 @@
       if(txMessage)uiAlert(txMessage,'Głosowanie');
     }
 
-    async function passTurn(){if(!isMyTurn()||room.status!=='playing')return;asArray(room.pending?.tiles).forEach(p=>{if(p?.tile){const point=pointForCell(p.r,p.c);animateTileBackToRack(p.tile,point.x,point.y);}});const next=clone(room);const me=next.players[myId];asArray(next.pending?.tiles).forEach(p=>me.rack.push(p.tile));next.pending={uid:null,tiles:[]};next.logs=addLog(next.logs,`<b>${esc(me.name)}</b> pasuje.`);next.consecutivePasses++;advanceOrEnd(next,'Za dużo pasów z rzędu.');await saveRoom(next)}
+    async function passTurn(){if(!isMyTurn()||room.status!=='playing')return;asArray(room.pending?.tiles).forEach(p=>{if(p?.tile){const point=pointForCell(p.r,p.c);animateTileBackToRack(p.tile,point.x,point.y,{hideRackUntilFinish:true});}});const next=clone(room);const me=next.players[myId];asArray(next.pending?.tiles).forEach(p=>me.rack.push(p.tile));next.pending={uid:null,tiles:[]};next.logs=addLog(next.logs,`<b>${esc(me.name)}</b> pasuje.`);next.consecutivePasses++;advanceOrEnd(next,'Za dużo pasów z rzędu.');await saveRoom(next)}
     async function exchangeTiles(){if(!isMyTurn()||room.status!=='playing')return;if(room.pending?.tiles?.length)return uiAlert('Najpierw zdejmij litery z planszy.');if(room.bag.length<7)return uiAlert('Wymiana dostępna tylko, gdy w woreczku jest minimum 7 liter.');const me=room.players[myId];const indexes=await uiExchangePrompt(me.rack);if(!indexes||!indexes.length)return;const next=clone(room);const p=next.players[myId];const returned=[...indexes].sort((a,b)=>b-a).map(i=>p.rack.splice(i,1)[0]).filter(Boolean).map(t=>({...t,letter:t.blank?'*':t.letter,value:t.blank?0:t.value}));drawTiles(p.rack,next.bag,7);next.bag=shuffle(next.bag.concat(returned));next.logs=addLog(next.logs,`<b>${esc(p.name)}</b> wymienia ${returned.length} liter.`);next.lastEvent={type:'exchange',playerName:p.name,count:returned.length,t:serverNow()};next.consecutivePasses=0;advanceTurn(next);await saveRoom(next)}
     function shuffleRack(){
       if(rackShuffleAnimating)return;
@@ -709,7 +710,13 @@
 
     function animateTileBackToRack(tile,startX,startY,options={}){
       return new Promise(resolve=>{
+        const shouldHideRackTile=!!options.hideRackUntilFinish&&tile?.id!==undefined;
+        if(shouldHideRackTile){
+          returningRackTileIds.add(tile.id);
+          if(els.rack)renderRack();
+        }
         if(!els.dragLayer||!tile){
+          if(shouldHideRackTile){returningRackTileIds.delete(tile.id);if(els.rack)renderRack();}
           if(options.onFinish)options.onFinish();
           resolve();
           return;
@@ -740,6 +747,10 @@
           if(finished)return;
           finished=true;
           ghost.remove();
+          if(shouldHideRackTile){
+            returningRackTileIds.delete(tile.id);
+            if(els.rack)renderRack();
+          }
           if(options.onFinish)options.onFinish();
           resolve();
         };
