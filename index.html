@@ -708,24 +708,53 @@
       const pending = data.pending?.tiles || [];
       if(!pending.length) return {ok:false,message:'Nie położono żadnej litery.'};
       if(data.pending.uid !== currentPlayerId()) return {ok:false,message:'To nie jest ruch aktualnego gracza.'};
+
       const temp = {...data.board};
       pending.forEach(p => temp[key(p.r,p.c)] = p.tile);
-      const rows = [...new Set(pending.map(p=>p.r))];
-      const cols = [...new Set(pending.map(p=>p.c))];
-      const sameRow = rows.length === 1, sameCol = cols.length === 1;
-      if(!sameRow && !sameCol) return {ok:false,message:'Nowe litery muszą leżeć w jednej linii.'};
-      if(data.moveNumber === 0 && !pending.some(p=>p.r===CENTER&&p.c===CENTER)) return {ok:false,message:'Pierwszy ruch musi przechodzić przez środek planszy.'};
-      const fixed = sameRow ? rows[0] : cols[0];
-      const nums = pending.map(p=>sameRow?p.c:p.r); const min = Math.min(...nums), max = Math.max(...nums);
-      for(let i=min;i<=max;i++){const r=sameRow?fixed:i,c=sameRow?i:fixed;if(!temp[key(r,c)]) return {ok:false,message:'Między literami nie może być pustych pól.'};}
-      if(data.moveNumber > 0 && !isConnectedToExisting(data.board,pending)) return {ok:false,message:'Ruch musi dotykać litery z planszy.'};
-      const words = [], seen = new Set();
-      const main = getWordAt(temp, sameRow?fixed:pending[0].r, sameRow?pending[0].c:fixed, sameRow?'row':'col');
-      if(main.tiles.length > 1) addWord(main);
-      pending.forEach(p=>{const cross = getWordAt(temp,p.r,p.c,sameRow?'col':'row'); if(cross.tiles.length>1) addWord(cross);});
-      function addWord(w){const k=w.tiles.map(t=>key(t.r,t.c)).join('|'); if(!seen.has(k)){seen.add(k);words.push(w)}}
-      if(!words.length) return {ok:false,message:'Musisz ułożyć słowo z co najmniej 2 liter.'};
-      let total = words.reduce((sum,w)=>sum+scoreWord(w,pending),0);
+
+      const pendingKeys = new Set(pending.map(p => key(p.r,p.c)));
+      const words = [];
+      const seen = new Set();
+
+      const addWord = word => {
+        if(!word || word.tiles.length < 2) return;
+        const touchesNewTile = word.tiles.some(t => pendingKeys.has(key(t.r,t.c)));
+        if(!touchesNewTile) return;
+        const wordKey = word.tiles.map(t => key(t.r,t.c)).join('|');
+        if(seen.has(wordKey)) return;
+        seen.add(wordKey);
+        words.push(word);
+      };
+
+      for(const p of pending){
+        addWord(getWordAt(temp, p.r, p.c, 'row'));
+        addWord(getWordAt(temp, p.r, p.c, 'col'));
+      }
+
+      if(!words.length){
+        return {ok:false,message:'Musisz ułożyć przynajmniej jedno słowo z co najmniej 2 liter.'};
+      }
+
+      const pendingUsedInWord = new Set();
+      for(const word of words){
+        for(const item of word.tiles){
+          const k = key(item.r,item.c);
+          if(pendingKeys.has(k)) pendingUsedInWord.add(k);
+        }
+      }
+      if(pendingUsedInWord.size !== pendingKeys.size){
+        return {ok:false,message:'Każda nowa litera musi należeć do jakiegoś słowa.'};
+      }
+
+      if(data.moveNumber === 0){
+        const centerUsed = words.some(word => word.tiles.some(t => t.r === CENTER && t.c === CENTER));
+        if(!centerUsed) return {ok:false,message:'Pierwszy ruch musi tworzyć słowo przechodzące przez środek planszy.'};
+      }else{
+        const connected = pending.some(p => [[1,0],[-1,0],[0,1],[0,-1]].some(([dr,dc]) => inBounds(p.r+dr,p.c+dc) && data.board[key(p.r+dr,p.c+dc)]));
+        if(!connected) return {ok:false,message:'Przynajmniej jedna nowa litera musi dotykać litery z planszy.'};
+      }
+
+      let total = words.reduce((sum,word) => sum + scoreWord(word,pending),0);
       if(pending.length === 7) total += 50;
       return {ok:true,score:total,words:words.map(w=>w.text)};
     }
