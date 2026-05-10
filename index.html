@@ -664,7 +664,7 @@
       const player = next.players[playerId];
       const pending = next.pending?.tiles || [];
       pending.forEach(p => next.board[key(p.r,p.c)] = p.tile);
-      next.lastEvent = {type:'word',playerId,playerName:player.name,words:result.words,score:result.score,tiles:pending.map(p=>({r:p.r,c:p.c,letter:p.tile.letter})),t:Date.now()};
+      next.lastEvent = {type:'word',playerId,playerName:player.name,words:result.words,score:result.score,tiles:result.wordTiles || pending.map(p=>({r:p.r,c:p.c,letter:p.tile.letter})),newTiles:pending.map(p=>({r:p.r,c:p.c,letter:p.tile.letter})),t:Date.now()};
       player.score += result.score;
       drawTiles(player.rack,next.bag,7);
       next.moveNumber++;
@@ -804,7 +804,17 @@
 
       let total = words.reduce((sum,word) => sum + scoreWord(word,pending),0);
       if(pending.length === 7) total += 50;
-      return {ok:true,score:total,words:words.map(w=>w.text)};
+      const wordTiles = [];
+      const wordTileKeys = new Set();
+      for(const word of words){
+        for(const item of word.tiles){
+          const k = key(item.r,item.c);
+          if(wordTileKeys.has(k)) continue;
+          wordTileKeys.add(k);
+          wordTiles.push({r:item.r,c:item.c,letter:item.tile.letter});
+        }
+      }
+      return {ok:true,score:total,words:words.map(w=>w.text),wordTiles};
     }
 
     function getWordAt(boardObj,r,c,dir){
@@ -1134,8 +1144,9 @@
     }
     function isCelebratedCell(r,c){
       const ev = room?.lastEvent;
-      if(!ev || ev.type !== 'word' || !Array.isArray(ev.tiles)) return false;
-      return ev.tiles.some(t => t.r === r && t.c === c);
+      if(!ev || ev.type !== 'word') return false;
+      const tiles = Array.isArray(ev.tiles) ? ev.tiles : [];
+      return tiles.some(t => t.r === r && t.c === c);
     }
     function languageLabel(lang){
       if(lang === 'en') return 'angielski';
