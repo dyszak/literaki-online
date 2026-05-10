@@ -1,1264 +1,155 @@
 <!DOCTYPE html>
-<html lang='pl'>
+<html lang="pl">
 <head>
-  <meta charset='UTF-8' />
-  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-  <title>Literaki Online — 4 osoby</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Literaki Online</title>
   <style>
-    :root{
-      --bg:#0f172a;--panel:#111827;--panel2:#1f2937;--text:#e5e7eb;--muted:#9ca3af;--accent:#fbbf24;
-      --green:#22c55e;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;--tile:#f4d28f;--tile-border:#b9852b;
-      --cell:#ddc7a1;--board:#315f3e;--shadow:0 18px 50px rgba(0,0,0,.36)
-    }
-    *{box-sizing:border-box;user-select:none}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:radial-gradient(circle at top left,#1e3a8a 0,transparent 32%),var(--bg);color:var(--text);min-height:100vh;padding:18px}button,input,select{font:inherit}.hidden{display:none!important}
-    .wrap{max-width:1500px;margin:0 auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;background:rgba(17,24,39,.86);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:14px 18px;box-shadow:var(--shadow);backdrop-filter:blur(10px);margin-bottom:18px}.title h1{margin:0;font-size:28px;letter-spacing:-.04em}.title span{color:var(--muted);font-size:14px}.badge{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border-radius:999px;background:rgba(251,191,36,.13);border:1px solid rgba(251,191,36,.28);color:#fde68a;white-space:nowrap;font-weight:800}
-    .card{background:rgba(17,24,39,.92);border:1px solid rgba(255,255,255,.09);border-radius:24px;box-shadow:var(--shadow);padding:18px}.center-card{max-width:720px;margin:60px auto}.center-card h2{font-size:32px;margin:0 0 8px;letter-spacing:-.04em}.center-card p{margin:0 0 18px;color:var(--muted);line-height:1.55}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px;margin-bottom:12px}.field label{font-size:13px;color:var(--muted);font-weight:800}.field input,.field select{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none}.field select option{background:#111827;color:#e5e7eb}.btn{border:0;border-radius:14px;padding:12px 13px;background:var(--panel2);color:var(--text);font-weight:900;cursor:pointer;transition:.08s}.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.08)}.btn:disabled{opacity:.5;cursor:not-allowed}.primary{background:var(--green)!important;color:#052e16!important}.danger{background:var(--red)!important;color:#fff!important}.blue{background:var(--blue)!important;color:#fff!important}.purple{background:var(--purple)!important;color:#fff!important}.wide{width:100%}.small{font-size:13px;color:var(--muted);line-height:1.45}.room-code{font-size:42px;font-weight:950;letter-spacing:.12em;color:#fde68a;text-align:center;background:rgba(251,191,36,.1);border:1px dashed rgba(251,191,36,.35);border-radius:18px;padding:16px;margin:12px 0}.players-list{display:grid;gap:10px;margin:14px 0}.lobby-player{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px}.online{color:#86efac}.offline{color:#fca5a5}
-    .settings-card{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px;margin:14px 0}.settings-card h3{margin:0 0 10px;font-size:17px}.check-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;color:var(--text);font-weight:800;line-height:1.35}.check-row input{width:18px;height:18px;margin-top:1px;accent-color:#22c55e}.check-row span{display:block}.check-row small{display:block;color:var(--muted);font-weight:600;margin-top:2px}.dim{opacity:.52}
-    .game{display:grid;grid-template-columns:minmax(700px,1fr) 370px;gap:18px;align-items:start}.board-wrap,.side,.rack-panel{background:rgba(17,24,39,.9);border:1px solid rgba(255,255,255,.08);border-radius:24px;box-shadow:var(--shadow)}.board-wrap{padding:16px;overflow:auto}.board{width:min(92vw,820px);aspect-ratio:1;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);gap:3px;background:var(--board);padding:8px;border-radius:18px;margin:0 auto;border:4px solid #183826}.cell{position:relative;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--cell);min-width:34px;min-height:34px;color:rgba(17,24,39,.78);font-size:clamp(8px,.7vw,11px);font-weight:950;text-align:center;line-height:1.05;cursor:pointer;transition:.08s;overflow:hidden}.cell:hover{transform:translateY(-1px);filter:brightness(1.05)}.cell.pending{outline:3px solid #fbbf24;outline-offset:-3px}.cell.tw{background:#ef4444;color:#fff}.cell.dw{background:#f59e0b;color:#111827}.cell.tl{background:#2563eb;color:#fff}.cell.dl{background:#93c5fd;color:#0f172a}.cell.center{box-shadow:inset 0 0 0 3px rgba(255,255,255,.5)}.tile{width:100%;height:100%;min-width:34px;min-height:34px;border-radius:9px;background:linear-gradient(145deg,#ffe0a5,var(--tile));border:2px solid var(--tile-border);color:#3b2607;display:flex;align-items:center;justify-content:center;position:relative;font-weight:950;font-size:clamp(17px,1.5vw,25px);box-shadow:inset 0 1px rgba(255,255,255,.55),0 3px 0 #8d5e18;cursor:pointer}.tile small{position:absolute;right:4px;bottom:2px;font-size:10px;font-weight:950;color:#5b3a0a}.tile.blank:after{content:'★';position:absolute;left:4px;top:2px;font-size:9px;opacity:.65}.tile.locked{filter:saturate(.9)}
-    .rack-panel{margin-top:18px;padding:16px}.rack-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.rack-head h2{margin:0;font-size:18px}.rack{display:grid;grid-template-columns:repeat(7,70px);gap:10px;min-height:78px;align-items:center;justify-content:center;background:rgba(0,0,0,.18);padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.08);overflow-x:auto}.rack .tile{width:70px;height:70px;font-size:30px}.rack .tile.selected{outline:4px solid var(--accent);transform:translateY(-6px)}.side{padding:16px;display:flex;flex-direction:column;gap:14px;position:sticky;top:18px}.players{display:grid;gap:10px}.player{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:12px;border-radius:17px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08)}.player.active{background:rgba(34,197,94,.13);border-color:rgba(34,197,94,.42)}.player.me{box-shadow:inset 0 0 0 2px rgba(251,191,36,.25)}.player-name{font-weight:850;display:flex;gap:8px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}.score{font-size:24px;font-weight:950;color:#fff}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.info{display:grid;gap:8px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);padding:13px;border-radius:17px;color:var(--muted);font-size:14px;line-height:1.45}.info strong{color:var(--text)}.log{min-height:160px;max-height:270px;overflow:auto;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:17px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted)}.log b{color:var(--text)}
+    :root{--bg:#0f172a;--panel:#111827;--panel2:#1f2937;--text:#e5e7eb;--muted:#9ca3af;--accent:#fbbf24;--green:#22c55e;--red:#ef4444;--blue:#3b82f6;--purple:#a855f7;--tile:#f4d28f;--tile-border:#b9852b;--board:#315f3e;--cell:#ddc7a1;--shadow:0 18px 50px rgba(0,0,0,.36)}
+    *{box-sizing:border-box;user-select:none}body{margin:0;min-height:100vh;padding:18px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,#1e3a8a 0,transparent 32%),var(--bg);color:var(--text)}button,input,select{font:inherit}.hidden{display:none!important}.wrap{max-width:1500px;margin:0 auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:14px;background:rgba(17,24,39,.88);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:14px 18px;box-shadow:var(--shadow);backdrop-filter:blur(10px);margin-bottom:18px}.title h1{margin:0;font-size:28px;letter-spacing:-.04em}.title span{color:var(--muted);font-size:14px}.top-badges{display:flex;gap:10px;align-items:center;justify-content:flex-end;flex-wrap:wrap}.badge{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border-radius:999px;background:rgba(251,191,36,.13);border:1px solid rgba(251,191,36,.28);color:#fde68a;white-space:nowrap;font-weight:850}.badge.warn{animation:timerWarn .8s ease-in-out infinite;color:#fecaca;border-color:rgba(248,113,113,.55);background:rgba(239,68,68,.15)}
+    .card{background:rgba(17,24,39,.92);border:1px solid rgba(255,255,255,.09);border-radius:24px;box-shadow:var(--shadow);padding:18px}.center-card{max-width:720px;margin:60px auto}.center-card h2{font-size:32px;margin:0 0 8px;letter-spacing:-.04em}.center-card p{margin:0 0 18px;color:var(--muted);line-height:1.55}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:7px;margin-bottom:12px}.field label{font-size:13px;color:var(--muted);font-weight:850}.field input,.field select{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none}.field select option{background:#111827;color:#e5e7eb}.btn{border:0;border-radius:14px;padding:12px 13px;background:var(--panel2);color:var(--text);font-weight:900;cursor:pointer;transition:.08s}.btn:hover:not(:disabled){transform:translateY(-1px);filter:brightness(1.08)}.btn:disabled{opacity:.45;cursor:not-allowed}.primary{background:var(--green)!important;color:#052e16!important}.danger{background:var(--red)!important;color:#fff!important}.blue{background:var(--blue)!important;color:#fff!important}.purple{background:var(--purple)!important;color:#fff!important}.wide{width:100%}.small{font-size:13px;color:var(--muted);line-height:1.45}.settings-card{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px;margin:14px 0}.settings-card h3{margin:0 0 10px;font-size:17px}.check-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;color:var(--text);font-weight:850;line-height:1.35}.check-row input{width:18px;height:18px;margin-top:1px;accent-color:#22c55e}.check-row small{display:block;color:var(--muted);font-weight:600;margin-top:2px}.dim{opacity:.55}.room-code{font-size:42px;font-weight:950;letter-spacing:.12em;color:#fde68a;text-align:center;background:rgba(251,191,36,.1);border:1px dashed rgba(251,191,36,.35);border-radius:18px;padding:16px;margin:12px 0}.players-list{display:grid;gap:10px;margin:14px 0}.lobby-player{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:12px}.online{color:#86efac}.offline{color:#fca5a5}
+    .game{display:grid;grid-template-columns:minmax(700px,1fr) 370px;gap:18px;align-items:start}.board-wrap,.side,.rack-panel{background:rgba(17,24,39,.9);border:1px solid rgba(255,255,255,.08);border-radius:24px;box-shadow:var(--shadow)}.board-wrap{padding:16px;overflow:auto}.board{width:min(92vw,820px);aspect-ratio:1;display:grid;grid-template-columns:repeat(15,1fr);grid-template-rows:repeat(15,1fr);gap:3px;background:var(--board);padding:8px;border-radius:18px;margin:0 auto;border:4px solid #183826}.cell{position:relative;display:flex;align-items:center;justify-content:center;border-radius:8px;background:var(--cell);min-width:34px;min-height:34px;color:rgba(17,24,39,.78);font-size:clamp(8px,.7vw,11px);font-weight:950;text-align:center;line-height:1.05;cursor:pointer;transition:.08s;overflow:hidden}.cell:hover{transform:translateY(-1px);filter:brightness(1.05)}.cell.pending{outline:3px solid #fbbf24;outline-offset:-3px}.cell.tw{background:#ef4444;color:#fff}.cell.dw{background:#f59e0b;color:#111827}.cell.tl{background:#2563eb;color:#fff}.cell.dl{background:#93c5fd;color:#0f172a}.cell.center{box-shadow:inset 0 0 0 3px rgba(255,255,255,.5)}.cell.word-flash{animation:cellFlash 1.25s ease both}.tile{width:100%;height:100%;min-width:34px;min-height:34px;border-radius:9px;background:linear-gradient(145deg,#ffe0a5,var(--tile));border:2px solid var(--tile-border);color:#3b2607;display:flex;align-items:center;justify-content:center;position:relative;font-weight:950;font-size:clamp(17px,1.5vw,25px);box-shadow:inset 0 1px rgba(255,255,255,.55),0 3px 0 #8d5e18;cursor:pointer}.tile small{position:absolute;right:4px;bottom:2px;font-size:10px;font-weight:950;color:#5b3a0a}.tile.blank:after{content:"★";position:absolute;left:4px;top:2px;font-size:9px;opacity:.65}.tile.locked{filter:saturate(.9)}.cell.pending .tile{animation:placePop .25s cubic-bezier(.2,1.4,.3,1) both}.tile.celebrate{animation:tileCelebrate 1.05s cubic-bezier(.2,1.45,.3,1) both}
+    .rack-panel{margin-top:18px;padding:16px}.rack-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.rack-head h2{margin:0;font-size:18px}.rack{display:grid;grid-template-columns:repeat(7,70px);gap:10px;min-height:78px;align-items:center;justify-content:center;background:rgba(0,0,0,.18);padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.08);overflow-x:auto}.rack .tile{width:70px;height:70px;font-size:30px}.rack .tile.selected{outline:4px solid var(--accent);transform:translateY(-6px)}.side{padding:16px;display:flex;flex-direction:column;gap:14px;position:sticky;top:18px}.players{display:grid;gap:10px}.player{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:12px;border-radius:17px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.08)}.player.active{background:rgba(34,197,94,.13);border-color:rgba(34,197,94,.42);animation:activePulse 1.8s ease-in-out infinite}.player.me{box-shadow:inset 0 0 0 2px rgba(251,191,36,.25)}.player-name{font-weight:850;display:flex;gap:8px;align-items:center}.dot{width:10px;height:10px;border-radius:50%;background:var(--muted)}.score{font-size:24px;font-weight:950;color:#fff}.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}.info{display:grid;gap:8px;background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);padding:13px;border-radius:17px;color:var(--muted);font-size:14px;line-height:1.45}.info strong{color:var(--text)}.log{min-height:160px;max-height:270px;overflow:auto;background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.08);padding:12px;border-radius:17px;display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--muted)}.log b{color:var(--text)}
     .vote-panel{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.28);border-radius:18px;padding:14px;color:#fde68a}.vote-panel h3{margin:0 0 8px;font-size:18px}.vote-panel p{margin:0 0 10px;color:#fef3c7;line-height:1.45}.word-list{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0}.word-pill{background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.13);border-radius:999px;padding:6px 10px;font-weight:900;color:#fff}.vote-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.vote-meta{font-size:13px;color:#fef3c7;line-height:1.45;margin-top:8px}.vote-progress{width:100%;height:12px;background:rgba(0,0,0,.32);border:1px solid rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin:10px 0}.vote-progress-fill{height:100%;width:100%;background:linear-gradient(90deg,#22c55e,#fbbf24,#ef4444);border-radius:999px;transition:width .35s linear}.vote-progress.danger .vote-progress-fill{animation:timerWarn .8s ease-in-out infinite}.vote-time{font-weight:950;color:#fff}
-    .ui-modal-backdrop{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.72);backdrop-filter:blur(7px);padding:18px}.ui-modal-backdrop.show{display:flex;animation:overlayFade .2s ease both}.ui-modal{width:min(480px,94vw);background:linear-gradient(145deg,rgba(17,24,39,.98),rgba(30,41,59,.98));border:1px solid rgba(255,255,255,.12);border-radius:26px;box-shadow:var(--shadow);padding:20px;animation:eventPop .24s cubic-bezier(.2,1.25,.3,1) both}.ui-modal h3{margin:0 0 8px;font-size:24px;letter-spacing:-.03em}.ui-modal p{margin:0 0 14px;color:var(--muted);line-height:1.5;white-space:pre-wrap}.ui-modal input{width:100%;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none;margin:4px 0 14px}.ui-modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}.ui-modal-actions .btn{min-width:105px}.ui-exchange-grid{display:grid;grid-template-columns:repeat(7,minmax(42px,1fr));gap:10px;margin:12px 0 16px}.ui-letter-grid{display:grid;grid-template-columns:repeat(7,minmax(34px,1fr));gap:8px;margin:12px 0 16px}.ui-letter-choice{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:var(--text);border-radius:12px;padding:10px 0;font-weight:950;cursor:pointer}.ui-letter-choice:hover{background:rgba(251,191,36,.2);border-color:rgba(251,191,36,.45);transform:translateY(-1px)}.ui-exchange-choice{border:0;background:transparent;padding:0;cursor:pointer;border-radius:14px}.ui-exchange-choice .tile{width:100%;height:auto;aspect-ratio:1;min-width:0;min-height:0}.ui-exchange-choice.selected{outline:4px solid #60a5fa;outline-offset:3px;background:rgba(96,165,250,.12)}.ui-exchange-choice:hover{transform:translateY(-2px)}
-    .toast-host{position:fixed;right:18px;bottom:18px;z-index:80;display:grid;gap:10px;max-width:min(380px,calc(100vw - 36px))}.toast{background:rgba(17,24,39,.96);border:1px solid rgba(251,191,36,.36);box-shadow:var(--shadow);border-radius:18px;padding:13px 14px;animation:toastIn .28s ease both;color:var(--text)}.toast b{color:#fde68a}.toast small{display:block;color:var(--muted);margin-top:3px;line-height:1.35}.event-overlay{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.64);backdrop-filter:blur(5px);pointer-events:none}.event-overlay.show{display:flex;animation:overlayFade .28s ease both}.event-card{width:min(520px,92vw);background:linear-gradient(145deg,rgba(17,24,39,.98),rgba(30,41,59,.98));border:1px solid rgba(255,255,255,.12);border-radius:30px;box-shadow:var(--shadow);padding:28px;text-align:center;animation:eventPop .36s cubic-bezier(.2,1.35,.35,1) both}.event-icon{font-size:62px;line-height:1;margin-bottom:10px;filter:drop-shadow(0 12px 22px rgba(0,0,0,.35));animation:swing .9s ease both}.event-card h2{margin:0 0 8px;font-size:32px;letter-spacing:-.04em}.event-card p{margin:0;color:var(--muted);line-height:1.45}.cell.word-flash{animation:cellFlash 1.35s ease both}.cell.word-flash .tile,.tile.celebrate{animation:tileCelebrate 1.1s cubic-bezier(.2,1.45,.3,1) both}.cell.pending .tile{animation:placePop .28s cubic-bezier(.2,1.4,.3,1) both}.player.active{animation:activePulse 1.8s ease-in-out infinite}.badge.timer-warn{animation:timerWarn .8s ease-in-out infinite;color:#fecaca;border-color:rgba(248,113,113,.55);background:rgba(239,68,68,.15)}@keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}@keyframes overlayFade{from{opacity:0}to{opacity:1}}@keyframes eventPop{from{opacity:0;transform:translateY(18px) scale(.92)}to{opacity:1;transform:none}}@keyframes swing{0%{transform:rotate(-12deg) scale(.9)}40%{transform:rotate(8deg) scale(1.08)}70%{transform:rotate(-4deg)}100%{transform:rotate(0) scale(1)}}@keyframes cellFlash{0%{box-shadow:0 0 0 0 rgba(251,191,36,.95);filter:brightness(1.25)}35%{box-shadow:0 0 0 6px rgba(251,191,36,.45);filter:brightness(1.16)}100%{box-shadow:0 0 0 0 rgba(251,191,36,0);filter:none}}@keyframes tileCelebrate{0%{transform:translateY(0) rotate(0)}28%{transform:translateY(-12px) rotate(-4deg) scale(1.08)}58%{transform:translateY(3px) rotate(3deg) scale(.98)}100%{transform:none}}@keyframes placePop{from{opacity:.5;transform:scale(.7) rotate(-6deg)}to{opacity:1;transform:none}}@keyframes activePulse{0%,100%{box-shadow:inset 0 0 0 0 rgba(34,197,94,.0)}50%{box-shadow:inset 0 0 0 2px rgba(34,197,94,.5),0 0 24px rgba(34,197,94,.18)}}@keyframes timerWarn{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+    .toast-host{position:fixed;right:18px;bottom:18px;z-index:80;display:grid;gap:10px;max-width:min(380px,calc(100vw - 36px))}.toast{background:rgba(17,24,39,.96);border:1px solid rgba(251,191,36,.36);box-shadow:var(--shadow);border-radius:18px;padding:13px 14px;animation:toastIn .28s ease both;color:var(--text)}.toast b{color:#fde68a}.toast small{display:block;color:var(--muted);margin-top:3px;line-height:1.35}.event-overlay{position:fixed;inset:0;z-index:70;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.64);backdrop-filter:blur(5px);pointer-events:none}.event-overlay.show{display:flex;animation:overlayFade .28s ease both}.event-card{width:min(520px,92vw);background:linear-gradient(145deg,rgba(17,24,39,.98),rgba(30,41,59,.98));border:1px solid rgba(255,255,255,.12);border-radius:30px;box-shadow:var(--shadow);padding:28px;text-align:center;animation:eventPop .36s cubic-bezier(.2,1.35,.35,1) both}.event-icon{font-size:62px;line-height:1;margin-bottom:10px;filter:drop-shadow(0 12px 22px rgba(0,0,0,.35));animation:swing .9s ease both}.event-card h2{margin:0 0 8px;font-size:32px;letter-spacing:-.04em}.event-card p{margin:0;color:var(--muted);line-height:1.45}.ui-modal-backdrop{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.72);backdrop-filter:blur(7px);padding:18px}.ui-modal-backdrop.show{display:flex;animation:overlayFade .2s ease both}.ui-modal{width:min(520px,94vw);background:linear-gradient(145deg,rgba(17,24,39,.98),rgba(30,41,59,.98));border:1px solid rgba(255,255,255,.12);border-radius:26px;box-shadow:var(--shadow);padding:20px;animation:eventPop .24s cubic-bezier(.2,1.25,.3,1) both}.ui-modal h3{margin:0 0 8px;font-size:24px;letter-spacing:-.03em}.ui-modal p{margin:0 0 14px;color:var(--muted);line-height:1.5;white-space:pre-wrap}.ui-modal input{width:100%;border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none;margin:4px 0 14px}.ui-modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}.ui-modal-actions .btn{min-width:105px}.ui-exchange-grid{display:grid;grid-template-columns:repeat(7,minmax(42px,1fr));gap:10px;margin:12px 0 16px}.ui-exchange-choice{border:0;background:transparent;padding:0;cursor:pointer;border-radius:14px}.ui-exchange-choice .tile{width:100%;height:auto;aspect-ratio:1;min-width:0;min-height:0}.ui-exchange-choice.selected{outline:4px solid #60a5fa;outline-offset:3px;background:rgba(96,165,250,.12)}.ui-letter-grid{display:grid;grid-template-columns:repeat(7,minmax(34px,1fr));gap:8px;margin:12px 0 16px}.ui-letter-choice{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:var(--text);border-radius:12px;padding:10px 0;font-weight:950;cursor:pointer}.ui-letter-choice:hover{background:rgba(251,191,36,.2);border-color:rgba(251,191,36,.45);transform:translateY(-1px)}
+    @keyframes toastIn{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}@keyframes overlayFade{from{opacity:0}to{opacity:1}}@keyframes eventPop{from{opacity:0;transform:translateY(18px) scale(.92)}to{opacity:1;transform:none}}@keyframes swing{0%{transform:rotate(-12deg) scale(.9)}40%{transform:rotate(8deg) scale(1.08)}70%{transform:rotate(-4deg)}100%{transform:rotate(0) scale(1)}}@keyframes cellFlash{0%{box-shadow:0 0 0 0 rgba(251,191,36,.95);filter:brightness(1.25)}35%{box-shadow:0 0 0 6px rgba(251,191,36,.45);filter:brightness(1.16)}100%{box-shadow:0 0 0 0 rgba(251,191,36,0);filter:none}}@keyframes tileCelebrate{0%{transform:translateY(0) rotate(0)}28%{transform:translateY(-12px) rotate(-4deg) scale(1.08)}58%{transform:translateY(3px) rotate(3deg) scale(.98)}100%{transform:none}}@keyframes placePop{from{opacity:.5;transform:scale(.7) rotate(-6deg)}to{opacity:1;transform:none}}@keyframes activePulse{0%,100%{box-shadow:inset 0 0 0 0 rgba(34,197,94,0)}50%{box-shadow:inset 0 0 0 2px rgba(34,197,94,.5),0 0 24px rgba(34,197,94,.18)}}@keyframes timerWarn{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
     @media(max-width:1050px){.game{grid-template-columns:1fr}.side{position:static}.board{width:min(94vw,820px)}.rack{grid-template-columns:repeat(7,minmax(46px,1fr))}.rack .tile{width:100%;height:auto;aspect-ratio:1}.grid2{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <div class='wrap'>
-    <section class='topbar'>
-      <div class='title'>
-        <h1>Literaki Online</h1>
-        <span>Scrabble-like dla 4 osób, lobby i pokoje online.</span>
-      </div>
-      <div style='display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end'>
-        <div id='turnTimerBadge' class='badge'>Czas: —</div>
-        <div id='topBadge' class='badge'>Ładowanie…</div>
-      </div>
+  <div class="wrap">
+    <section class="topbar">
+      <div class="title"><h1>Literaki Online</h1><span>Lobby online, głosowanie, timer i gra dla 2–4 osób.</span></div>
+      <div class="top-badges"><div id="turnTimerBadge" class="badge">Czas: —</div><div id="topBadge" class="badge">Ładowanie…</div></div>
     </section>
 
-    <section id='setupView' class='card center-card'>
-      <h2>Ładowanie gry</h2>
-      <p>Łączę aplikację z Firebase i przygotowuję lobby online.</p>
-      <div class='small' id='setupError'></div>
-    </section>
+    <section id="loadingView" class="card center-card"><h2>Ładowanie gry</h2><p id="loadingText">Łączę aplikację z Firebase.</p></section>
 
-    <section id='homeView' class='card center-card hidden'>
-      <h2>Lobby</h2>
-      <p>Stwórz pokój i wyślij znajomym kod albo link. Gra może działać od 2 do 4 osób.</p>
-      <div class='field'>
-        <label>Twoja nazwa</label>
-        <input id='nameInput' maxlength='18' placeholder='np. Daniel' />
-      </div>
-
-      <div class='settings-card'>
+    <section id="homeView" class="card center-card hidden">
+      <h2>Lobby</h2><p>Stwórz pokój i wyślij znajomym kod albo link. Gra może działać od 2 do 4 osób.</p>
+      <div class="field"><label>Twoja nazwa</label><input id="nameInput" maxlength="18" placeholder="np. Daniel" /></div>
+      <div class="settings-card">
         <h3>Ustawienia pokoju</h3>
-        <div class='field'>
-          <label>Liczba graczy</label>
-          <select id='playerCountSelect'>
-            <option value='2'>2 osoby</option>
-            <option value='3'>3 osoby</option>
-            <option value='4' selected>4 osoby</option>
-          </select>
-        </div>
-        <label class='check-row'>
-          <input id='timerToggle' type='checkbox' checked />
-          <span>Limit czasu na ułożenie słowa
-            <small>Po przekroczeniu czasu litery wracają na stojak, a gracz traci kolejkę.</small>
-          </span>
-        </label>
-        <div id='timerSecondsWrap' class='field'>
-          <label>Czas na ruch: 15–600 sekund</label>
-          <input id='timerSecondsInput' type='number' min='15' max='600' step='5' value='120' />
-        </div>
-        <label id='voteToggleWrap' class='check-row'>
-          <input id='voteToggle' type='checkbox' checked />
-          <span>Głosowanie nad poprawnością słowa
-            <small>Po zatwierdzeniu ruchu pozostali gracze głosują. Jeżeli większość kliknie „nie zgadzam się”, ruch przepada i gracz traci kolejkę.</small>
-          </span>
-        </label>
-
-        <input id='dictionaryToggle' type='checkbox' class='hidden' />
-        <div id='dictionaryLangWrap' class='hidden'><select id='dictionaryLangSelect'><option value='pl'>Polski</option></select></div>
-        <div id='dictionarySourceWrap' class='hidden'><select id='dictionarySourceSelect'><option value='none'>Brak</option></select></div>
-        <p id='settingsHint' class='small' style='margin:8px 0 0'></p>
+        <div class="field"><label>Liczba graczy</label><select id="playerCountSelect"><option value="2">2 osoby</option><option value="3">3 osoby</option><option value="4" selected>4 osoby</option></select></div>
+        <label class="check-row"><input id="timerToggle" type="checkbox" checked /><span>Limit czasu na ułożenie słowa<small>Po przekroczeniu czasu litery wracają na stojak, a gracz traci kolejkę.</small></span></label>
+        <div id="timerSecondsWrap" class="field"><label>Czas na ruch: 15–600 sekund</label><input id="timerSecondsInput" type="number" min="15" max="600" step="5" value="120" /></div>
+        <label class="check-row"><input id="voteToggle" type="checkbox" checked /><span>Głosowanie nad poprawnością słowa<small>Po zatwierdzeniu ruchu pozostali gracze głosują. Jeżeli wymagana liczba aktywnych graczy kliknie „nie zgadzam się”, ruch przepada.</small></span></label>
+        <p id="settingsHint" class="small" style="margin:8px 0 0"></p>
       </div>
-
-      <div class='grid2'>
-        <button id='createRoomBtn' class='btn primary'>Utwórz pokój</button>
-        <div>
-          <input id='joinCodeInput' maxlength='6' placeholder='Kod pokoju' style='width:100%;margin-bottom:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none;text-transform:uppercase' />
-          <button id='joinRoomBtn' class='btn blue wide'>Dołącz</button>
-        </div>
-      </div>
-      <p class='small' style='margin-top:16px'>Uwaga: to prosta wersja peer-lobby na Firebase. Nie jest odporna na cheatowanie, bo klienci mają dostęp do stanu gry.</p>
+      <div class="grid2"><button id="createRoomBtn" class="btn primary">Utwórz pokój</button><div><input id="joinCodeInput" maxlength="6" placeholder="Kod pokoju" style="width:100%;margin-bottom:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.07);color:var(--text);border-radius:14px;padding:13px 14px;outline:none;text-transform:uppercase" /><button id="joinRoomBtn" class="btn blue wide">Dołącz</button></div></div>
+      <p class="small" style="margin-top:16px">To prosta gra ze wspólnym stanem w Firebase. Do gry ze znajomymi wystarczy, ale nie jest odporna na cheatowanie.</p>
     </section>
 
-    <section id='lobbyView' class='card center-card hidden'>
-      <h2>Pokój</h2>
-      <p>Wyślij kod lub link pozostałym graczom.</p>
-      <div id='roomCodeBox' class='room-code'>-----</div>
-      <button id='copyLinkBtn' class='btn blue wide'>Kopiuj link do pokoju</button>
-      <div id='lobbySettingsSummary' class='info' style='margin-top:14px'></div>
-      <div id='lobbyPlayers' class='players-list'></div>
-      <button id='startGameBtn' class='btn primary wide'>Start gry</button>
-      <button id='backHomeBtn' class='btn wide' style='margin-top:10px'>Wróć</button>
-      <p class='small' id='hostHint' style='margin-top:14px'></p>
+    <section id="lobbyView" class="card center-card hidden">
+      <h2>Pokój</h2><p>Wyślij kod lub link pozostałym graczom.</p><div id="roomCodeBox" class="room-code">-----</div><button id="copyLinkBtn" class="btn blue wide">Kopiuj link do pokoju</button><div id="lobbySettingsSummary" class="info" style="margin-top:14px"></div><div id="lobbyPlayers" class="players-list"></div><button id="startGameBtn" class="btn primary wide">Start gry</button><button id="backHomeBtn" class="btn wide" style="margin-top:10px">Wróć</button><p class="small" id="hostHint" style="margin-top:14px"></p>
     </section>
 
-    <section id='gameView' class='game hidden'>
-      <main>
-        <div class='board-wrap'><div id='board' class='board'></div></div>
-        <div class='rack-panel'>
-          <div class='rack-head'>
-            <h2 id='rackTitle'>Stojak</h2>
-            <span id='movePreview' class='badge'>Ruch: 0 pkt</span>
-          </div>
-          <div id='rack' class='rack'></div>
-        </div>
-      </main>
-      <aside class='side'>
-        <div id='playersPanel' class='players'></div>
-        <div class='controls'>
-          <button id='playBtn' class='btn primary'>Zatwierdź</button>
-          <button id='undoBtn' class='btn'>Cofnij literę</button>
-          <button id='exchangeBtn' class='btn blue'>Wymień</button>
-          <button id='passBtn' class='btn'>Pas</button>
-          <button id='shuffleBtn' class='btn purple'>Pomieszaj</button>
-          <button id='leaveBtn' class='btn danger'>Wyjdź</button>
-        </div>
-        <div id='votePanel' class='vote-panel hidden'></div>
-        <div class='info'>
-          <div><strong>Pokój:</strong> <span id='roomInfo'>—</span></div>
-          <div><strong>Tryb słów:</strong> <span id='validationInfo'>—</span></div>
-          <div><strong>Czas ruchu:</strong> <span id='timerInfo'>—</span></div>
-          <div><strong>Woreczek:</strong> <span id='bagCount'>0</span> liter</div>
-          <div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div>
-          <div><strong>Zasada:</strong> pierwszy ruch musi przejść przez środek.</div>
-        </div>
-        <div id='log' class='log'></div>
+    <section id="gameView" class="game hidden">
+      <main><div class="board-wrap"><div id="board" class="board"></div></div><div class="rack-panel"><div class="rack-head"><h2 id="rackTitle">Stojak</h2><span id="movePreview" class="badge">Ruch: 0 pkt</span></div><div id="rack" class="rack"></div></div></main>
+      <aside class="side">
+        <div id="playersPanel" class="players"></div>
+        <div class="controls"><button id="playBtn" class="btn primary">Zatwierdź</button><button id="undoBtn" class="btn">Cofnij literę</button><button id="exchangeBtn" class="btn blue">Wymień</button><button id="passBtn" class="btn">Pas</button><button id="shuffleBtn" class="btn purple">Pomieszaj</button><button id="leaveBtn" class="btn danger">Wyjdź</button></div>
+        <div id="votePanel" class="vote-panel hidden"></div>
+        <div class="info"><div><strong>Pokój:</strong> <span id="roomInfo">—</span></div><div><strong>Tryb słów:</strong> <span id="validationInfo">głosowanie</span></div><div><strong>Czas ruchu:</strong> <span id="timerInfo">—</span></div><div><strong>Woreczek:</strong> <span id="bagCount">0</span> liter</div><div><strong>Premie:</strong> TW = potrójne słowo, DW = podwójne słowo, TL = potrójna litera, DL = podwójna litera.</div></div>
+        <div id="log" class="log"></div>
       </aside>
     </section>
   </div>
 
-  <div id='toastHost' class='toast-host'></div>
-  <div id='eventOverlay' class='event-overlay'>
-    <div class='event-card'>
-      <div id='eventIcon' class='event-icon'>⏱️</div>
-      <h2 id='eventTitle'>Czas minął!</h2>
-      <p id='eventText'>Gracz traci kolejkę.</p>
-    </div>
-  </div>
+  <div id="toastHost" class="toast-host"></div>
+  <div id="eventOverlay" class="event-overlay"><div class="event-card"><div id="eventIcon" class="event-icon">✨</div><h2 id="eventTitle">Ruch!</h2><p id="eventText"></p></div></div>
+  <div id="uiModalBackdrop" class="ui-modal-backdrop"><div class="ui-modal"><h3 id="uiModalTitle">Komunikat</h3><p id="uiModalText"></p><input id="uiModalInput" class="hidden" /><div id="uiModalActions" class="ui-modal-actions"></div></div></div>
 
-  <div id='uiModalBackdrop' class='ui-modal-backdrop'>
-    <div class='ui-modal'>
-      <h3 id='uiModalTitle'>Komunikat</h3>
-      <p id='uiModalText'></p>
-      <input id='uiModalInput' class='hidden' />
-      <div id='uiModalActions' class='ui-modal-actions'></div>
-    </div>
-  </div>
-
-  <script type='module'>    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
     import { getAuth, signInAnonymously } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js';
-    import { getDatabase, ref, get, set, update, remove, onValue, onDisconnect } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
-
-    // Firebase używany do lobby, synchronizacji gry i statusu online/offline.
-    const FIREBASE_CONFIG = {
-      apiKey: "AIzaSyA0_fhuy7ofypez2zUhNwdbB61NXxGtPwU",
-      authDomain: "dyszak-1eddc.firebaseapp.com",
-      databaseURL: "https://dyszak-1eddc-default-rtdb.firebaseio.com",
-      projectId: "dyszak-1eddc",
-      storageBucket: "dyszak-1eddc.firebasestorage.app",
-      messagingSenderId: "364073429062",
-      appId: "1:364073429062:web:af2cd1348881d6b92fc247",
-      measurementId: "G-ZT5M0ZWS0E"
-    };
-
-    const SIZE = 15;
-    const CENTER = 7;
-    const VOTING_SECONDS = 30;
-    const MULTIPLIERS = makeMultipliers();
-    const LETTER_VALUES = {A:1,E:1,I:1,N:1,O:1,R:1,S:1,W:1,Z:1,C:2,D:2,K:2,L:2,M:2,P:2,T:2,Y:2,B:3,G:3,H:3,J:3,Ł:3,U:3,Ą:5,Ę:5,F:5,Ó:5,Ś:5,Ż:5,Ć:6,Ń:7,Ź:9,'*':0};
-    const LETTER_DISTRIBUTION = [['A',9],['E',7],['I',8],['N',5],['O',6],['R',4],['S',4],['W',4],['Z',5],['C',3],['D',3],['K',3],['L',3],['M',3],['P',3],['T',3],['Y',4],['B',2],['G',2],['H',2],['J',2],['Ł',2],['U',2],['Ą',1],['Ę',1],['F',1],['Ó',1],['Ś',1],['Ż',1],['Ć',1],['Ń',1],['Ź',1],['*',2]];
-    
-    const els = {
-      setupView:q('setupView'),homeView:q('homeView'),lobbyView:q('lobbyView'),gameView:q('gameView'),topBadge:q('topBadge'),setupError:q('setupError'),
-      nameInput:q('nameInput'),joinCodeInput:q('joinCodeInput'),playerCountSelect:q('playerCountSelect'),timerToggle:q('timerToggle'),timerSecondsInput:q('timerSecondsInput'),timerSecondsWrap:q('timerSecondsWrap'),dictionaryToggle:q('dictionaryToggle'),dictionaryLangSelect:q('dictionaryLangSelect'),dictionarySourceSelect:q('dictionarySourceSelect'),dictionaryLangWrap:q('dictionaryLangWrap'),dictionarySourceWrap:q('dictionarySourceWrap'),voteToggle:q('voteToggle'),voteToggleWrap:q('voteToggleWrap'),settingsHint:q('settingsHint'),
-      roomCodeBox:q('roomCodeBox'),lobbySettingsSummary:q('lobbySettingsSummary'),lobbyPlayers:q('lobbyPlayers'),hostHint:q('hostHint'),startGameBtn:q('startGameBtn'),
-      board:q('board'),rack:q('rack'),rackTitle:q('rackTitle'),movePreview:q('movePreview'),playersPanel:q('playersPanel'),votePanel:q('votePanel'),bagCount:q('bagCount'),roomInfo:q('roomInfo'),validationInfo:q('validationInfo'),timerInfo:q('timerInfo'),turnTimerBadge:q('turnTimerBadge'),log:q('log'),toastHost:q('toastHost'),eventOverlay:q('eventOverlay'),eventIcon:q('eventIcon'),eventTitle:q('eventTitle'),eventText:q('eventText'),uiModalBackdrop:q('uiModalBackdrop'),uiModalTitle:q('uiModalTitle'),uiModalText:q('uiModalText'),uiModalInput:q('uiModalInput'),uiModalActions:q('uiModalActions')
-    };
-
-    let app, db, auth, myId, currentRoomCode = null, room = null, unsubscribeRoom = null, selectedRackIndex = null;
-    let timeoutProcessing = false;
-    let offlineSkipProcessing = false;
-    let votingResolveProcessing = false;
-    let lastTurnNotificationKey = '';
-    let lastSeenEventKey = '';
-    const savedName = localStorage.getItem('literaki_name') || '';
-    els.nameInput.value = savedName;
-
-    q('createRoomBtn').onclick = createRoom;
-    q('joinRoomBtn').onclick = () => joinRoom(els.joinCodeInput.value.trim().toUpperCase());
-    q('copyLinkBtn').onclick = copyRoomLink;
-    q('startGameBtn').onclick = startGame;
-    q('backHomeBtn').onclick = goHome;
-    q('playBtn').onclick = submitMove;
-    q('undoBtn').onclick = undoMove;
-    q('exchangeBtn').onclick = exchangeTiles;
-    q('passBtn').onclick = passTurn;
-    q('shuffleBtn').onclick = shuffleRack;
-    q('leaveBtn').onclick = goHome;
-    els.nameInput.oninput = () => localStorage.setItem('literaki_name', cleanName(els.nameInput.value));
-    els.dictionaryToggle.onchange = syncCreateSettings;
-    els.dictionaryLangSelect.onchange = syncCreateSettings;
-    els.dictionarySourceSelect.onchange = syncCreateSettings;
-    els.playerCountSelect.onchange = syncCreateSettings;
-    els.timerToggle.onchange = syncCreateSettings;
-    els.timerSecondsInput.oninput = syncCreateSettings;
-    els.voteToggle.onchange = syncCreateSettings;
-
-    syncCreateSettings();
-    init();
-    setInterval(() => {
-      if(!room) return;
-      if(room.status === 'lobby') return;
-      renderTimer();
-      if(room.status === 'voting'){
-        heartbeatOnline();
-        renderVotePanel();
-        maybeResolveVotingTimeout();
-        return;
-      }
-      heartbeatOnline();
-      maybeSkipOfflineTurn();
-      maybeExpireTurn();
-    }, 1000);
-
-
-    async function init(){
-      const params = new URLSearchParams(location.search);
-      const urlRoom = params.get('room');
-      if(urlRoom) els.joinCodeInput.value = urlRoom.toUpperCase();
-
-      if(!isFirebaseConfigured()){
-        els.topBadge.textContent = 'Brak konfiguracji';
-        els.setupError.innerHTML = 'Brakuje poprawnej konfiguracji Firebase w <b>FIREBASE_CONFIG</b>.';
-        return;
-      }
-
-      app = initializeApp(FIREBASE_CONFIG);
-      db = getDatabase(app);
-      try{
-        auth = getAuth(app);
-        const cred = await signInAnonymously(auth);
-        myId = cred.user.uid;
-      }catch(err){
-        console.warn('Anonymous Auth niedostępne. Używam lokalnego ID. Jeśli reguły bazy wymagają auth, włącz Authentication -> Anonymous.', err);
-        myId = localStorage.getItem('literaki_uid') || crypto.randomUUID();
-        localStorage.setItem('literaki_uid', myId);
-      }
-      els.setupView.classList.add('hidden');
-      els.homeView.classList.remove('hidden');
-      els.topBadge.textContent = 'Online';
-      if(urlRoom) joinRoom(urlRoom.toUpperCase());
-    }
-
-    function isFirebaseConfigured(){
-      return FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.includes('WSTAW') && FIREBASE_CONFIG.databaseURL && !FIREBASE_CONFIG.databaseURL.includes('WSTAW');
-    }
-
-    function syncCreateSettings(){
-      const dictionaryEnabled = els.dictionaryToggle.checked;
-      const timerEnabled = els.timerToggle.checked;
-      els.timerSecondsWrap.classList.toggle('dim', !timerEnabled);
-      els.timerSecondsInput.disabled = !timerEnabled;
-      els.dictionaryLangWrap.classList.toggle('dim', !dictionaryEnabled);
-      els.dictionarySourceWrap.classList.toggle('dim', !dictionaryEnabled);
-      els.dictionaryLangSelect.disabled = !dictionaryEnabled;
-      els.dictionarySourceSelect.disabled = !dictionaryEnabled;
-      els.voteToggle.disabled = dictionaryEnabled;
-      els.voteToggleWrap.classList.toggle('dim', dictionaryEnabled);
-      if(dictionaryEnabled){
-        els.settingsHint.textContent = `Tryb: ${els.playerCountSelect.value} graczy, ${timerEnabled ? timerSeconds() + 's na ruch' : 'bez limitu czasu'}, głosowanie graczy.`;
-      }else if(els.voteToggle.checked){
-        els.settingsHint.textContent = `Tryb: ${els.playerCountSelect.value} graczy, ${timerEnabled ? timerSeconds() + 's na ruch' : 'bez limitu czasu'}, bez słownika, ruchy przechodzą przez głosowanie pozostałych graczy.`;
-      }else{
-        els.settingsHint.textContent = `Tryb: ${els.playerCountSelect.value} graczy, ${timerEnabled ? timerSeconds() + 's na ruch' : 'bez limitu czasu'}, bez słownika i bez głosowania — gracze sami pilnują poprawności.`;
-      }
-    }
-
-    function readRoomSettings(){
-      const dictionaryEnabled = els.dictionaryToggle.checked;
-      return {
-        playerCount: Number(els.playerCountSelect.value) || 4,
-        timerEnabled: els.timerToggle.checked,
-        turnTimeLimitSeconds: timerSeconds(),
-        dictionaryEnabled:false,
-        dictionaryLanguage:'pl',
-        dictionarySource:'none',
-        votingEnabled: !dictionaryEnabled && els.voteToggle.checked
-      };
-    }
-
-
-    async function createRoom(){
-      await requestNotificationPermission();
-      const name = cleanName(els.nameInput.value) || 'Gracz';
-      localStorage.setItem('literaki_name', name);
-      const code = await uniqueRoomCode();
-      const settings = readRoomSettings();
-      const data = {
-        code,status:'lobby',hostId:myId,createdAt:Date.now(),updatedAt:Date.now(),currentIndex:0,moveNumber:0,consecutivePasses:0,
-        settings,order:[myId],players:{[myId]:playerObj(name)},board:{},bag:[],pending:{uid:null,tiles:[]},challenge:null,logs:[logObj(`Pokój utworzony. Tryb słów: ${settingsLabel(settings)}. Czekamy na 4 graczy.`)]
-      };
-      await set(roomRef(code), data);
-      subscribeRoom(code);
-    }
-
-    async function uniqueRoomCode(){
-      for(let i=0;i<20;i++){
-        const code = Math.random().toString(36).slice(2,7).toUpperCase();
-        const snap = await get(roomRef(code));
-        if(!snap.exists()) return code;
-      }
-      throw new Error('Nie udało się utworzyć kodu pokoju. Spróbuj ponownie.');
-    }
-
-    async function joinRoom(code){
-      await requestNotificationPermission();
-      code = String(code || '').replace(/[^A-Z0-9]/g,'').toUpperCase();
-      if(!code) return uiAlert('Wpisz kod pokoju.');
-      const name = cleanName(els.nameInput.value) || 'Gracz';
-      localStorage.setItem('literaki_name', name);
-      const snap = await get(roomRef(code));
-      if(!snap.exists()) return uiAlert('Nie znaleziono pokoju.');
-      const data = normalizeRoom(snap.val());
-      if(!data.players[myId]){
-        if(data.status !== 'lobby') return uiAlert('Ta gra już wystartowała. Dołączyć mogą tylko gracze, którzy byli w lobby.');
-        if(data.order.length >= targetPlayerCount(data)) return uiAlert('Pokój jest pełny.');
-        data.players[myId] = playerObj(name);
-        data.order.push(myId);
-        data.logs = addLogToArray(data.logs, `${esc(name)} dołącza do pokoju.`);
-        data.updatedAt = Date.now();
-        await set(roomRef(code), data);
-      }else{
-        await update(ref(db, `rooms/${code}/players/${myId}`), {name, online:true,lastSeen:Date.now()});
-      }
-      subscribeRoom(code);
-    }
-
-    function subscribeRoom(code){
-      if(unsubscribeRoom) unsubscribeRoom();
-      currentRoomCode = code;
-      history.replaceState(null,'',`?room=${code}`);
-      const r = roomRef(code);
-      unsubscribeRoom = onValue(r, snap => {
-        if(!snap.exists()) return goHome();
-        room = normalizeRoom(snap.val());
-        render();
-      });
-      update(ref(db, `rooms/${code}/players/${myId}`), {online:true,lastSeen:Date.now()}).catch(()=>{});
-      onDisconnect(ref(db, `rooms/${code}/players/${myId}`)).update({online:false,lastSeen:Date.now()}).catch(()=>{});
-    }
-
-    function playerObj(name){return {id:myId,name,score:0,rack:[],online:true,lastSeen:Date.now()}}
-    function roomRef(code){return ref(db, `rooms/${code}`)}
-    function normalizeRoom(data){
-      return {
-        ...data,
-        players:data.players || {},order:data.order || [],board:data.board || {},bag:data.bag || [],
-        pending:data.pending || {uid:null,tiles:[]},challenge:data.challenge || null,logs:data.logs || [],
-        settings:{...(data.settings || {playerCount:4,timerEnabled:true,turnTimeLimitSeconds:120,votingEnabled:true}),dictionaryEnabled:false,dictionaryLanguage:'pl',dictionarySource:'none'}
-      };
-    }
-
-    function render(){
-      if(!room) return;
-      els.topBadge.textContent = room.status === 'lobby' ? `Lobby ${room.code}` : room.status === 'voting' ? 'Głosowanie' : `Tura: ${currentPlayer()?.name || '—'}`;
-      els.homeView.classList.add('hidden');
-      els.setupView.classList.add('hidden');
-      els.lobbyView.classList.toggle('hidden', room.status !== 'lobby');
-      els.gameView.classList.toggle('hidden', room.status === 'lobby');
-      if(room.status === 'lobby') renderLobby(); else renderGame();
-    }
-
-    function renderLobby(){
-      els.roomCodeBox.textContent = room.code;
-      els.lobbySettingsSummary.innerHTML = `<div><strong>Liczba graczy:</strong> ${targetPlayerCount(room)}</div><div><strong>Tryb słów:</strong> ${settingsLabel(room.settings)}</div><div><strong>Limit czasu:</strong> ${timerLabel(room.settings)}</div>`;
-      els.lobbyPlayers.innerHTML = '';
-      room.order.forEach((id, index) => {
-        const p = room.players[id];
-        const row = document.createElement('div');
-        row.className = 'lobby-player';
-        row.innerHTML = `<b>${index+1}. ${esc(p?.name || 'Gracz')}</b><span class='${p?.online ? 'online' : 'offline'}'>${p?.online ? 'online' : 'offline'}</span>`;
-        els.lobbyPlayers.appendChild(row);
-      });
-      const isHost = room.hostId === myId;
-      els.startGameBtn.disabled = !isHost;
-      els.startGameBtn.textContent = isHost ? 'Start gry' : 'Tylko host może zacząć';
-      els.hostHint.innerHTML = isHost
-        ? `Jesteś hostem. Graczy w lobby: <b>${room.order.length}/${targetPlayerCount(room)}</b>. Start jest blokowany, dopóki nie ma kompletu osób.`
-        : `Czekasz, aż host rozpocznie grę. Graczy w lobby: <b>${room.order.length}/${targetPlayerCount(room)}</b>.`;
-    }
-
-    function renderGame(){
-      renderBoard();renderRack();renderPlayers();renderVotePanel();renderLog();
-      els.bagCount.textContent = room.bag.length;
-      els.roomInfo.textContent = room.code;
-      els.validationInfo.textContent = settingsLabel(room.settings);
-      renderTimer();
-      checkTurnNotification();
-      handleLastEvent();
-      const me = room.players[myId];
-      els.rackTitle.textContent = me ? `Twój stojak — ${me.name}` : 'Obserwator';
-      updateMovePreview();
-      const active = isMyTurn() && room.status === 'playing';
-      ['playBtn','undoBtn','exchangeBtn','passBtn'].forEach(id => q(id).disabled = !active);
-      q('shuffleBtn').disabled = !(room.status === 'playing' && !!room.players[myId]);
-    }
-
-    function renderBoard(){
-      els.board.innerHTML = '';
-      for(let r=0;r<SIZE;r++) for(let c=0;c<SIZE;c++){
-        const cell = document.createElement('div');
-        const mult = MULTIPLIERS[r][c];
-        cell.className = `cell ${mult || ''} ${r===CENTER&&c===CENTER?'center':''}`;
-        const pending = pendingAt(r,c);
-        const tile = pending?.tile || room.board[key(r,c)];
-        if(pending) cell.classList.add('pending');
-        const celebrate = isCelebratedCell(r,c);
-        if(celebrate) cell.classList.add('word-flash');
-        if(tile){
-          const node = tileEl(tile, !pending);
-          if(celebrate) node.classList.add('celebrate');
-          if(pending){
-            node.title = 'Kliknij, aby zdjąć tę literę z planszy';
-            node.onclick = e => {
-              e.stopPropagation();
-              removePendingTile(r,c);
-            };
-          }
-          cell.appendChild(node);
-        } else cell.textContent = labelForMultiplier(mult,r,c);
-        cell.onclick = () => pending ? removePendingTile(r,c) : onCellClick(r,c);
-        els.board.appendChild(cell);
-      }
-    }
-
-    function renderRack(){
-      const me = room.players[myId];
-      els.rack.innerHTML = '';
-      if(!me) return;
-      me.rack.forEach((tile,index)=>{
-        const node = tileEl(tile,false);
-        node.classList.toggle('selected', selectedRackIndex === index);
-        node.onclick = () => {
-          if(!isMyTurn() || room.status !== 'playing') return;
-          selectedRackIndex = selectedRackIndex === index ? null : index;
-          renderRack();
-        };
-        els.rack.appendChild(node);
-      });
-    }
-
-    function renderPlayers(){
-      els.playersPanel.innerHTML = '';
-      room.order.forEach((id,i)=>{
-        const p = room.players[id];
-        const row = document.createElement('div');
-        row.className = `player ${i===room.currentIndex?'active':''} ${id===myId?'me':''}`;
-        row.innerHTML = `<div><div class='player-name'><span class='dot' style='background:${p?.online ? ['#22c55e','#3b82f6','#f97316','#a855f7'][i%4] : '#64748b'}'></span>${esc(p?.name||'Gracz')} ${id===myId?'(ty)':''}</div><div class='small ${p?.online ? 'online' : 'offline'}'>${p?.online ? 'online' : 'offline'}</div></div><div class='score'>${p?.score||0}</div>`;
-        els.playersPanel.appendChild(row);
-      });
-    }
-
-    function renderVotePanel(){
-      if(room.status !== 'voting' || !room.challenge){
-        els.votePanel.classList.add('hidden');
-        els.votePanel.innerHTML = '';
-        return;
-      }
-      const ch = room.challenge;
-      const submitter = room.players[ch.submitterId];
-      const eligible = activeVotePlayerIds(room, ch.submitterId);
-      const votes = ch.votes || {};
-      const agrees = eligible.filter(id => votes[id]?.agree === true).length;
-      const rejects = eligible.filter(id => votes[id]?.agree === false).length;
-      const thresholds = voteThresholds(room, eligible.length);
-      const needed = thresholds.reject;
-      const left = votingSecondsLeft(ch);
-      const progress = votingProgressPercent(ch);
-      const myVote = votes[myId];
-      const canVote = eligible.includes(myId) && !myVote;
-      const wordsHtml = (ch.words || []).map(w => `<span class='word-pill'>${esc(w)}</span>`).join('');
-      let actionHtml = '';
-      if(ch.submitterId === myId){
-        actionHtml = `<p>Czekasz na głosy pozostałych graczy.</p>`;
-      }else if(myVote){
-        actionHtml = `<p>Twój głos: <b>${myVote.agree ? 'zgadzam się' : 'nie zgadzam się'}</b>.</p>`;
-      }else if(canVote){
-        actionHtml = `<div class='vote-actions'><button id='voteAgreeBtn' class='btn primary'>Zgadzam się</button><button id='voteRejectBtn' class='btn danger'>Nie zgadzam się</button></div>`;
-      }else{
-        actionHtml = `<p>Nie możesz głosować w tej rundzie.</p>`;
-      }
-      els.votePanel.classList.remove('hidden');
-      els.votePanel.innerHTML = `
-        <h3>Głosowanie nad słowem</h3>
-        <p><b>${esc(submitter?.name || 'Gracz')}</b> chce zatwierdzić ruch za <b>${ch.score} pkt</b>.</p>
-        <div class='word-list'>${wordsHtml}</div>
-        ${actionHtml}
-        <div class='vote-progress ${left <= 10 ? 'danger' : ''}'><div class='vote-progress-fill' style='width:${progress}%'></div></div>
-        <div class='vote-meta'>Czas głosowania: <span class='vote-time'>${formatTime(left)}</span>. Głosy online: ${agrees} zgadza się / ${rejects} nie zgadza się. Do odrzucenia ruchu potrzeba ${needed || 1} głosów przeciw.</div>
-      `;
-      const agreeBtn = q('voteAgreeBtn');
-      const rejectBtn = q('voteRejectBtn');
-      if(agreeBtn) agreeBtn.onclick = () => voteOnChallenge(true);
-      if(rejectBtn) rejectBtn.onclick = () => voteOnChallenge(false);
-    }
-
-    function renderLog(){
-      els.log.innerHTML = '';
-      [...room.logs].slice(-40).reverse().forEach(item=>{
-        const div = document.createElement('div');
-        div.innerHTML = item.html || esc(item.text || '');
-        els.log.appendChild(div);
-      });
-    }
-
-    async function startGame(){
-      if(room.hostId !== myId) return;
-      if(room.order.length !== targetPlayerCount(room)) return uiAlert(`Do startu potrzeba dokładnie ${targetPlayerCount(room)} graczy.`);
-      const next = clone(room);
-      next.status = 'playing';
-      next.board = {};
-      next.bag = createBag();
-      next.currentIndex = 0;
-      next.moveNumber = 0;
-      next.consecutivePasses = 0;
-      next.pending = {uid:null,tiles:[]};
-      next.challenge = null;
-      next.turnStartedAt = Date.now();
-      next.order.forEach(id => { next.players[id].score = 0; next.players[id].rack = []; drawTiles(next.players[id].rack,next.bag,7); });
-      next.logs = addLogToArray(next.logs, `Gra wystartowała. Tryb słów: ${settingsLabel(next.settings)}. Pierwszy ruch musi przejść przez środek.`);
-      await saveRoom(next);
-    }
-
-    async function removePendingTile(r,c){
-      if(!room || room.status !== 'playing') return;
-      if(room.pending?.uid !== myId) return;
-      const existing = pendingAt(r,c);
-      if(!existing) return;
-      const next = clone(room);
-      const me = next.players[myId];
-      const idx = (next.pending?.tiles || []).findIndex(p => p.r === r && p.c === c);
-      if(idx < 0) return;
-      const [removed] = next.pending.tiles.splice(idx,1);
-      me.rack.push(removed.tile);
-      if(!next.pending.tiles.length) next.pending = {uid:null,tiles:[]};
-      selectedRackIndex = null;
-      await saveRoom(next);
-    }
-
-    async function removeLastPendingTile(){
-      if(!room || room.status !== 'playing') return;
-      if(room.pending?.uid !== myId) return;
-      const tiles = room.pending?.tiles || [];
-      if(!tiles.length) return;
-      const last = tiles[tiles.length - 1];
-      await removePendingTile(last.r,last.c);
-    }
-
-    async function onCellClick(r,c){
-      if(!isMyTurn() || room.status !== 'playing') return;
-      const existing = pendingAt(r,c);
-      const next = clone(room);
-      const me = next.players[myId];
-      if(existing){
-        const idx = next.pending.tiles.findIndex(p=>p.r===r&&p.c===c);
-        const [removed] = next.pending.tiles.splice(idx,1);
-        me.rack.push(removed.tile);
-        if(!next.pending.tiles.length) next.pending = {uid:null,tiles:[]};
-        selectedRackIndex = null;
-        await saveRoom(next);
-        return;
-      }
-      if(next.board[key(r,c)] || selectedRackIndex === null) return;
-      const tile = me.rack.splice(selectedRackIndex,1)[0];
-      selectedRackIndex = null;
-      if(!tile) return;
-      if(tile.blank && tile.letter === '*'){
-        const letter = await uiBlankLetterPrompt();
-        if(!letter){me.rack.push(tile);return render();}
-        tile.letter = letter;
-        tile.value = 0;
-      }
-      if(!next.pending.uid) next.pending = {uid:myId,tiles:[]};
-      next.pending.tiles.push({r,c,tile});
-      await saveRoom(next);
-    }
-
-    async function submitMove(){
-      if(!isMyTurn() || room.status !== 'playing') return;
-      const result = validateAndScoreMove(room);
-      if(!result.ok) return uiAlert(result.message);
-
-      if(isVotingMode(room)){
-        await openChallenge(result);
-        return;
-      }
-
-      const next = clone(room);
-      acceptMove(next, result, myId);
-      await saveRoom(next);
-    }
-
-
-    async function openChallenge(result){
-      const next = clone(room);
-      const me = next.players[myId];
-      next.status = 'voting';
-      const now = Date.now();
-      next.challenge = {id:`${now}_${myId}`,submitterId:myId,submitterName:me.name,words:result.words,score:result.score,votes:{},createdAt:now,endsAt:now + VOTING_SECONDS * 1000};
-      next.logs = addLogToArray(next.logs, `<b>${esc(me.name)}</b> zgłasza ruch do głosowania: ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);
-      await saveRoom(next);
-    }
-
-    async function voteOnChallenge(agree){
-      if(!room.challenge || room.status !== 'voting') return;
-      if(room.challenge.submitterId === myId) return uiAlert('Autor ruchu nie głosuje nad swoim ruchem.');
-      const eligible = activeVotePlayerIds(room, room.challenge.submitterId);
-      if(!eligible.includes(myId)) return uiAlert('Nie możesz głosować, bo nie jesteś aktywnym głosującym w tej rundzie.');
-      if(room.challenge.votes?.[myId]) return uiAlert('Już oddałeś głos.');
-
-      const next = clone(room);
-      if(!next.challenge.votes) next.challenge.votes = {};
-      next.challenge.votes[myId] = {agree,name:next.players[myId]?.name || 'Gracz',t:Date.now()};
-      const resolution = challengeResolution(next);
-      if(resolution === 'reject'){
-        rejectMove(next);
-      }else if(resolution === 'accept'){
-        acceptMove(next, {words:next.challenge.words,score:next.challenge.score}, next.challenge.submitterId);
-      }else{
-        next.logs = addLogToArray(next.logs, `<b>${esc(next.players[myId]?.name || 'Gracz')}</b> głosuje: <b>${agree ? 'zgadzam się' : 'nie zgadzam się'}</b>.`);
-      }
-      await saveRoom(next);
-    }
-
-    function challengeResolution(data){
-      const ch = data.challenge;
-      if(!ch) return 'pending';
-      const eligible = activeVotePlayerIds(data, ch.submitterId);
-      const votes = ch.votes || {};
-      const agrees = eligible.filter(id => votes[id]?.agree === true).length;
-      const rejects = eligible.filter(id => votes[id]?.agree === false).length;
-      const voted = eligible.filter(id => votes[id]).length;
-      const thresholds = voteThresholds(data, eligible.length);
-      const rejectNeeded = thresholds.reject;
-      const acceptNeeded = thresholds.accept;
-      const timedOut = votingSecondsLeft(ch) <= 0;
-
-      if(eligible.length > 0 && rejects >= rejectNeeded) return 'reject';
-      if(eligible.length > 0 && agrees >= acceptNeeded) return 'accept';
-      if(eligible.length > 0 && voted >= eligible.length) return rejects >= needed ? 'reject' : 'accept';
-      if(timedOut) return rejects >= rejectNeeded ? 'reject' : 'accept';
-      return 'pending';
-    }
-
-    function voteThresholds(data, eligibleCount){
-      const activePlayerCount = (data.order || []).filter(id => data.players?.[id]?.online !== false).length;
-      const reject = activePlayerCount <= 3 ? 1 : Math.floor(eligibleCount / 2) + 1;
-      const accept = Math.floor(eligibleCount / 2) + 1;
-      return {reject: Math.max(1, reject), accept: Math.max(1, accept)};
-    }
-
-    function activeVotePlayerIds(data, submitterId){
-      const ids = (data.order || []).filter(id => id !== submitterId && data.players?.[id]?.online !== false);
-      if(data === room && myId && myId !== submitterId && data.players?.[myId] && !ids.includes(myId)){
-        ids.push(myId);
-      }
-      return ids;
-    }
-
-    async function heartbeatOnline(){
-      if(!currentRoomCode || !myId || !db || !room?.players?.[myId]) return;
-      const now = Date.now();
-      if(heartbeatOnline.last && now - heartbeatOnline.last < 15000) return;
-      heartbeatOnline.last = now;
-      try{
-        await update(ref(db, `rooms/${currentRoomCode}/players/${myId}`), {online:true,lastSeen:now});
-      }catch(_){ }
-    }
-
-    function votingSecondsLeft(challenge){
-      if(!challenge) return VOTING_SECONDS;
-      const createdAt = Number(challenge.createdAt);
-      const rawEndsAt = Number(challenge.endsAt);
-      const fallbackEndsAt = Number.isFinite(createdAt) && createdAt > 0 ? createdAt + VOTING_SECONDS * 1000 : Date.now() + VOTING_SECONDS * 1000;
-      const endsAt = Number.isFinite(rawEndsAt) && rawEndsAt > 0 ? rawEndsAt : fallbackEndsAt;
-      const left = Math.ceil((endsAt - Date.now()) / 1000);
-      if(!Number.isFinite(left)) return VOTING_SECONDS;
-      return Math.max(0, Math.min(VOTING_SECONDS, left));
-    }
-
-    function votingProgressPercent(challenge){
-      const left = votingSecondsLeft(challenge);
-      const percent = (left / VOTING_SECONDS) * 100;
-      if(!Number.isFinite(percent)) return 100;
-      return Math.max(0, Math.min(100, percent));
-    }
-
-    async function maybeResolveVotingTimeout(){
-      if(votingResolveProcessing || !room || room.status !== 'voting' || !room.challenge) return;
-      const left = votingSecondsLeft(room.challenge);
-      if(left > 0) return;
-      votingResolveProcessing = true;
-      try{
-        const next = clone(room);
-        if(next.status !== 'voting' || !next.challenge) return;
-
-        const ch = next.challenge;
-        const eligible = activeVotePlayerIds(next, ch.submitterId);
-        const votes = ch.votes || {};
-        const rejects = eligible.filter(id => votes[id]?.agree === false).length;
-        const thresholds = voteThresholds(next, eligible.length);
-        const shouldReject = eligible.length > 0 && rejects >= thresholds.reject;
-
-        if(shouldReject) rejectMove(next, true);
-        else acceptMove(next, {words:ch.words || [],score:Number(ch.score || 0)}, ch.submitterId, true);
-
-        await saveRoom(next);
-      }catch(err){
-        console.error('Nie udało się automatycznie zakończyć głosowania:', err);
-        showToast('Błąd głosowania', 'Nie udało się automatycznie zakończyć głosowania. Spróbuj odświeżyć stronę.');
-      }finally{
-        setTimeout(() => votingResolveProcessing = false, 1200);
-      }
-    }
-
-    function acceptMove(next, result, playerId, byVotingTimeout = false){
-      const player = next.players[playerId];
-      const pending = next.pending?.tiles || [];
-      pending.forEach(p => next.board[key(p.r,p.c)] = p.tile);
-      next.lastEvent = {type:'word',playerId,playerName:player.name,words:result.words,score:result.score,tiles:result.wordTiles || pending.map(p=>({r:p.r,c:p.c,letter:p.tile.letter})),newTiles:pending.map(p=>({r:p.r,c:p.c,letter:p.tile.letter})),t:Date.now()};
-      player.score += result.score;
-      drawTiles(player.rack,next.bag,7);
-      next.moveNumber++;
-      next.consecutivePasses = 0;
-      next.status = 'playing';
-      next.pending = {uid:null,tiles:[]};
-      next.challenge = null;
-      next.logs = addLogToArray(next.logs, `${byVotingTimeout ? '<b>Głosowanie zakończone po czasie.</b> ' : ''}<b>${esc(player.name)}</b> układa ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);
-      if(player.rack.length === 0 && next.bag.length === 0) endGame(next, `${player.name} pozbył się wszystkich liter.`);
-      else next.currentIndex = (next.currentIndex + 1) % next.order.length;
-      next.turnStartedAt = Date.now();
-    }
-
-    function rejectMove(next, byVotingTimeout = false){
-      const ch = next.challenge;
-      const player = next.players[ch.submitterId];
-      const pending = next.pending?.tiles || [];
-      pending.forEach(p => player.rack.push(p.tile));
-      next.status = 'playing';
-      next.pending = {uid:null,tiles:[]};
-      next.challenge = null;
-      next.consecutivePasses = 0;
-      next.logs = addLogToArray(next.logs, `<b>Ruch odrzucony.</b> ${byVotingTimeout ? 'Głosowanie zakończyło się po czasie. ' : ''}Większość aktywnych graczy nie zgodziła się ze słowem ${esc(ch.words.join(', '))}. <b>${esc(player.name)}</b> traci kolejkę.`);
-      next.lastEvent = {type:'reject',playerId:ch.submitterId,playerName:player.name,words:ch.words,t:Date.now()};
-      next.currentIndex = (next.currentIndex + 1) % next.order.length;
-      next.turnStartedAt = Date.now();
-    }
-
-    async function undoMove(){
-      if(!isMyTurn() || room.status !== 'playing' || !room.pending?.tiles?.length) return;
-      await removeLastPendingTile();
-    }
-
-    async function passTurn(){
-      if(!isMyTurn() || room.status !== 'playing') return;
-      const next = clone(room);
-      const me = next.players[myId];
-      next.pending.tiles.forEach(p => me.rack.push(p.tile));
-      next.pending = {uid:null,tiles:[]};
-      next.consecutivePasses++;
-      next.logs = addLogToArray(next.logs, `<b>${esc(me.name)}</b> pasuje.`);
-      if(next.consecutivePasses >= next.order.length * 2) endGame(next, 'Za dużo pasów z rzędu.'); else next.currentIndex = (next.currentIndex + 1) % next.order.length;
-      next.turnStartedAt = Date.now();
-      await saveRoom(next);
-    }
-
-    async function exchangeTiles(){
-      if(!isMyTurn() || room.status !== 'playing') return;
-      if(room.pending?.tiles?.length) return uiAlert('Najpierw cofnij litery z planszy.');
-      if(room.bag.length < 7) return uiAlert('Wymiana dostępna tylko, gdy w woreczku jest minimum 7 liter.');
-      const me = room.players[myId];
-      const indexes = await uiExchangePrompt(me.rack);
-      if(!indexes || !indexes.length) return;
-
-      const next = clone(room);
-      const p = next.players[myId];
-      const sorted = [...indexes].sort((a,b)=>b-a);
-      const returned = sorted.map(i=>p.rack.splice(i,1)[0]).filter(Boolean).map(t=>({
-        ...t,
-        letter:t.blank?'*':t.letter,
-        value:t.blank?0:t.value
-      }));
-      drawTiles(p.rack,next.bag,7);
-      next.bag = shuffle(next.bag.concat(returned));
-      next.consecutivePasses = 0;
-      next.logs = addLogToArray(next.logs, `<b>${esc(p.name)}</b> wymienia ${returned.length} liter.`);
-      next.lastEvent = {type:'exchange',playerId:myId,playerName:p.name,count:returned.length,t:Date.now()};
-      next.currentIndex = (next.currentIndex + 1) % next.order.length;
-      next.turnStartedAt = Date.now();
-      await saveRoom(next);
-    }
-
-    async function shuffleRack(){
-      if(!room || !room.players[myId]) return;
-      if(room.status !== 'playing' && room.status !== 'voting') return;
-      const next = clone(room);
-      if(!next.players[myId]) return;
-      next.players[myId].rack = shuffle(next.players[myId].rack || []);
-      selectedRackIndex = null;
-      await saveRoom(next);
-    }
-
-    function validateAndScoreMove(data){
-      const pending = data.pending?.tiles || [];
-      if(!pending.length) return {ok:false,message:'Nie położono żadnej litery.'};
-      if(data.pending.uid !== currentPlayerId()) return {ok:false,message:'To nie jest ruch aktualnego gracza.'};
-
-      const temp = {...data.board};
-      pending.forEach(p => temp[key(p.r,p.c)] = p.tile);
-
-      const pendingKeys = new Set(pending.map(p => key(p.r,p.c)));
-      const words = [];
-      const seen = new Set();
-
-      const addWord = word => {
-        if(!word || word.tiles.length < 2) return;
-        const touchesNewTile = word.tiles.some(t => pendingKeys.has(key(t.r,t.c)));
-        if(!touchesNewTile) return;
-        const wordKey = word.tiles.map(t => key(t.r,t.c)).join('|');
-        if(seen.has(wordKey)) return;
-        seen.add(wordKey);
-        words.push(word);
-      };
-
-      for(const p of pending){
-        addWord(getWordAt(temp, p.r, p.c, 'row'));
-        addWord(getWordAt(temp, p.r, p.c, 'col'));
-      }
-
-      if(!words.length){
-        return {ok:false,message:'Musisz ułożyć przynajmniej jedno słowo z co najmniej 2 liter.'};
-      }
-
-      const pendingUsedInWord = new Set();
-      for(const word of words){
-        for(const item of word.tiles){
-          const k = key(item.r,item.c);
-          if(pendingKeys.has(k)) pendingUsedInWord.add(k);
-        }
-      }
-      if(pendingUsedInWord.size !== pendingKeys.size){
-        return {ok:false,message:'Każda nowa litera musi należeć do jakiegoś słowa.'};
-      }
-
-      if(data.moveNumber === 0){
-        const centerUsed = words.some(word => word.tiles.some(t => t.r === CENTER && t.c === CENTER));
-        if(!centerUsed) return {ok:false,message:'Pierwszy ruch musi tworzyć słowo przechodzące przez środek planszy.'};
-      }else{
-        const connected = pending.some(p => [[1,0],[-1,0],[0,1],[0,-1]].some(([dr,dc]) => inBounds(p.r+dr,p.c+dc) && data.board[key(p.r+dr,p.c+dc)]));
-        if(!connected) return {ok:false,message:'Przynajmniej jedna nowa litera musi dotykać litery z planszy.'};
-      }
-
-      let total = words.reduce((sum,word) => sum + scoreWord(word,pending),0);
-      if(pending.length === 7) total += 50;
-      const wordTiles = [];
-      const wordTileKeys = new Set();
-      for(const word of words){
-        for(const item of word.tiles){
-          const k = key(item.r,item.c);
-          if(wordTileKeys.has(k)) continue;
-          wordTileKeys.add(k);
-          wordTiles.push({r:item.r,c:item.c,letter:item.tile.letter});
-        }
-      }
-      return {ok:true,score:total,words:words.map(w=>w.text),wordTiles};
-    }
-
-    function getWordAt(boardObj,r,c,dir){
-      const dr = dir === 'col' ? 1 : 0, dc = dir === 'row' ? 1 : 0;
-      let sr=r, sc=c;
-      while(inBounds(sr-dr,sc-dc) && boardObj[key(sr-dr,sc-dc)]){sr-=dr;sc-=dc}
-      const tiles=[]; let text='';
-      while(inBounds(sr,sc) && boardObj[key(sr,sc)]){const tile=boardObj[key(sr,sc)];tiles.push({r:sr,c:sc,tile});text+=tile.letter;sr+=dr;sc+=dc}
-      return {tiles,text};
-    }
-
-    function scoreWord(word,pending){
-      const pendingKeys = new Set(pending.map(p=>key(p.r,p.c)));
-      let sum=0, wordMult=1;
-      word.tiles.forEach(item=>{
-        let points = item.tile.value;
-        if(pendingKeys.has(key(item.r,item.c))){
-          const mult = MULTIPLIERS[item.r][item.c];
-          if(mult === 'dl') points *= 2;
-          if(mult === 'tl') points *= 3;
-          if(mult === 'dw') wordMult *= 2;
-          if(mult === 'tw') wordMult *= 3;
-        }
-        sum += points;
-      });
-      return sum * wordMult;
-    }
-
-    function isConnectedToExisting(boardObj,pending){
-      return pending.some(p=>[[1,0],[-1,0],[0,1],[0,-1]].some(([dr,dc])=>inBounds(p.r+dr,p.c+dc)&&boardObj[key(p.r+dr,p.c+dc)]));
-    }
-
-    function updateMovePreview(){
-      if(room.status === 'voting') return els.movePreview.textContent = 'Głosowanie';
-      if(!isMyTurn() || room.status !== 'playing') return els.movePreview.textContent = 'Nie twoja tura';
-      const result = validateAndScoreMove(room);
-      els.movePreview.textContent = result.ok ? `Ruch: ${result.score} pkt` : 'Ruch: 0 pkt';
-    }
-
-    function createBag(){
-      let id=0; const bag=[];
-      LETTER_DISTRIBUTION.forEach(([letter,count])=>{for(let i=0;i<count;i++) bag.push({id:id++,letter,value:LETTER_VALUES[letter],blank:letter==='*'})});
-      return shuffle(bag);
-    }
-    function drawTiles(rack,bag,target=7){while(rack.length<target && bag.length) rack.push(bag.pop())}
-    function endGame(next,reason){
-      next.status = 'finished';
-      next.order.forEach(id=>{next.players[id].score -= (next.players[id].rack || []).reduce((s,t)=>s+t.value,0)});
-      const winner = [...next.order].map(id=>next.players[id]).sort((a,b)=>b.score-a.score)[0];
-      next.logs = addLogToArray(next.logs, `<b>Koniec gry.</b> ${esc(reason)} Wygrywa <b>${esc(winner.name)}</b>: <b>${winner.score} pkt</b>.`);
-    }
-    async function saveRoom(next){next.updatedAt=Date.now();await set(roomRef(currentRoomCode),next)}
-    function addLogToArray(logs,html){return [...(logs||[]),logObj(html)].slice(-80)}
-    function logObj(html){return {html,t:Date.now()}}
-    function pendingAt(r,c){return (room.pending?.tiles || []).find(p=>p.r===r&&p.c===c)}
-    function currentPlayerId(){return room.order[room.currentIndex]}
-    function currentPlayer(){return room.players[currentPlayerId()]}
-    function isMyTurn(){return room && currentPlayerId() === myId && room.pending?.uid !== null ? room.pending.uid === myId : currentPlayerId() === myId}
-    function isVotingMode(data){return !data.settings?.dictionaryEnabled && !!data.settings?.votingEnabled}
-    function settingsLabel(settings){
-      if(settings?.dictionaryEnabled) return `słownik: ${languageLabel(settings.dictionaryLanguage)} (${sourceLabel(settings.dictionarySource)})`;
-      if(settings?.votingEnabled) return 'głosowanie graczy';
-      return 'ręczna kontrola bez głosowania';
-    }
-    function uiBlankLetterPrompt(){
-      return new Promise(resolve => {
-        const letters = 'AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ'.split('');
-        els.uiModalTitle.textContent = 'Joker';
-        els.uiModalText.textContent = 'Wybierz literę, którą ma udawać joker. Joker nadal jest wart 0 punktów.';
-        els.uiModalInput.classList.add('hidden');
-        els.uiModalActions.innerHTML = '';
-
-        const modalBox = els.uiModalActions.parentElement;
-        const oldGrid = modalBox.querySelector('.ui-letter-grid');
-        if(oldGrid) oldGrid.remove();
-
-        const grid = document.createElement('div');
-        grid.className = 'ui-letter-grid';
-        letters.forEach(letter => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'ui-letter-choice';
-          btn.textContent = letter;
-          btn.onclick = () => close(letter);
-          grid.appendChild(btn);
-        });
-        modalBox.insertBefore(grid, els.uiModalActions);
-
-        const close = value => {
-          grid.remove();
-          els.uiModalBackdrop.classList.remove('show');
-          setTimeout(() => { els.uiModalActions.innerHTML = ''; }, 120);
-          resolve(value);
-        };
-
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn';
-        cancelBtn.textContent = 'Anuluj';
-        cancelBtn.onclick = () => close(null);
-        els.uiModalActions.append(cancelBtn);
-        els.uiModalBackdrop.classList.add('show');
-      });
-    }
-
-    function uiExchangePrompt(rack){
-      return new Promise(resolve => {
-        const selected = new Set();
-        els.uiModalTitle.textContent = 'Wymień litery';
-        els.uiModalText.textContent = 'Kliknij litery, które chcesz wymienić. Wymiana kończy twoją turę.';
-        els.uiModalInput.classList.add('hidden');
-        els.uiModalActions.innerHTML = '';
-
-        const modalBox = els.uiModalActions.parentElement;
-        const oldGrid = modalBox.querySelector('.ui-exchange-grid');
-        if(oldGrid) oldGrid.remove();
-
-        const grid = document.createElement('div');
-        grid.className = 'ui-exchange-grid';
-        rack.forEach((tile, index) => {
-          const btn = document.createElement('button');
-          btn.type = 'button';
-          btn.className = 'ui-exchange-choice';
-          btn.appendChild(tileEl(tile, false));
-          btn.onclick = () => {
-            if(selected.has(index)) selected.delete(index);
-            else selected.add(index);
-            btn.classList.toggle('selected', selected.has(index));
-          };
-          grid.appendChild(btn);
-        });
-        modalBox.insertBefore(grid, els.uiModalActions);
-
-        const close = value => {
-          grid.remove();
-          els.uiModalBackdrop.classList.remove('show');
-          setTimeout(() => { els.uiModalActions.innerHTML = ''; }, 120);
-          resolve(value);
-        };
-
-        const cancelBtn = document.createElement('button');
-        cancelBtn.className = 'btn';
-        cancelBtn.textContent = 'Anuluj';
-        cancelBtn.onclick = () => close(null);
-
-        const okBtn = document.createElement('button');
-        okBtn.className = 'btn blue';
-        okBtn.textContent = 'Wymień wybrane';
-        okBtn.onclick = () => {
-          if(!selected.size){
-            showToast('Wymiana liter', 'Wybierz przynajmniej jedną literę.');
-            return;
-          }
-          close([...selected]);
-        };
-
-        els.uiModalActions.append(cancelBtn, okBtn);
-        els.uiModalBackdrop.classList.add('show');
-      });
-    }
-
-    function timerSeconds(){
-      const raw = Number(els.timerSecondsInput?.value || 120);
-      return Math.min(600, Math.max(15, Math.round(raw)));
-    }
-    function renderTimer(){
-      if(!els.timerInfo || !room) return;
-      const limit = room.settings?.turnTimeLimitSeconds || 120;
-      if(!room.settings?.timerEnabled || room.status === 'finished'){
-        els.topBadge.classList.remove('timer-warn');
-        els.turnTimerBadge.classList.remove('timer-warn');
-        els.timerInfo.textContent = 'bez limitu';
-        els.turnTimerBadge.textContent = 'Czas: bez limitu';
-        return;
-      }
-      if(room.status === 'voting'){
-        els.topBadge.classList.remove('timer-warn');
-        els.turnTimerBadge.classList.remove('timer-warn');
-        els.timerInfo.textContent = 'pauza podczas głosowania';
-        els.turnTimerBadge.textContent = 'Czas: pauza';
-        return;
-      }
-      const left = secondsLeft(room);
-      const label = `${formatTime(left)} / ${formatTime(limit)}`;
-      els.timerInfo.textContent = label;
-      els.turnTimerBadge.textContent = `Czas: ${formatTime(left)}`;
-      els.timerInfo.style.color = left <= 10 ? '#fca5a5' : '';
-      els.topBadge.classList.toggle('timer-warn', left <= 10 && room.status === 'playing');
-      els.turnTimerBadge.classList.toggle('timer-warn', left <= 10 && room.status === 'playing');
-    }
-    function secondsLeft(data){
-      if(!data?.settings?.timerEnabled || !data.turnStartedAt) return Infinity;
-      const limit = Math.max(15, Number(data.settings.turnTimeLimitSeconds || 120));
-      return Math.max(0, Math.ceil((data.turnStartedAt + limit * 1000 - Date.now()) / 1000));
-    }
-    function formatTime(total){
-      if(!Number.isFinite(total)) return '∞';
-      const m = Math.floor(total / 60);
-      const s = total % 60;
-      return `${m}:${String(s).padStart(2,'0')}`;
-    }
-    async function maybeSkipOfflineTurn(){
-      if(offlineSkipProcessing || !room || room.status !== 'playing') return;
-      const playerId = currentPlayerId();
-      const player = room.players[playerId];
-      if(!player || player.online !== false) return;
-
-      offlineSkipProcessing = true;
-      try{
-        const next = clone(room);
-        if(next.status !== 'playing') return;
-        const freshPlayerId = next.order[next.currentIndex];
-        const freshPlayer = next.players[freshPlayerId];
-        if(!freshPlayer || freshPlayer.online !== false) return;
-
-        if(next.pending?.uid === freshPlayerId){
-          (next.pending.tiles || []).forEach(p => freshPlayer.rack.push(p.tile));
-        }
-        next.pending = {uid:null,tiles:[]};
-        next.consecutivePasses++;
-        next.logs = addLogToArray(next.logs, `<b>${esc(freshPlayer.name || 'Gracz')}</b> jest offline, więc jego tura została pominięta.`);
-        next.lastEvent = {type:'offlineSkip',playerId:freshPlayerId,playerName:freshPlayer.name || 'Gracz',t:Date.now()};
-
-        if(next.consecutivePasses >= next.order.length * 2) endGame(next, 'Za dużo pominiętych tur z rzędu.');
-        else {
-          next.currentIndex = (next.currentIndex + 1) % next.order.length;
-          next.turnStartedAt = Date.now();
-        }
-        await saveRoom(next);
-      }finally{
-        setTimeout(() => offlineSkipProcessing = false, 1200);
-      }
-    }
-
-    async function maybeExpireTurn(){
-      if(timeoutProcessing || !room || room.status !== 'playing' || !room.settings?.timerEnabled) return;
-      if(secondsLeft(room) > 0) return;
-      timeoutProcessing = true;
-      try{
-        const next = clone(room);
-        if(next.status !== 'playing' || !next.settings?.timerEnabled || secondsLeft(next) > 0) return;
-        const playerId = currentPlayerId();
-        const player = next.players[playerId];
-        if(next.pending?.uid === playerId){
-          (next.pending.tiles || []).forEach(p => player.rack.push(p.tile));
-        }
-        next.pending = {uid:null,tiles:[]};
-        next.consecutivePasses++;
-        next.logs = addLogToArray(next.logs, `<b>${esc(player?.name || 'Gracz')}</b> nie zmieścił się w czasie i traci kolejkę.`);
-        next.lastEvent = {type:'timeout',playerId,playerName:player?.name || 'Gracz',t:Date.now()};
-        if(next.consecutivePasses >= next.order.length * 2) endGame(next, 'Za dużo utraconych/pominiętych tur z rzędu.');
-        else {
-          next.currentIndex = (next.currentIndex + 1) % next.order.length;
-          next.turnStartedAt = Date.now();
-        }
-        await saveRoom(next);
-      }finally{
-        setTimeout(() => timeoutProcessing = false, 1200);
-      }
-    }
-    function timerLabel(settings){
-      if(!settings?.timerEnabled) return 'bez limitu';
-      return `${Math.max(15, Number(settings.turnTimeLimitSeconds || 120))} sekund na ruch`;
-    }
-    async function requestNotificationPermission(){
-      if(!('Notification' in window)) return;
-      if(Notification.permission === 'default'){
-        try{ await Notification.requestPermission(); }catch(_){ }
-      }
-    }
-    function browserNotify(title, body){
-      if('Notification' in window && Notification.permission === 'granted'){
-        try{ new Notification(title, {body, icon: location.origin + '/favicon.ico'}); }catch(_){ }
-      }
-    }
-    function showToast(title, text){
-      if(!els.toastHost) return;
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.innerHTML = `<b>${esc(title)}</b><small>${esc(text)}</small>`;
-      els.toastHost.prepend(toast);
-      setTimeout(() => {toast.style.opacity = '0'; toast.style.transform = 'translateY(10px) scale(.98)';}, 4200);
-      setTimeout(() => toast.remove(), 4700);
-    }
-    function checkTurnNotification(){
-      if(!room || room.status !== 'playing' || !isMyTurn()) return;
-      const turnKey = `${room.code}:${room.currentIndex}:${room.turnStartedAt || 0}`;
-      if(lastTurnNotificationKey === turnKey) return;
-      lastTurnNotificationKey = turnKey;
-      showToast('Twoja kolej!', 'Ułóż słowo na planszy.');
-      browserNotify('Twoja kolej w Literakach', `Pokój ${room.code}: teraz grasz ty.`);
-      showEventOverlay('turn','Twoja kolej!','Masz teraz czas na ułożenie słowa.');
-    }
-    function handleLastEvent(){
-      if(!room?.lastEvent?.t) return;
-      const eventKey = `${room.lastEvent.type}:${room.lastEvent.t}:${room.lastEvent.playerId || ''}`;
-      if(lastSeenEventKey === eventKey) return;
-      lastSeenEventKey = eventKey;
-      const ev = room.lastEvent;
-      if(ev.type === 'word'){
-        showToast('Słowo zatwierdzone', `${ev.playerName || 'Gracz'} zdobywa ${ev.score || 0} pkt: ${(ev.words || []).join(', ')}`);
-        showEventOverlay('word','Ładny ruch!', `${ev.playerName || 'Gracz'}: ${(ev.words || []).join(', ')} za ${ev.score || 0} pkt.`);
-      }
-      if(ev.type === 'timeout'){
-        showToast('Czas minął', `${ev.playerName || 'Gracz'} traci kolejkę.`);
-        showEventOverlay('timeout','Czas minął!', `${ev.playerName || 'Gracz'} nie zdążył ułożyć słowa.`);
-      }
-      if(ev.type === 'reject'){
-        showToast('Ruch odrzucony', `${ev.playerName || 'Gracz'} traci kolejkę.`);
-        showEventOverlay('reject','Ruch odrzucony', 'Większość graczy nie zgodziła się ze słowem.');
-      }
-      if(ev.type === 'offlineSkip'){
-        showToast('Gracz offline', `${ev.playerName || 'Gracz'} jest offline — tura pominięta.`);
-        showEventOverlay('offline','Gracz offline', `${ev.playerName || 'Gracz'} jest offline, więc jego tura została pominięta.`);
-      }
-    }
-    function showEventOverlay(type,title,text){
-      if(!els.eventOverlay) return;
-      const icons = {turn:'🎲',word:'✨',timeout:'⏱️',reject:'🚫',offline:'📴'};
-      els.eventIcon.textContent = icons[type] || '✨';
-      els.eventTitle.textContent = title;
-      els.eventText.textContent = text;
-      els.eventOverlay.classList.remove('show');
-      void els.eventOverlay.offsetWidth;
-      els.eventOverlay.classList.add('show');
-      clearTimeout(showEventOverlay._timer);
-      showEventOverlay._timer = setTimeout(() => els.eventOverlay.classList.remove('show'), type === 'timeout' ? 2600 : 1800);
-    }
-    function isCelebratedCell(r,c){
-      const ev = room?.lastEvent;
-      if(!ev || ev.type !== 'word') return false;
-      const tiles = Array.isArray(ev.tiles) ? ev.tiles : [];
-      return tiles.some(t => t.r === r && t.c === c);
-    }
-    function languageLabel(lang){
-      if(lang === 'en') return 'angielski';
-      if(lang === 'both') return 'polski albo angielski';
-      return 'polski';
-    }
-    function sourceLabel(source){
-      if(source === 'sjp_file') return 'plik SJP w projekcie';
-      if(source === 'online') return 'online API';
-      if(source === 'firebase_online') return 'Firebase + online';
-      return 'Firebase';
-    }
-    function targetPlayerCount(data){
-      const n = Number(data?.settings?.playerCount || 4);
-      return Math.min(4, Math.max(2, n));
-    }
-    function key(r,c){return `${r}_${c}`}
-    function inBounds(r,c){return r>=0&&r<SIZE&&c>=0&&c<SIZE}
-    function clone(obj){return structuredClone(obj)}
-    function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-    function cleanName(s){return String(s||'').trim().slice(0,18)}
-    function esc(s){return String(s).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]))}
-    function q(id){return document.getElementById(id)}
-    async function copyRoomLink(){await navigator.clipboard.writeText(`${location.origin}${location.pathname}?room=${room.code}`);uiAlert('Skopiowano link.');}
-    function goHome(){
-      if(currentRoomCode && myId && db){
-        update(ref(db, `rooms/${currentRoomCode}/players/${myId}`), {online:false,lastSeen:Date.now()}).catch(()=>{});
-      }
-      currentRoomCode=null;room=null;selectedRackIndex=null;
-      if(unsubscribeRoom){unsubscribeRoom();unsubscribeRoom=null}
-      history.replaceState(null,'',location.pathname);
-      els.lobbyView.classList.add('hidden');els.gameView.classList.add('hidden');els.homeView.classList.remove('hidden');els.topBadge.textContent='Online'
-    }
-    function tileEl(tile,locked){const div=document.createElement('div');div.className=`tile ${tile.blank?'blank':''} ${locked?'locked':''}`;div.innerHTML=`<span>${esc(tile.letter)}</span><small>${tile.value}</small>`;return div}
-    function labelForMultiplier(mult,r,c){if(r===CENTER&&c===CENTER)return '★ DW';if(mult==='tw')return 'TW';if(mult==='dw')return 'DW';if(mult==='tl')return 'TL';if(mult==='dl')return 'DL';return ''}
-    function makeMultipliers(){
-      const m=Array.from({length:SIZE},()=>Array.from({length:SIZE},()=>'')); const set=(type,coords)=>coords.forEach(([r,c])=>m[r][c]=type);
-      set('tw',[[0,0],[0,7],[0,14],[7,0],[7,14],[14,0],[14,7],[14,14]]);
-      set('dw',[[1,1],[2,2],[3,3],[4,4],[7,7],[10,10],[11,11],[12,12],[13,13],[1,13],[2,12],[3,11],[4,10],[10,4],[11,3],[12,2],[13,1]]);
-      set('tl',[[1,5],[1,9],[5,1],[5,5],[5,9],[5,13],[9,1],[9,5],[9,9],[9,13],[13,5],[13,9]]);
-      set('dl',[[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12],[7,3],[7,11],[8,2],[8,6],[8,8],[8,12],[11,0],[11,7],[11,14],[12,6],[12,8],[14,3],[14,11]]);
-      return m;
-    }
+    import { getDatabase, ref, get, set, update, onValue, onDisconnect } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js';
+
+    const FIREBASE_CONFIG = {apiKey:"AIzaSyA0_fhuy7ofypez2zUhNwdbB61NXxGtPwU",authDomain:"dyszak-1eddc.firebaseapp.com",databaseURL:"https://dyszak-1eddc-default-rtdb.firebaseio.com",projectId:"dyszak-1eddc",storageBucket:"dyszak-1eddc.firebasestorage.app",messagingSenderId:"364073429062",appId:"1:364073429062:web:af2cd1348881d6b92fc247",measurementId:"G-ZT5M0ZWS0E"};
+    const SIZE=15,CENTER=7,VOTING_SECONDS=30;
+    const LETTER_VALUES={A:1,E:1,I:1,N:1,O:1,R:1,S:1,W:1,Z:1,C:2,D:2,K:2,L:2,M:2,P:2,T:2,Y:2,B:3,G:3,H:3,J:3,Ł:3,U:3,Ą:5,Ę:5,F:5,Ó:5,Ś:5,Ż:5,Ć:6,Ń:7,Ź:9,'*':0};
+    const LETTER_DISTRIBUTION=[['A',9],['E',7],['I',8],['N',5],['O',6],['R',4],['S',4],['W',4],['Z',5],['C',3],['D',3],['K',3],['L',3],['M',3],['P',3],['T',3],['Y',4],['B',2],['G',2],['H',2],['J',2],['Ł',2],['U',2],['Ą',1],['Ę',1],['F',1],['Ó',1],['Ś',1],['Ż',1],['Ć',1],['Ń',1],['Ź',1],['*',2]];
+    const MULTIPLIERS=makeMultipliers();
+    const $=id=>document.getElementById(id);
+    const els={loadingView:$('loadingView'),loadingText:$('loadingText'),homeView:$('homeView'),lobbyView:$('lobbyView'),gameView:$('gameView'),topBadge:$('topBadge'),turnTimerBadge:$('turnTimerBadge'),nameInput:$('nameInput'),playerCountSelect:$('playerCountSelect'),timerToggle:$('timerToggle'),timerSecondsInput:$('timerSecondsInput'),timerSecondsWrap:$('timerSecondsWrap'),voteToggle:$('voteToggle'),settingsHint:$('settingsHint'),joinCodeInput:$('joinCodeInput'),roomCodeBox:$('roomCodeBox'),lobbySettingsSummary:$('lobbySettingsSummary'),lobbyPlayers:$('lobbyPlayers'),hostHint:$('hostHint'),startGameBtn:$('startGameBtn'),board:$('board'),rack:$('rack'),rackTitle:$('rackTitle'),movePreview:$('movePreview'),playersPanel:$('playersPanel'),votePanel:$('votePanel'),roomInfo:$('roomInfo'),validationInfo:$('validationInfo'),timerInfo:$('timerInfo'),bagCount:$('bagCount'),log:$('log'),toastHost:$('toastHost'),eventOverlay:$('eventOverlay'),eventIcon:$('eventIcon'),eventTitle:$('eventTitle'),eventText:$('eventText'),uiModalBackdrop:$('uiModalBackdrop'),uiModalTitle:$('uiModalTitle'),uiModalText:$('uiModalText'),uiModalInput:$('uiModalInput'),uiModalActions:$('uiModalActions')};
+    let app,auth,db,myId,currentRoomCode=null,room=null,unsubscribeRoom=null,selectedRackIndex=null;
+    let busyTimeout=false,busySkip=false,busyVoteResolve=false,lastTurnKey='',lastEventKey='',lastHeartbeat=0;
+
+    els.nameInput.value=localStorage.getItem('literaki_name')||'';
+    $('createRoomBtn').onclick=createRoom;$('joinRoomBtn').onclick=()=>joinRoom(els.joinCodeInput.value);$('copyLinkBtn').onclick=copyRoomLink;$('startGameBtn').onclick=startGame;$('backHomeBtn').onclick=goHome;$('playBtn').onclick=submitMove;$('undoBtn').onclick=undoMove;$('exchangeBtn').onclick=exchangeTiles;$('passBtn').onclick=passTurn;$('shuffleBtn').onclick=shuffleRack;$('leaveBtn').onclick=goHome;
+    els.nameInput.oninput=()=>localStorage.setItem('literaki_name',cleanName(els.nameInput.value));[els.playerCountSelect,els.timerToggle,els.timerSecondsInput,els.voteToggle].forEach(el=>el.addEventListener('input',syncSettingsHint));
+    document.addEventListener('click',e=>{const btn=e.target.closest('[data-vote]');if(btn){e.preventDefault();voteOnChallenge(btn.dataset.vote==='agree')}});
+    syncSettingsHint();init();setInterval(tick,1000);
+
+    async function init(){try{const urlRoom=new URLSearchParams(location.search).get('room');if(urlRoom)els.joinCodeInput.value=urlRoom.toUpperCase();app=initializeApp(FIREBASE_CONFIG);db=getDatabase(app);auth=getAuth(app);const cred=await signInAnonymously(auth);myId=cred.user.uid;els.loadingView.classList.add('hidden');els.homeView.classList.remove('hidden');els.topBadge.textContent='Online';if(urlRoom)joinRoom(urlRoom)}catch(err){console.error(err);els.loadingText.textContent='Nie udało się połączyć z Firebase. Sprawdź konsolę przeglądarki i reguły bazy.';els.topBadge.textContent='Błąd Firebase'}}
+    async function requestNotifications(){if('Notification'in window&&Notification.permission==='default'){try{await Notification.requestPermission()}catch(_){}}}
+    function syncSettingsHint(){const timer=els.timerToggle.checked;els.timerSecondsWrap.classList.toggle('dim',!timer);els.timerSecondsInput.disabled=!timer;els.settingsHint.textContent=`Tryb: ${els.playerCountSelect.value} graczy, ${timer?timerSeconds()+'s na ruch':'bez limitu czasu'}, ${els.voteToggle.checked?'głosowanie po ruchu':'bez głosowania'}.`}
+    function readSettings(){return{playerCount:Number(els.playerCountSelect.value)||4,timerEnabled:!!els.timerToggle.checked,turnTimeLimitSeconds:timerSeconds(),votingEnabled:!!els.voteToggle.checked}}
+    function timerSeconds(){const n=Number(els.timerSecondsInput.value||120);return Math.min(600,Math.max(15,Math.round(n)))}
+
+    async function createRoom(){await requestNotifications();const name=cleanName(els.nameInput.value)||'Gracz';localStorage.setItem('literaki_name',name);const code=await uniqueRoomCode();const settings=readSettings();const data={code,status:'lobby',hostId:myId,createdAt:Date.now(),updatedAt:Date.now(),settings,currentIndex:0,moveNumber:0,consecutivePasses:0,order:[myId],players:{[myId]:playerObj(name)},board:{},bag:[],pending:{uid:null,tiles:[]},challenge:null,lastEvent:null,logs:[logObj(`Pokój utworzony. ${settingsLabel(settings)}.`)]};await set(roomRef(code),data);subscribeRoom(code)}
+    async function uniqueRoomCode(){for(let i=0;i<40;i++){const code=Math.random().toString(36).slice(2,7).toUpperCase();if(!(await get(roomRef(code))).exists())return code}throw new Error('Nie udało się utworzyć kodu')}
+    async function joinRoom(raw){await requestNotifications();const code=String(raw||'').replace(/[^A-Z0-9]/gi,'').toUpperCase();if(!code)return uiAlert('Wpisz kod pokoju.');const name=cleanName(els.nameInput.value)||'Gracz';localStorage.setItem('literaki_name',name);const snap=await get(roomRef(code));if(!snap.exists())return uiAlert('Nie znaleziono pokoju.');const data=normalizeRoom(snap.val());if(!data.players[myId]){if(data.status!=='lobby')return uiAlert('Ta gra już wystartowała. Dołączyć mogą tylko gracze z lobby.');if(data.order.length>=targetPlayerCount(data))return uiAlert('Pokój jest pełny.');data.players[myId]=playerObj(name);data.order.push(myId);data.logs=addLog(data.logs,`${esc(name)} dołącza do pokoju.`);data.updatedAt=Date.now();await set(roomRef(code),data)}else await update(ref(db,`rooms/${code}/players/${myId}`),{name,online:true,lastSeen:Date.now()});subscribeRoom(code)}
+    function subscribeRoom(code){if(unsubscribeRoom)unsubscribeRoom();currentRoomCode=code;history.replaceState(null,'',`?room=${code}`);unsubscribeRoom=onValue(roomRef(code),snap=>{if(!snap.exists())return goHome(false);room=normalizeRoom(snap.val());render()});update(ref(db,`rooms/${code}/players/${myId}`),{online:true,lastSeen:Date.now()}).catch(()=>{});onDisconnect(ref(db,`rooms/${code}/players/${myId}`)).update({online:false,lastSeen:Date.now()}).catch(()=>{})}
+    function playerObj(name){return{id:myId,name,score:0,rack:[],online:true,lastSeen:Date.now()}}function roomRef(code){return ref(db,`rooms/${code}`)}function normalizeRoom(d){return{...d,settings:{playerCount:4,timerEnabled:true,turnTimeLimitSeconds:120,votingEnabled:true,...(d.settings||{})},players:d.players||{},order:d.order||[],board:d.board||{},bag:d.bag||[],pending:d.pending||{uid:null,tiles:[]},challenge:d.challenge||null,logs:d.logs||[]}}
+
+    function render(){if(!room)return;els.loadingView.classList.add('hidden');els.homeView.classList.add('hidden');els.lobbyView.classList.toggle('hidden',room.status!=='lobby');els.gameView.classList.toggle('hidden',room.status==='lobby');els.topBadge.textContent=room.status==='lobby'?`Lobby ${room.code}`:room.status==='voting'?'Głosowanie':room.status==='finished'?'Koniec gry':`Tura: ${currentPlayer()?.name||'—'}`;if(room.status==='lobby')renderLobby();else renderGame()}
+    function renderLobby(){els.roomCodeBox.textContent=room.code;els.lobbySettingsSummary.innerHTML=`<div><strong>Liczba graczy:</strong> ${targetPlayerCount(room)}</div><div><strong>Tryb:</strong> ${settingsLabel(room.settings)}</div>`;els.lobbyPlayers.innerHTML='';room.order.forEach((id,i)=>{const p=room.players[id]||{};const row=document.createElement('div');row.className='lobby-player';row.innerHTML=`<b>${i+1}. ${esc(p.name||'Gracz')} ${id===myId?'(ty)':''}</b><span class='${p.online?'online':'offline'}'>${p.online?'online':'offline'}</span>`;els.lobbyPlayers.appendChild(row)});const host=room.hostId===myId;els.startGameBtn.disabled=!host||room.order.length!==targetPlayerCount(room);els.startGameBtn.textContent=host?'Start gry':'Tylko host może zacząć';els.hostHint.innerHTML=host?`Graczy w lobby: <b>${room.order.length}/${targetPlayerCount(room)}</b>.`:`Czekasz na hosta. Graczy: <b>${room.order.length}/${targetPlayerCount(room)}</b>.`;els.turnTimerBadge.textContent='Czas: —';els.turnTimerBadge.classList.remove('warn')}
+    function renderGame(){renderBoard();renderRack();renderPlayers();renderVotePanel();renderLog();els.roomInfo.textContent=room.code;els.validationInfo.textContent=room.settings.votingEnabled?'głosowanie graczy':'bez głosowania';els.bagCount.textContent=room.bag.length;els.rackTitle.textContent=room.players[myId]?`Twój stojak — ${room.players[myId].name}`:'Obserwator';updateMovePreview();renderTimer();const active=isMyTurn()&&room.status==='playing';['playBtn','undoBtn','exchangeBtn','passBtn'].forEach(id=>$(id).disabled=!active);$('shuffleBtn').disabled=!(room.players[myId]&&(room.status==='playing'||room.status==='voting'))}
+    function renderBoard(){els.board.innerHTML='';for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){const cell=document.createElement('div');const mult=MULTIPLIERS[r][c];cell.className=`cell ${mult||''} ${r===CENTER&&c===CENTER?'center':''}`;const pending=pendingAt(r,c);const tile=pending?.tile||room.board[k(r,c)];const celeb=isCelebratedCell(r,c);if(pending)cell.classList.add('pending');if(celeb)cell.classList.add('word-flash');if(tile){const node=tileEl(tile,!pending);if(celeb)node.classList.add('celebrate');if(pending){node.title='Kliknij, aby zdjąć tę literę';node.onclick=e=>{e.stopPropagation();removePendingTile(r,c)}}cell.appendChild(node)}else cell.textContent=labelForMultiplier(mult,r,c);cell.onclick=()=>pending?removePendingTile(r,c):onCellClick(r,c);els.board.appendChild(cell)}}
+    function renderRack(){els.rack.innerHTML='';const me=room.players[myId];if(!me)return;(me.rack||[]).forEach((tile,i)=>{const node=tileEl(tile,false);node.classList.toggle('selected',selectedRackIndex===i);node.onclick=()=>{if(!isMyTurn()||room.status!=='playing')return;selectedRackIndex=selectedRackIndex===i?null:i;renderRack()};els.rack.appendChild(node)})}
+    function renderPlayers(){els.playersPanel.innerHTML='';room.order.forEach((id,i)=>{const p=room.players[id]||{};const row=document.createElement('div');row.className=`player ${i===room.currentIndex?'active':''} ${id===myId?'me':''}`;row.innerHTML=`<div><div class='player-name'><span class='dot' style='background:${p.online?['#22c55e','#3b82f6','#f97316','#a855f7'][i%4]:'#64748b'}'></span>${esc(p.name||'Gracz')} ${id===myId?'(ty)':''}</div><div class='small ${p.online?'online':'offline'}'>${p.online?'online':'offline'}</div></div><div class='score'>${p.score||0}</div>`;els.playersPanel.appendChild(row)})}
+    function renderLog(){els.log.innerHTML='';[...room.logs].slice(-50).reverse().forEach(item=>{const div=document.createElement('div');div.innerHTML=item.html||esc(item.text||'');els.log.appendChild(div)})}
+    function renderVotePanel(){if(room.status!=='voting'||!room.challenge){els.votePanel.classList.add('hidden');els.votePanel.innerHTML='';return}const ch=room.challenge;const eligible=activeVotePlayerIds(room,ch.submitterId);const votes=ch.votes||{};const agrees=eligible.filter(id=>votes[id]?.agree===true).length;const rejects=eligible.filter(id=>votes[id]?.agree===false).length;const thresholds=voteThresholds(room,eligible.length);const left=votingSecondsLeft(ch),progress=votingProgressPercent(ch);const meVote=votes[myId];const canVote=eligible.includes(myId)&&!meVote;const words=(ch.words||[]).map(w=>`<span class='word-pill'>${esc(w)}</span>`).join('');let action='';if(ch.submitterId===myId)action='<p>Czekasz na głosy pozostałych aktywnych graczy.</p>';else if(meVote)action=`<p>Twój głos: <b>${meVote.agree?'zgadzam się':'nie zgadzam się'}</b>.</p>`;else if(canVote)action=`<div class='vote-actions'><button type='button' data-vote='agree' class='btn primary'>Zgadzam się</button><button type='button' data-vote='reject' class='btn danger'>Nie zgadzam się</button></div>`;else action='<p>Nie jesteś aktywnym głosującym w tej rundzie.</p>';els.votePanel.classList.remove('hidden');els.votePanel.innerHTML=`<h3>Głosowanie nad ruchem</h3><p><b>${esc(room.players[ch.submitterId]?.name||'Gracz')}</b> chce zatwierdzić ruch za <b>${ch.score||0} pkt</b>.</p><div class='word-list'>${words}</div>${action}<div class='vote-progress ${left<=10?'danger':''}'><div class='vote-progress-fill' style='width:${progress}%'></div></div><div class='vote-meta'>Czas: <span class='vote-time'>${formatTime(left)}</span>. Głosy online: ${agrees} tak / ${rejects} nie. Do odrzucenia potrzeba ${thresholds.reject} głosów przeciw.</div>`}
+
+    async function startGame(){if(room.hostId!==myId)return;if(room.order.length!==targetPlayerCount(room))return uiAlert(`Do startu potrzeba dokładnie ${targetPlayerCount(room)} graczy.`);const next=clone(room);next.status='playing';next.board={};next.bag=createBag();next.pending={uid:null,tiles:[]};next.challenge=null;next.currentIndex=0;next.moveNumber=0;next.consecutivePasses=0;next.turnStartedAt=Date.now();next.lastEvent=null;next.order.forEach(id=>{next.players[id].score=0;next.players[id].rack=[];drawTiles(next.players[id].rack,next.bag,7)});next.logs=addLog(next.logs,`Gra wystartowała. ${settingsLabel(next.settings)}.`);await saveRoom(next)}
+    async function onCellClick(r,c){if(!isMyTurn()||room.status!=='playing')return;if(room.board[k(r,c)]||selectedRackIndex===null)return;const next=clone(room);const me=next.players[myId];const tile=me.rack.splice(selectedRackIndex,1)[0];selectedRackIndex=null;if(!tile)return;if(tile.blank&&tile.letter==='*'){const chosen=await uiBlankLetterPrompt();if(!chosen){me.rack.push(tile);return render()}tile.letter=chosen;tile.value=0}if(!next.pending.uid)next.pending={uid:myId,tiles:[]};next.pending.tiles.push({r,c,tile});await saveRoom(next)}
+    async function removePendingTile(r,c){if(!room||room.status!=='playing'||room.pending?.uid!==myId)return;const idx=(room.pending.tiles||[]).findIndex(p=>p.r===r&&p.c===c);if(idx<0)return;const next=clone(room);const me=next.players[myId];const [removed]=next.pending.tiles.splice(idx,1);me.rack.push(removed.tile);if(!next.pending.tiles.length)next.pending={uid:null,tiles:[]};selectedRackIndex=null;await saveRoom(next)}
+    async function undoMove(){if(!isMyTurn()||room.status!=='playing'||!room.pending?.tiles?.length)return;const last=room.pending.tiles[room.pending.tiles.length-1];await removePendingTile(last.r,last.c)}
+    async function submitMove(){if(!isMyTurn()||room.status!=='playing')return;const result=validateAndScoreMove(room);if(!result.ok)return uiAlert(result.message);const voters=activeVotePlayerIds(room,myId);if(room.settings.votingEnabled&&voters.length>0){const now=Date.now();const next=clone(room);next.status='voting';next.challenge={id:`${now}_${myId}`,submitterId:myId,words:result.words,score:result.score,wordTiles:result.wordTiles,votes:{},createdAt:now,endsAt:now+VOTING_SECONDS*1000};next.logs=addLog(next.logs,`<b>${esc(next.players[myId].name)}</b> zgłasza do głosowania: ${esc(result.words.join(', '))} za <b>${result.score} pkt</b>.`);await saveRoom(next)}else{const next=clone(room);acceptMove(next,result,myId,false);await saveRoom(next)}}
+    async function voteOnChallenge(agree){if(!room||room.status!=='voting'||!room.challenge)return;if(room.challenge.submitterId===myId)return uiAlert('Autor ruchu nie głosuje nad swoim ruchem.');const eligible=activeVotePlayerIds(room,room.challenge.submitterId);if(!eligible.includes(myId))return uiAlert('Nie możesz głosować w tej rundzie.');if(room.challenge.votes?.[myId])return uiAlert('Już oddałeś głos.');const next=clone(room);next.challenge.votes=next.challenge.votes||{};next.challenge.votes[myId]={agree,name:next.players[myId]?.name||'Gracz',t:Date.now()};const res=challengeResolution(next);if(res==='reject')rejectMove(next,false);else if(res==='accept')acceptMove(next,{words:next.challenge.words,score:next.challenge.score,wordTiles:next.challenge.wordTiles},next.challenge.submitterId,false);else next.logs=addLog(next.logs,`<b>${esc(next.players[myId]?.name||'Gracz')}</b> głosuje: <b>${agree?'zgadzam się':'nie zgadzam się'}</b>.`);await saveRoom(next)}
+    async function passTurn(){if(!isMyTurn()||room.status!=='playing')return;const next=clone(room);const me=next.players[myId];(next.pending?.tiles||[]).forEach(p=>me.rack.push(p.tile));next.pending={uid:null,tiles:[]};next.logs=addLog(next.logs,`<b>${esc(me.name)}</b> pasuje.`);next.consecutivePasses++;advanceOrEnd(next,'Za dużo pasów z rzędu.');await saveRoom(next)}
+    async function exchangeTiles(){if(!isMyTurn()||room.status!=='playing')return;if(room.pending?.tiles?.length)return uiAlert('Najpierw zdejmij litery z planszy.');if(room.bag.length<7)return uiAlert('Wymiana dostępna tylko, gdy w woreczku jest minimum 7 liter.');const me=room.players[myId];const indexes=await uiExchangePrompt(me.rack);if(!indexes||!indexes.length)return;const next=clone(room);const p=next.players[myId];const returned=[...indexes].sort((a,b)=>b-a).map(i=>p.rack.splice(i,1)[0]).filter(Boolean).map(t=>({...t,letter:t.blank?'*':t.letter,value:t.blank?0:t.value}));drawTiles(p.rack,next.bag,7);next.bag=shuffle(next.bag.concat(returned));next.logs=addLog(next.logs,`<b>${esc(p.name)}</b> wymienia ${returned.length} liter.`);next.lastEvent={type:'exchange',playerName:p.name,count:returned.length,t:Date.now()};next.consecutivePasses=0;advanceTurn(next);await saveRoom(next)}
+    async function shuffleRack(){if(!room?.players?.[myId]||(room.status!=='playing'&&room.status!=='voting'))return;const next=clone(room);next.players[myId].rack=shuffle(next.players[myId].rack||[]);selectedRackIndex=null;await saveRoom(next)}
+
+    function validateAndScoreMove(data){const pending=data.pending?.tiles||[];if(!pending.length)return{ok:false,message:'Nie położono żadnej litery.'};if(data.pending.uid!==currentPlayerId())return{ok:false,message:'To nie jest ruch aktualnego gracza.'};const temp={...data.board};pending.forEach(p=>temp[k(p.r,p.c)]=p.tile);const pKeys=new Set(pending.map(p=>k(p.r,p.c)));const words=[],seen=new Set();const add=w=>{if(!w||w.tiles.length<2)return;if(!w.tiles.some(t=>pKeys.has(k(t.r,t.c))))return;const wk=w.tiles.map(t=>k(t.r,t.c)).join('|');if(seen.has(wk))return;seen.add(wk);words.push(w)};pending.forEach(p=>{add(getWordAt(temp,p.r,p.c,'row'));add(getWordAt(temp,p.r,p.c,'col'))});if(!words.length)return{ok:false,message:'Musisz ułożyć przynajmniej jedno słowo z co najmniej 2 liter.'};const used=new Set();words.forEach(w=>w.tiles.forEach(t=>{const kk=k(t.r,t.c);if(pKeys.has(kk))used.add(kk)}));if(used.size!==pKeys.size)return{ok:false,message:'Każda nowa litera musi należeć do jakiegoś słowa.'};const comps=pendingComponents(temp,pKeys);if(data.moveNumber===0){if(!comps.some(comp=>comp.has(k(CENTER,CENTER))))return{ok:false,message:'Pierwszy ruch musi tworzyć słowo przechodzące przez środek.'}}else{for(const comp of comps){let touchesExisting=false;for(const kk of comp){if(data.board[kk]){touchesExisting=true;break}}if(!touchesExisting)return{ok:false,message:'Każda osobna grupa nowych liter musi łączyć się z literami z planszy.'}}let total=words.reduce((s,w)=>s+scoreWord(w,pending),0);if(pending.length===7)total+=50;const wordTiles=[],tileSeen=new Set();words.forEach(w=>w.tiles.forEach(t=>{const kk=k(t.r,t.c);if(!tileSeen.has(kk)){tileSeen.add(kk);wordTiles.push({r:t.r,c:t.c,letter:t.tile.letter})}}));return{ok:true,score:total,words:words.map(w=>w.text),wordTiles}}
+    function getWordAt(board,r,c,dir){const dr=dir==='col'?1:0,dc=dir==='row'?1:0;let sr=r,sc=c;while(inBounds(sr-dr,sc-dc)&&board[k(sr-dr,sc-dc)]){sr-=dr;sc-=dc}const tiles=[];let text='';while(inBounds(sr,sc)&&board[k(sr,sc)]){const tile=board[k(sr,sc)];tiles.push({r:sr,c:sc,tile});text+=tile.letter;sr+=dr;sc+=dc}return{tiles,text}}
+    function pendingComponents(temp,pKeys){const comps=[],seen=new Set();for(const start of pKeys){if(seen.has(start))continue;const comp=new Set(),queue=[start];seen.add(start);while(queue.length){const cur=queue.shift();comp.add(cur);const [r,c]=cur.split('_').map(Number);[[1,0],[-1,0],[0,1],[0,-1]].forEach(([dr,dc])=>{const nk=k(r+dr,c+dc);if(inBounds(r+dr,c+dc)&&temp[nk]&&!seen.has(nk)){seen.add(nk);queue.push(nk)}})}comps.push(comp)}return comps}
+    function scoreWord(word,pending){const pKeys=new Set(pending.map(p=>k(p.r,p.c)));let sum=0,wm=1;word.tiles.forEach(item=>{let pts=item.tile.value;if(pKeys.has(k(item.r,item.c))){const m=MULTIPLIERS[item.r][item.c];if(m==='dl')pts*=2;if(m==='tl')pts*=3;if(m==='dw')wm*=2;if(m==='tw')wm*=3}sum+=pts});return sum*wm}
+
+    function challengeResolution(data){const ch=data.challenge;if(!ch)return'pending';const eligible=activeVotePlayerIds(data,ch.submitterId);const votes=ch.votes||{};const agrees=eligible.filter(id=>votes[id]?.agree===true).length;const rejects=eligible.filter(id=>votes[id]?.agree===false).length;const voted=eligible.filter(id=>votes[id]).length;const th=voteThresholds(data,eligible.length);if(eligible.length&&rejects>=th.reject)return'reject';if(eligible.length&&agrees>=th.accept)return'accept';if(eligible.length&&voted>=eligible.length)return rejects>=th.reject?'reject':'accept';if(votingSecondsLeft(ch)<=0)return rejects>=th.reject?'reject':'accept';return'pending'}
+    function activeVotePlayerIds(data,submitterId){return(data.order||[]).filter(id=>id!==submitterId&&data.players?.[id]?.online!==false)}
+    function voteThresholds(data,eligibleCount){const active=(data.order||[]).filter(id=>data.players?.[id]?.online!==false).length;const reject=active<=3?1:Math.floor(eligibleCount/2)+1;const accept=Math.floor(eligibleCount/2)+1;return{reject:Math.max(1,reject),accept:Math.max(1,accept)}}
+    function votingSecondsLeft(ch){if(!ch)return VOTING_SECONDS;const ends=Number(ch.endsAt)||((Number(ch.createdAt)||Date.now())+VOTING_SECONDS*1000);const left=Math.ceil((ends-Date.now())/1000);return Number.isFinite(left)?Math.max(0,Math.min(VOTING_SECONDS,left)):VOTING_SECONDS}function votingProgressPercent(ch){return Math.max(0,Math.min(100,(votingSecondsLeft(ch)/VOTING_SECONDS)*100))}
+    async function maybeResolveVoting(){if(busyVoteResolve||!room||room.status!=='voting'||!room.challenge||votingSecondsLeft(room.challenge)>0)return;busyVoteResolve=true;try{const next=clone(room);if(next.status!=='voting'||!next.challenge)return;const res=challengeResolution(next);if(res==='reject')rejectMove(next,true);else acceptMove(next,{words:next.challenge.words||[],score:Number(next.challenge.score||0),wordTiles:next.challenge.wordTiles||[]},next.challenge.submitterId,true);await saveRoom(next)}finally{setTimeout(()=>busyVoteResolve=false,1200)}}
+    function acceptMove(next,result,playerId,byTime){const player=next.players[playerId];const pending=next.pending?.tiles||[];pending.forEach(p=>next.board[k(p.r,p.c)]=p.tile);player.score+=Number(result.score||0);drawTiles(player.rack,next.bag,7);next.moveNumber++;next.consecutivePasses=0;next.status='playing';next.pending={uid:null,tiles:[]};next.challenge=null;next.lastEvent={type:'word',playerId,playerName:player.name,words:result.words||[],score:result.score||0,tiles:result.wordTiles||pending.map(p=>({r:p.r,c:p.c,letter:p.tile.letter})),t:Date.now()};next.logs=addLog(next.logs,`${byTime?'<b>Głosowanie zakończone po czasie.</b> ':''}<b>${esc(player.name)}</b> układa ${esc((result.words||[]).join(', '))} za <b>${result.score||0} pkt</b>.`);if(player.rack.length===0&&next.bag.length===0)endGame(next,`${player.name} pozbył się wszystkich liter.`);else advanceTurn(next)}
+    function rejectMove(next,byTime){const ch=next.challenge;const player=next.players[ch.submitterId];(next.pending?.tiles||[]).forEach(p=>player.rack.push(p.tile));next.status='playing';next.pending={uid:null,tiles:[]};next.challenge=null;next.consecutivePasses=0;next.logs=addLog(next.logs,`<b>Ruch odrzucony.</b> ${byTime?'Głosowanie zakończyło się po czasie. ':''}<b>${esc(player.name)}</b> traci kolejkę.`);next.lastEvent={type:'reject',playerName:player.name,t:Date.now()};advanceTurn(next)}
+
+    function tick(){if(!room)return;heartbeatOnline();if(room.status==='voting'){renderTimer();renderVotePanel();maybeResolveVoting();return}if(room.status==='playing'){renderTimer();maybeSkipOfflineTurn();maybeExpireTurn()}}
+    async function heartbeatOnline(){if(!currentRoomCode||!myId||!room?.players?.[myId])return;const now=Date.now();if(now-lastHeartbeat<10000)return;lastHeartbeat=now;update(ref(db,`rooms/${currentRoomCode}/players/${myId}`),{online:true,lastSeen:now}).catch(()=>{})}
+    async function maybeSkipOfflineTurn(){if(busySkip||!room||room.status!=='playing')return;const pid=currentPlayerId(),p=room.players[pid];if(!p||p.online!==false)return;busySkip=true;try{const next=clone(room);const id=next.order[next.currentIndex],pl=next.players[id];if(!pl||pl.online!==false)return;if(next.pending?.uid===id)(next.pending.tiles||[]).forEach(t=>pl.rack.push(t.tile));next.pending={uid:null,tiles:[]};next.logs=addLog(next.logs,`<b>${esc(pl.name)}</b> jest offline, więc jego tura została pominięta.`);next.lastEvent={type:'offlineSkip',playerName:pl.name,t:Date.now()};next.consecutivePasses++;advanceOrEnd(next,'Za dużo pominiętych tur z rzędu.');await saveRoom(next)}finally{setTimeout(()=>busySkip=false,1200)}}
+    async function maybeExpireTurn(){if(busyTimeout||!room||room.status!=='playing'||!room.settings.timerEnabled||secondsLeft(room)>0)return;busyTimeout=true;try{const next=clone(room);if(next.status!=='playing'||!next.settings.timerEnabled||secondsLeft(next)>0)return;const pid=next.order[next.currentIndex],p=next.players[pid];if(next.pending?.uid===pid)(next.pending.tiles||[]).forEach(t=>p.rack.push(t.tile));next.pending={uid:null,tiles:[]};next.logs=addLog(next.logs,`<b>${esc(p.name)}</b> nie zmieścił się w czasie i traci kolejkę.`);next.lastEvent={type:'timeout',playerName:p.name,t:Date.now()};next.consecutivePasses++;advanceOrEnd(next,'Za dużo utraconych tur z rzędu.');await saveRoom(next)}finally{setTimeout(()=>busyTimeout=false,1200)}}
+    function renderTimer(){if(!room)return;if(!room.settings.timerEnabled||room.status==='finished'){els.timerInfo.textContent='bez limitu';els.turnTimerBadge.textContent='Czas: bez limitu';els.turnTimerBadge.classList.remove('warn');return}if(room.status==='voting'){const left=votingSecondsLeft(room.challenge);els.timerInfo.textContent=`głosowanie ${formatTime(left)}`;els.turnTimerBadge.textContent=`Głosowanie: ${formatTime(left)}`;els.turnTimerBadge.classList.toggle('warn',left<=10);return}const left=secondsLeft(room),limit=room.settings.turnTimeLimitSeconds||120;els.timerInfo.textContent=`${formatTime(left)} / ${formatTime(limit)}`;els.turnTimerBadge.textContent=`Czas: ${formatTime(left)}`;els.turnTimerBadge.classList.toggle('warn',left<=10)}
+    function secondsLeft(data){if(!data.settings?.timerEnabled||!data.turnStartedAt)return Infinity;const limit=Number(data.settings.turnTimeLimitSeconds||120);return Math.max(0,Math.ceil((data.turnStartedAt+limit*1000-Date.now())/1000))}
+
+    function updateMovePreview(){if(room.status==='voting')return els.movePreview.textContent='Głosowanie';if(!isMyTurn()||room.status!=='playing')return els.movePreview.textContent='Nie twoja tura';const r=validateAndScoreMove(room);els.movePreview.textContent=r.ok?`Ruch: ${r.score} pkt`:'Ruch: 0 pkt'}
+    function checkTurnNotification(){if(!room||room.status!=='playing'||!isMyTurn())return;const key=`${room.code}:${room.currentIndex}:${room.turnStartedAt||0}`;if(lastTurnKey===key)return;lastTurnKey=key;showToast('Twoja kolej!','Ułóż słowo na planszy.');browserNotify('Twoja kolej w Literakach',`Pokój ${room.code}: teraz grasz ty.`);showEventOverlay('turn','Twoja kolej!','Masz teraz czas na ułożenie słowa.')}
+    function handleLastEvent(){const ev=room?.lastEvent;if(!ev?.t)return;const key=`${ev.type}:${ev.t}`;if(lastEventKey===key)return;lastEventKey=key;if(ev.type==='word'){showToast('Słowo zatwierdzone',`${ev.playerName||'Gracz'} zdobywa ${ev.score||0} pkt.`);showEventOverlay('word','Ładny ruch!',`${ev.playerName||'Gracz'}: ${(ev.words||[]).join(', ')} za ${ev.score||0} pkt.`)}if(ev.type==='timeout'){showToast('Czas minął',`${ev.playerName||'Gracz'} traci kolejkę.`);showEventOverlay('timeout','Czas minął!',`${ev.playerName||'Gracz'} nie zdążył ułożyć słowa.`)}if(ev.type==='reject'){showToast('Ruch odrzucony',`${ev.playerName||'Gracz'} traci kolejkę.`);showEventOverlay('reject','Ruch odrzucony','Głosowanie odrzuciło ruch.')}if(ev.type==='offlineSkip'){showToast('Gracz offline',`${ev.playerName||'Gracz'} jest offline — tura pominięta.`);showEventOverlay('offline','Gracz offline',`${ev.playerName||'Gracz'} jest offline, więc jego tura została pominięta.`)}}
+    function showEventOverlay(type,title,text){const icons={turn:'🎲',word:'✨',timeout:'⏱️',reject:'🚫',offline:'📴'};els.eventIcon.textContent=icons[type]||'✨';els.eventTitle.textContent=title;els.eventText.textContent=text;els.eventOverlay.classList.remove('show');void els.eventOverlay.offsetWidth;els.eventOverlay.classList.add('show');clearTimeout(showEventOverlay.t);showEventOverlay.t=setTimeout(()=>els.eventOverlay.classList.remove('show'),type==='timeout'?2600:1800)}
+
+    function advanceTurn(next){next.currentIndex=(next.currentIndex+1)%next.order.length;next.turnStartedAt=Date.now()}function advanceOrEnd(next,reason){if(next.consecutivePasses>=next.order.length*2)endGame(next,reason);else advanceTurn(next)}function endGame(next,reason){next.status='finished';next.order.forEach(id=>{const p=next.players[id];p.score-=(p.rack||[]).reduce((s,t)=>s+t.value,0)});const winner=[...next.order].map(id=>next.players[id]).sort((a,b)=>b.score-a.score)[0];next.logs=addLog(next.logs,`<b>Koniec gry.</b> ${esc(reason)} Wygrywa <b>${esc(winner.name)}</b>: <b>${winner.score}</b> pkt.`)}
+    async function saveRoom(next){next.updatedAt=Date.now();await set(roomRef(currentRoomCode),next)}function createBag(){let id=0,bag=[];LETTER_DISTRIBUTION.forEach(([letter,count])=>{for(let i=0;i<count;i++)bag.push({id:id++,letter,value:LETTER_VALUES[letter],blank:letter==='*'})});return shuffle(bag)}function drawTiles(rack,bag,target=7){while(rack.length<target&&bag.length)rack.push(bag.pop())}
+    function currentPlayerId(){return room?.order?.[room.currentIndex]}function currentPlayer(){return room?.players?.[currentPlayerId()]}function isMyTurn(){return room&&currentPlayerId()===myId&&(room.pending?.uid?room.pending.uid===myId:true)}function pendingAt(r,c){return(room.pending?.tiles||[]).find(p=>p.r===r&&p.c===c)}function targetPlayerCount(data){return Math.min(4,Math.max(2,Number(data?.settings?.playerCount||4)))}function settingsLabel(s){return`${targetPlayerCount({settings:s})} graczy, ${s.timerEnabled?`${s.turnTimeLimitSeconds}s na ruch`:'bez limitu czasu'}, ${s.votingEnabled?'głosowanie':'bez głosowania'}`}
+    function tileEl(tile,locked){const d=document.createElement('div');d.className=`tile ${tile.blank?'blank':''} ${locked?'locked':''}`;d.innerHTML=`<span>${esc(tile.letter)}</span><small>${tile.value}</small>`;return d}function isCelebratedCell(r,c){const ev=room?.lastEvent;return!!(ev&&ev.type==='word'&&Array.isArray(ev.tiles)&&ev.tiles.some(t=>t.r===r&&t.c===c))}function labelForMultiplier(m,r,c){if(r===CENTER&&c===CENTER)return'★ DW';return m?m.toUpperCase():''}
+    function formatTime(x){if(!Number.isFinite(x))return'∞';x=Math.max(0,Math.round(x));return`${Math.floor(x/60)}:${String(x%60).padStart(2,'0')}`}function k(r,c){return`${r}_${c}`}function inBounds(r,c){return r>=0&&r<SIZE&&c>=0&&c<SIZE}function clone(o){return structuredClone(o)}function shuffle(arr){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function cleanName(s){return String(s||'').trim().slice(0,18)}function esc(s){return String(s??'').replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]))}function logObj(html){return{html,t:Date.now()}}function addLog(logs,html){return[...(logs||[]),logObj(html)].slice(-90)}
+    async function copyRoomLink(){await navigator.clipboard.writeText(`${location.origin}${location.pathname}?room=${room.code}`);uiAlert('Skopiowano link.')}function goHome(markOffline=true){if(markOffline&&currentRoomCode&&myId&&db)update(ref(db,`rooms/${currentRoomCode}/players/${myId}`),{online:false,lastSeen:Date.now()}).catch(()=>{});currentRoomCode=null;room=null;selectedRackIndex=null;if(unsubscribeRoom){unsubscribeRoom();unsubscribeRoom=null}history.replaceState(null,'',location.pathname);els.lobbyView.classList.add('hidden');els.gameView.classList.add('hidden');els.homeView.classList.remove('hidden');els.topBadge.textContent='Online'}
+    function showToast(title,text){const t=document.createElement('div');t.className='toast';t.innerHTML=`<b>${esc(title)}</b><small>${esc(text)}</small>`;els.toastHost.prepend(t);setTimeout(()=>{t.style.opacity='0';t.style.transform='translateY(10px) scale(.98)'},4200);setTimeout(()=>t.remove(),4700)}function browserNotify(title,body){if('Notification'in window&&Notification.permission==='granted'){try{new Notification(title,{body})}catch(_){}}}
+    function uiAlert(message,title='Komunikat'){return openModal({type:'alert',title,message})}function uiConfirm(message,title='Potwierdź'){return openModal({type:'confirm',title,message})}function uiPrompt(title,message,placeholder='',defaultValue=''){return openModal({type:'prompt',title,message,placeholder,defaultValue})}
+    function openModal({type,title,message,placeholder='',defaultValue=''}){return new Promise(resolve=>{els.uiModalTitle.textContent=title;els.uiModalText.textContent=message;els.uiModalActions.innerHTML='';els.uiModalInput.classList.toggle('hidden',type!=='prompt');els.uiModalInput.value=defaultValue;els.uiModalInput.placeholder=placeholder;const close=v=>{els.uiModalBackdrop.classList.remove('show');setTimeout(()=>{els.uiModalActions.innerHTML='';els.uiModalInput.classList.add('hidden')},120);resolve(v)};if(type==='alert'){const ok=button('OK','btn primary',()=>close(true));els.uiModalActions.append(ok)}else{const cancel=button('Anuluj','btn',()=>close(null));const ok=button(type==='confirm'?'Tak':'OK','btn primary',()=>close(type==='confirm'?true:els.uiModalInput.value));els.uiModalActions.append(cancel,ok)}els.uiModalBackdrop.classList.add('show');if(type==='prompt')setTimeout(()=>els.uiModalInput.focus(),30)})}
+    function uiBlankLetterPrompt(){return new Promise(resolve=>{els.uiModalTitle.textContent='Joker';els.uiModalText.textContent='Wybierz literę, którą ma udawać joker. Joker dalej jest wart 0 punktów.';els.uiModalInput.classList.add('hidden');els.uiModalActions.innerHTML='';const box=els.uiModalActions.parentElement,grid=document.createElement('div');grid.className='ui-letter-grid';'AĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ'.split('').forEach(letter=>grid.appendChild(button(letter,'ui-letter-choice',()=>close(letter))));box.insertBefore(grid,els.uiModalActions);const close=v=>{grid.remove();els.uiModalBackdrop.classList.remove('show');setTimeout(()=>els.uiModalActions.innerHTML='',120);resolve(v)};els.uiModalActions.append(button('Anuluj','btn',()=>close(null)));els.uiModalBackdrop.classList.add('show')})}
+    function uiExchangePrompt(rack){return new Promise(resolve=>{const selected=new Set();els.uiModalTitle.textContent='Wymień litery';els.uiModalText.textContent='Kliknij litery, które chcesz wymienić. Wymiana kończy twoją turę.';els.uiModalInput.classList.add('hidden');els.uiModalActions.innerHTML='';const box=els.uiModalActions.parentElement,grid=document.createElement('div');grid.className='ui-exchange-grid';rack.forEach((tile,i)=>{const b=document.createElement('button');b.type='button';b.className='ui-exchange-choice';b.appendChild(tileEl(tile,false));b.onclick=()=>{selected.has(i)?selected.delete(i):selected.add(i);b.classList.toggle('selected',selected.has(i))};grid.appendChild(b)});box.insertBefore(grid,els.uiModalActions);const close=v=>{grid.remove();els.uiModalBackdrop.classList.remove('show');setTimeout(()=>els.uiModalActions.innerHTML='',120);resolve(v)};els.uiModalActions.append(button('Anuluj','btn',()=>close(null)),button('Wymień wybrane','btn blue',()=>selected.size?close([...selected]):showToast('Wymiana liter','Wybierz przynajmniej jedną literę.')));els.uiModalBackdrop.classList.add('show')})}
+    function button(text,cls,fn){const b=document.createElement('button');b.type='button';b.className=cls;b.textContent=text;b.onclick=fn;return b}
+    function makeMultipliers(){const m=Array.from({length:SIZE},()=>Array.from({length:SIZE},()=>''));const set=(t,cs)=>cs.forEach(([r,c])=>m[r][c]=t);set('tw',[[0,0],[0,7],[0,14],[7,0],[7,14],[14,0],[14,7],[14,14]]);set('dw',[[1,1],[2,2],[3,3],[4,4],[7,7],[10,10],[11,11],[12,12],[13,13],[1,13],[2,12],[3,11],[4,10],[10,4],[11,3],[12,2],[13,1]]);set('tl',[[1,5],[1,9],[5,1],[5,5],[5,9],[5,13],[9,1],[9,5],[9,9],[9,13],[13,5],[13,9]]);set('dl',[[0,3],[0,11],[2,6],[2,8],[3,0],[3,7],[3,14],[6,2],[6,6],[6,8],[6,12],[7,3],[7,11],[8,2],[8,6],[8,8],[8,12],[11,0],[11,7],[11,14],[12,6],[12,8],[14,3],[14,11]]);return m}
   </script>
 </body>
 </html>
